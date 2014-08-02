@@ -6,7 +6,8 @@ ThinBASIC is a BASIC Interpreter full of thousands of features and ... fast, ver
 
 ### About
 
-...
+ThinBASIC has been developed by Eros Olmi and Petr Screiber since 2004.
+On GitHub we will release sources of some part of ThinBASIC like some ThinBASIC modules and libraries.
 
 ### Documentation
 
@@ -18,3 +19,7 @@ Binary downloads, community, etc. can be found in ThinBASIC homepage:
 
 http://www.thinbasic.com/community/forum.php
 
+### Compiling from Sources
+
+All sources be compiled using PowerBASIC 10.04 Programming Language.
+Compilation of ThinBASIC sources needs PowerBASIC Compiler and ThinBASIC development Kit included in ThinBASIC distribution.
