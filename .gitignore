@@ -1,5 +1,5 @@
 # Compiler files which do not need to be included
 *.log
-*.dll
+#*.dll
 *.bak
 Backup.*.*
