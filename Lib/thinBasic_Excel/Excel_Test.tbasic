@@ -1,0 +1,49 @@
+Uses "Excel"
+
+Function TBMain() As Long
+  Dim xApp      As  Excel_Application
+  Dim xWorkBook As  Excel_Workbook
+  Dim xSheet    As  Excel_Worksheet
+  Dim x, y      As  Long
+  
+  xApp = New Excel_Application
+  
+  MsgBox 0, "Excel version is: " + xApp.Version
+  
+  xApp.Visible = 1       
+  
+
+  '---Pass Excel Instance to create a Workbook
+  xWorkBook = New Excel_WorkBook(xApp)
+  
+  '---Pass Workbook instance to create a sheet
+  xSheet    = New Excel_Worksheet(xWorkBook)
+
+  xSheet.Name = "thinBasic Test"
+  MsgBox 0, "Worksheet name: " & xSheet.Name
+  
+  '---Write some text
+  For y = 1 To 50
+    For x = 1 To 5
+      xSheet.Cells(y, x).Value = "Cell " & Chr$(x + 64) & Format$(y)
+    Next
+    x = 6
+    xSheet.Cells(Y, X) = y + y / 10
+    x = 7
+    xSheet.Cells(Y, X) = Format$(Rnd(-1000,1000), "$#,.00")
+  Next
+  
+  '---Read some text
+  MsgBox 0, "Cell 2,2 = " & xSheet.Cells(2,2).Value
+
+  'xSheet.PrintPreview
+  
+  xApp.AlertBeforeOverwriting = 0 
+  
+msgbox 0, xApp.AlertBeforeOverwriting      
+  xWorkBook.SaveAs(APP_ScriptFullName & ".xlsx")
+  xApp.Quit                     
+
+  MsgBox 0, "OK, test done. thinBasic will now close."             
+
+End Function

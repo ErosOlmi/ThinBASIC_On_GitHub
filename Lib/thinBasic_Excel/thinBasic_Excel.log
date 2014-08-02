@@ -1,0 +1,32 @@
+PowerBASIC 10 for Windows
+Copyright (c) 1996-2012 PowerBasic Inc.
+Englewood, Florida USA
+All Rights Reserved
+
+Primary source:  C:\THINBA~1\Lib\TH1A89~1\thinBasic_Excel.bas   {14066 total lines}
+Target compilation:  thinBasic_Excel.dll
+Compile time:  0.2 seconds, at 4219800 lines/minute
+
+10304 bytes compiled code, 18012 bytes RTLibrary,
+388 bytes string literals, and 3108 bytes dgroup.
+DLL does not require stack allocation.
+Disk image: 33296 bytes   Memory image: 21508 bytes.
+
+Component Files:
+----------------
+C:\THINBA~1\Lib\TH1A89~1\thinBasic_Excel.bas
+C:\THINBASIC\LIB\THINCORE.INC
+C:\THINBASIC\LIB\THINBASIC_EXCEL\EXCEL.INC
+C:\THINBASIC\LIB\THINBASIC_EXCEL\THINBASIC_EXCEL_APPLICATION.INC
+C:\THINBASIC\LIB\THINBASIC_EXCEL\THINBASIC_EXCEL_WORKBOOK.INC
+C:\THINBASIC\LIB\THINBASIC_EXCEL\THINBASIC_EXCEL_WORKSHEET.INC
+
+
+Code Extracted:
+---------------
+<CLASS> CLASS_APPEVENTS
+<CLASS> CLASS_CHARTEVENTS
+<CLASS> CLASS_DOCEVENTS
+<CLASS> CLASS_WORKBOOKEVENTS
+<CLASS> CLASS_OLEOBJECTEVENTS
+<CLASS> CLASS_REFRESHEVENTS
