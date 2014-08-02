@@ -14,7 +14,7 @@
 
 #RESOURCE STRINGINFO "0409", "04B0"
 
-#Resource VERSION$ "CompanyName",      "ThinBASIC"
+#RESOURCE VERSION$ "CompanyName",      "ThinBASIC"
 #RESOURCE VERSION$ "FileDescription",  "thinBasic module for Excel support"
 #RESOURCE VERSION$ "FileVersion",      "1.0.0.1"
 #RESOURCE VERSION$ "InternalName",     "Excel"
@@ -24,17 +24,17 @@
 #RESOURCE VERSION$ "ProductVersion",   "1.0.0.1"
 #RESOURCE VERSION$ "Comments",         "Support site: http://www.thinbasic.com/"
 
-Global gPath As String
+GLOBAL gPath AS STRING
 
 '---Every used defined thinBasic module must include this file
-#Include Once "..\thinCore.inc"  
+#INCLUDE ONCE "..\thinCore.inc"
 
-#Include Once "Excel.inc"
-#Include Once "thinBasic_Excel_Application.inc"
-#Include Once "thinBasic_Excel_Workbook.inc"
-#Include Once "thinBasic_Excel_Worksheet.inc"
- 
- 
+#INCLUDE ONCE "Excel.inc"
+#INCLUDE ONCE "thinBasic_Excel_Application.inc"
+#INCLUDE ONCE "thinBasic_Excel_Workbook.inc"
+#INCLUDE ONCE "thinBasic_Excel_Worksheet.inc"
+
+
 '----------------------------------------------------------------------------
 '---References:
 '     Excel Object Model: http://msdn.microsoft.com/en-us/library/bb149081(v=office.12).aspx
@@ -42,86 +42,89 @@ Global gPath As String
 
 '----------------------------------------------------------------------------
 FUNCTION LoadLocalSymbols ALIAS "LoadLocalSymbols" (OPTIONAL BYVAL sPath AS STRING) EXPORT AS LONG
-    Local RetCode                   As Long
-    Local pClass_cExcel_Application As Long
-    Local pClass_cExcel_Workbook    As Long
-    Local pClass_cExcel_Worksheet   As Long
+    LOCAL RetCode                   AS LONG
+    LOCAL pClass_cExcel_Application AS LONG
+    LOCAL pClass_cExcel_Workbook    AS LONG
+    LOCAL pClass_cExcel_Worksheet   AS LONG
 
-    '---Save DLL loading path to global var
+    ' -- Save DLL loading path to global var
     gPath = sPath
 
     '---
     ' Excel Application Class
     '---
       pClass_cExcel_Application = thinBasic_Class_Add("Excel_Application", 0)
-  
-      '---If class was created, define all methods and properties, each connected to a CODEPTR module function/sub
-      If pClass_cExcel_Application Then
-  
+
+      ' -- If class was created, define all methods and properties, each connected to a CODEPTR module function/sub
+      IF pClass_cExcel_Application THEN
+
         ' -- Constructor wrapper function needs to be linked in as _Create
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Application, "_Create"           , %thinBasic_ReturnNone       , CodePtr(cExcel_Application_Create            ))
-        ' -- Destructor wrapper function needs to be linked in as _Create
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Application, "_Destroy"          , %thinBasic_ReturnNone       , CodePtr(cExcel_Application_Destroy           ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Application, "_Create"           , %thinBasic_ReturnNone       , CODEPTR(cExcel_Application_Create            ))
+        ' -- Destructor wrapper function needs to be linked in as _Destroy
+        ' -- WARNING: You MUST supply destructor and set the object to NOTHING, otherwise you risk memory leak
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Application, "_Destroy"          , %thinBasic_ReturnNone       , CODEPTR(cExcel_Application_Destroy           ))
         ' -- ClassObject
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Application, "_GetClassObject"   , %thinBasic_ReturnNone       , CodePtr(cExcel_Application_GetClassObject    ))
-  
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Application, "_GetClassObject"   , %thinBasic_ReturnNone       , CODEPTR(cExcel_Application_GetClassObject    ))
+
         ' -- Common methods can take any name
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Application, "Quit"              , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Application_Method_Quit     ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Application, "Quit"              , %thinBasic_ReturnCodeLong   , CODEPTR(cExcel_Application_Method_Quit     ))
 
         ' -- Common properties can take any name
-        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "Version"                 , %thinBasic_ReturnString     , CodePtr(cExcel_Application_Property_Version ))
-        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "Visible"                 , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Application_Property_Visible ))
-        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "AlertBeforeOverwriting"  , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Application_Property_AlertBeforeOverwriting  ))
-        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "DisplayAlerts"           , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Application_Property_DisplayAlerts           ))
-        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "ActiveWindow"            , %thinBasic_ReturnString     , CodePtr(cExcel_Application_Property_ActiveWindow            ))
-                                                                                                                                           
-      End If
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "Version"                 , %thinBasic_ReturnString     , CODEPTR(cExcel_Application_Property_Version ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "Visible"                 , %thinBasic_ReturnCodeLong   , CODEPTR(cExcel_Application_Property_Visible ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "AlertBeforeOverwriting"  , %thinBasic_ReturnCodeLong   , CODEPTR(cExcel_Application_Property_AlertBeforeOverwriting  ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "DisplayAlerts"           , %thinBasic_ReturnCodeLong   , CODEPTR(cExcel_Application_Property_DisplayAlerts           ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "ActiveWindow"            , %thinBasic_ReturnString     , CODEPTR(cExcel_Application_Property_ActiveWindow            ))
+
+      END IF
 
     '---
     ' Excel Workbook Class
     '---
       pClass_cExcel_Workbook = thinBasic_Class_Add("Excel_Workbook", 0)
-  
-      '---If class was created, define all methods and properties, each connected to a CODEPTR module function/sub
-      If pClass_cExcel_Workbook Then
-  
+
+      ' -- If class was created, define all methods and properties, each connected to a CODEPTR module function/sub
+      IF pClass_cExcel_Workbook THEN
+
         ' -- Constructor wrapper function needs to be linked in as _Create
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "_Create"           , %thinBasic_ReturnNone       , CodePtr(cExcel_Workbook_Create            ))
-        ' -- Destructor wrapper function needs to be linked in as _Create
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "_Destroy"          , %thinBasic_ReturnNone       , CodePtr(cExcel_Workbook_Destroy           ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "_Create"           , %thinBasic_ReturnNone       , CODEPTR(cExcel_Workbook_Create            ))
+        ' -- Destructor wrapper function needs to be linked in as _Destroy
+        ' -- WARNING: You MUST supply destructor and set the object to NOTHING, otherwise you risk memory leak
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "_Destroy"          , %thinBasic_ReturnNone       , CODEPTR(cExcel_Workbook_Destroy           ))
         ' -- ClassObject
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "_GetClassObject"   , %thinBasic_ReturnNone       , CodePtr(cExcel_Workbook_GetClassObject    ))
-  
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "_GetClassObject"   , %thinBasic_ReturnNone       , CODEPTR(cExcel_Workbook_GetClassObject    ))
+
         ' -- Common methods can take any name
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "SaveAs"             , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Workbook_Method_SaveAs     ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "SaveAs"             , %thinBasic_ReturnCodeLong   , CODEPTR(cExcel_Workbook_Method_SaveAs     ))
 
         ' -- Common properties can take any name
-        
-      End If
+
+      END IF
 
     '---
     ' Excel Worksheet Class
     '---
       pClass_cExcel_Worksheet = thinBasic_Class_Add("Excel_Worksheet", 0)
-  
-      '---If class was created, define all methods and properties, each connected to a CODEPTR module function/sub
-      If pClass_cExcel_Worksheet Then
-  
+
+      ' -- If class was created, define all methods and properties, each connected to a CODEPTR module function/sub
+      IF pClass_cExcel_Worksheet THEN
+
         ' -- Constructor wrapper function needs to be linked in as _Create
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Worksheet, "_Create"           , %thinBasic_ReturnNone       , CodePtr(cExcel_Worksheet_Create           ))
-        ' -- Destructor wrapper function needs to be linked in as _Create
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Worksheet, "_Destroy"          , %thinBasic_ReturnNone       , CodePtr(cExcel_Worksheet_Destroy          ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Worksheet, "_Create"           , %thinBasic_ReturnNone       , CODEPTR(cExcel_Worksheet_Create           ))
+        ' -- Destructor wrapper function needs to be linked in as _Destroy
+        ' -- WARNING: You MUST supply destructor and set the object to NOTHING, otherwise you risk memory leak
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Worksheet, "_Destroy"          , %thinBasic_ReturnNone       , CODEPTR(cExcel_Worksheet_Destroy          ))
         ' -- ClassObject
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Worksheet, "_GetClassObject"   , %thinBasic_ReturnNone       , CodePtr(cExcel_Worksheet_GetClassObject   ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Worksheet, "_GetClassObject"   , %thinBasic_ReturnNone       , CODEPTR(cExcel_Worksheet_GetClassObject   ))
 
         ' -- Common methods can take any name
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Worksheet, "PrintPreview"      , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Worksheet_Method_PrintPreview     ))
-  
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Worksheet, "PrintPreview"      , %thinBasic_ReturnCodeLong   , CODEPTR(cExcel_Worksheet_Method_PrintPreview     ))
+
         ' -- Common properties can take any name
-        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Worksheet, "Cells"             , %thinBasic_ReturnString     , CodePtr(cExcel_Worksheet_Property_Cells   ))
-        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Worksheet, "Name"              , %thinBasic_ReturnString     , CodePtr(cExcel_Worksheet_Property_Name    ))
-        
-      End If
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Worksheet, "Cells"             , %thinBasic_ReturnString     , CODEPTR(cExcel_Worksheet_Property_Cells   ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Worksheet, "Name"              , %thinBasic_ReturnString     , CODEPTR(cExcel_Worksheet_Property_Name    ))
+
+      END IF
 
 END FUNCTION
 
