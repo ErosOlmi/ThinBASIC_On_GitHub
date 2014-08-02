@@ -10,7 +10,7 @@ ThinBASIC is a NASIC Interpreter full of thousands of features and ... fast, ver
 
 ### Documentation
 
-Documentation can be found at [GitHub Wiki](http://www.thinbasic.com/public/products/thinBasic/help/html/index.html).
+Documentation can be found at [ThinBASIC web site](http://www.thinbasic.com/public/products/thinBasic/help/html/index.html).
 
 ### Binary Downloads, Community, etc.
 
