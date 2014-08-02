@@ -33,6 +33,12 @@ Global gPath As String
 #Include Once "thinBasic_Excel_Application.inc"
 #Include Once "thinBasic_Excel_Workbook.inc"
 #Include Once "thinBasic_Excel_Worksheet.inc"
+ 
+ 
+'----------------------------------------------------------------------------
+'---References:
+'     Excel Object Model: http://msdn.microsoft.com/en-us/library/bb149081(v=office.12).aspx
+'----------------------------------------------------------------------------
 
 '----------------------------------------------------------------------------
 FUNCTION LoadLocalSymbols ALIAS "LoadLocalSymbols" (OPTIONAL BYVAL sPath AS STRING) EXPORT AS LONG
@@ -44,10 +50,9 @@ FUNCTION LoadLocalSymbols ALIAS "LoadLocalSymbols" (OPTIONAL BYVAL sPath AS STRI
     '---Save DLL loading path to global var
     gPath = sPath
 
-  '---
-  ' KEYWORDS
-  '---
-
+    '---
+    ' Excel Application Class
+    '---
       pClass_cExcel_Application = thinBasic_Class_Add("Excel_Application", 0)
   
       '---If class was created, define all methods and properties, each connected to a CODEPTR module function/sub
@@ -63,6 +68,7 @@ FUNCTION LoadLocalSymbols ALIAS "LoadLocalSymbols" (OPTIONAL BYVAL sPath AS STRI
         ' -- Common methods can take any name
         RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Application, "Quit"              , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Application_Method_Quit     ))
 
+        ' -- Common properties can take any name
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "Version"                 , %thinBasic_ReturnString     , CodePtr(cExcel_Application_Property_Version ))
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "Visible"                 , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Application_Property_Visible ))
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "AlertBeforeOverwriting"  , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Application_Property_AlertBeforeOverwriting  ))
@@ -71,7 +77,9 @@ FUNCTION LoadLocalSymbols ALIAS "LoadLocalSymbols" (OPTIONAL BYVAL sPath AS STRI
                                                                                                                                            
       End If
 
-
+    '---
+    ' Excel Workbook Class
+    '---
       pClass_cExcel_Workbook = thinBasic_Class_Add("Excel_Workbook", 0)
   
       '---If class was created, define all methods and properties, each connected to a CODEPTR module function/sub
@@ -85,18 +93,15 @@ FUNCTION LoadLocalSymbols ALIAS "LoadLocalSymbols" (OPTIONAL BYVAL sPath AS STRI
         RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "_GetClassObject"   , %thinBasic_ReturnNone       , CodePtr(cExcel_Workbook_GetClassObject    ))
   
         ' -- Common methods can take any name
-'        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "Quit"              , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Application_Method_Quit     ))
         RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "SaveAs"             , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Workbook_Method_SaveAs     ))
-'        RetCode = thinBasic_Class_AddMethod   (pClass_cADODB_Connection, "Close"            , %thinBasic_ReturnCodeDWord  , CodePtr(cADODB_Connection_Close     ))
-'
-'        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Workbook, "Version"           , %thinBasic_ReturnString     , CodePtr(cExcel_Application_Property_Version ))
-'        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Workbook, "Visible"           , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Application_Property_Visible ))
-'        RetCode = thinBasic_Class_AddProperty (pClass_cADODB_Connection, "Version"          , %thinBasic_ReturnString     , CodePtr(cADODB_Connection_Property_Version          ))
-'        RetCode = thinBasic_Class_AddProperty (pClass_cADODB_Connection, "ConnectionTimeOut", %thinBasic_ReturnCodeLong   , CodePtr(cADODB_Connection_Property_ConnectionTimeOut))
-'        RetCode = thinBasic_Class_AddProperty (pClass_cADODB_Connection, "CommandTimeOut"   , %thinBasic_ReturnCodeLong   , CodePtr(cADODB_Connection_Property_CommandTimeOut   ))
+
+        ' -- Common properties can take any name
         
       End If
 
+    '---
+    ' Excel Worksheet Class
+    '---
       pClass_cExcel_Worksheet = thinBasic_Class_Add("Excel_Worksheet", 0)
   
       '---If class was created, define all methods and properties, each connected to a CODEPTR module function/sub
@@ -112,6 +117,7 @@ FUNCTION LoadLocalSymbols ALIAS "LoadLocalSymbols" (OPTIONAL BYVAL sPath AS STRI
         ' -- Common methods can take any name
         RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Worksheet, "PrintPreview"      , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Worksheet_Method_PrintPreview     ))
   
+        ' -- Common properties can take any name
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Worksheet, "Cells"             , %thinBasic_ReturnString     , CodePtr(cExcel_Worksheet_Property_Cells   ))
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Worksheet, "Name"              , %thinBasic_ReturnString     , CodePtr(cExcel_Worksheet_Property_Name    ))
         
