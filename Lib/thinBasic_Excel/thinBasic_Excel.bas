@@ -1,7 +1,7 @@
 '
 ' Excel support for ThinBASIC
 '
-' Petr Schreiber
+' Petr Schreiber/Eros Olmi
 '
 
 #COMPILE DLL
@@ -14,12 +14,12 @@
 
 #RESOURCE STRINGINFO "0409", "04B0"
 
-#RESOURCE VERSION$ "CompanyName",      "Petr Schreiber"
+#Resource VERSION$ "CompanyName",      "ThinBASIC"
 #RESOURCE VERSION$ "FileDescription",  "thinBasic module for Excel support"
 #RESOURCE VERSION$ "FileVersion",      "1.0.0.1"
 #RESOURCE VERSION$ "InternalName",     "Excel"
 #RESOURCE VERSION$ "OriginalFilename", "ThinBASIC_Excel.dll"
-#RESOURCE VERSION$ "LegalCopyright",   "Copyright © Petr Schreiber 2014"
+#RESOURCE VERSION$ "LegalCopyright",   "Copyright © Petr Schreiber/Eros Olmi 2014"
 #RESOURCE VERSION$ "ProductName",      "Module"
 #RESOURCE VERSION$ "ProductVersion",   "1.0.0.1"
 #RESOURCE VERSION$ "Comments",         "Support site: http://www.thinbasic.com/"
