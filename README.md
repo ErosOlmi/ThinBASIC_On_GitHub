@@ -2,7 +2,7 @@
 
 ### ThinBASIC
 
-ThinBASIC is a NASIC Interpreter full of thousands of features and ... fast, very fast!
+ThinBASIC is a BASIC Interpreter full of thousands of features and ... fast, very fast!
 
 ### About
 
