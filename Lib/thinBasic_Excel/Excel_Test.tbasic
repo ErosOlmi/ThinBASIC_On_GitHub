@@ -6,23 +6,27 @@ Function TBMain() As Long
   Dim xSheet    As  Excel_Worksheet
   Dim x, y      As  Long
   
+  '---Create a new Excel Application COM Server instance
   xApp = New Excel_Application
   
+  '---Get back Excel Version
   MsgBox 0, "Excel version is: " + xApp.Version
   
-  xApp.Visible = 1       
-  
+  '---Set Visible to TRUE so we can see what's going on
+  xApp.Visible = %TRUE       
 
   '---Pass Excel Instance to create a Workbook
   xWorkBook = New Excel_WorkBook(xApp)
   
-  '---Pass Workbook instance to create a sheet
-  xSheet    = New Excel_Worksheet(xWorkBook)
+  '---Pass Workbook instance to create a new sheet
+  xSheet = New Excel_Worksheet(xWorkBook)
 
+  '---Change Sheet name (here Set and Get of a Sheet property takes place)
   xSheet.Name = "thinBasic Test"
   MsgBox 0, "Worksheet name: " & xSheet.Name
   
-  '---Write some text
+  '---Write some text into Excel sheet
+  MsgBox 0, "Now we will fill some cells"
   For y = 1 To 50
     For x = 1 To 5
       xSheet.Cells(y, x).Value = "Cell " & Chr$(x + 64) & Format$(y)
@@ -33,15 +37,19 @@ Function TBMain() As Long
     xSheet.Cells(Y, X) = Format$(Rnd(-1000,1000), "$#,.00")
   Next
   
-  '---Read some text
-  MsgBox 0, "Cell 2,2 = " & xSheet.Cells(2,2).Value
+  '---Read some text back
+  MsgBox 0, "Reading back Cell 2,2 = " & xSheet.Cells(2,2).Value
 
   'xSheet.PrintPreview
   
-  xApp.AlertBeforeOverwriting = 0 
-  
-msgbox 0, xApp.AlertBeforeOverwriting      
+  '---Tells Excel application to not show alerts (in this case alert about file already exists before saving)
+  xApp.DisplayAlerts = %FALSE
+  '---Save file name
   xWorkBook.SaveAs(APP_ScriptFullName & ".xlsx")
+  '---Reset DisplayAlerts
+  xApp.DisplayAlerts = %TRUE
+
+  '---Close Excel Application
   xApp.Quit                     
 
   MsgBox 0, "OK, test done. thinBasic will now close."             

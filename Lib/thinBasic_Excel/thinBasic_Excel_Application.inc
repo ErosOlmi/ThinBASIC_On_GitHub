@@ -428,7 +428,8 @@
   '             %Class_Action_None  SHOULD NEVER HAPPEN
   '--------------------------------------------------------------------------------------
   ' Syntax:
-  '   
+  '--------------------------------------------------------------------------------------
+  ' Help: True if Microsoft Excel displays a message before overwriting nonblank cells during a drag-and-drop editing operation  
   '--------------------------------------------------------------------------------------
     Local lEqualType    As Long
     Local vDummyVariant As variant
