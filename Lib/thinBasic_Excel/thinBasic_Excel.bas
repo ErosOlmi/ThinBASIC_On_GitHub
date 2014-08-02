@@ -62,16 +62,13 @@ FUNCTION LoadLocalSymbols ALIAS "LoadLocalSymbols" (OPTIONAL BYVAL sPath AS STRI
   
         ' -- Common methods can take any name
         RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Application, "Quit"              , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Application_Method_Quit     ))
-'        RetCode = thinBasic_Class_AddMethod   (pClass_cADODB_Connection, "Close"            , %thinBasic_ReturnCodeDWord  , CodePtr(cADODB_Connection_Close     ))
-'
+
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "Version"                 , %thinBasic_ReturnString     , CodePtr(cExcel_Application_Property_Version ))
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "Visible"                 , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Application_Property_Visible ))
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "AlertBeforeOverwriting"  , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Application_Property_AlertBeforeOverwriting  ))
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "DisplayAlerts"           , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Application_Property_DisplayAlerts           ))
-'        RetCode = thinBasic_Class_AddProperty (pClass_cADODB_Connection, "Version"          , %thinBasic_ReturnString     , CodePtr(cADODB_Connection_Property_Version          ))
-'        RetCode = thinBasic_Class_AddProperty (pClass_cADODB_Connection, "ConnectionTimeOut", %thinBasic_ReturnCodeLong   , CodePtr(cADODB_Connection_Property_ConnectionTimeOut))
-'        RetCode = thinBasic_Class_AddProperty (pClass_cADODB_Connection, "CommandTimeOut"   , %thinBasic_ReturnCodeLong   , CodePtr(cADODB_Connection_Property_CommandTimeOut   ))
-        
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "ActiveWindow"            , %thinBasic_ReturnString     , CodePtr(cExcel_Application_Property_ActiveWindow            ))
+                                                                                                                                           
       End If
 
 

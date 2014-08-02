@@ -592,6 +592,77 @@
   End Function
 
 
+  '--------------------------------------------------------------------------------------
+  Function cExcel_Application_Property_ActiveWindow(ByVal pObject As Long, ByVal lAction As Long) As String
+  '--------------------------------------------------------------------------------------
+  '  Properties functions has 2 params:
+  '   pObject   is a pointer to module class or any other memory area handled by a pseudo class
+  '   lAction   can be %Class_Action_Get, %Class_Action_Set, %Class_Action_None
+  '             depending on how the property is used in the script
+  '             %Class_Action_Get   when property is used inside an expression
+  '             %Class_Action_Set   when property is used at the beginning of a line
+  '             %Class_Action_None  SHOULD NEVER HAPPEN
+  '--------------------------------------------------------------------------------------
+  ' Syntax:
+  '   
+  '--------------------------------------------------------------------------------------
+    Local lEqualType    As Long
+    Local vDummyVariant As variant
+    Local sSubItem    As String
+    
+    ReDim oObject(1& To 1&) As iExcel_Application At pObject
+    ReDim lExcel_Application(1& To 1&) As Excel_Application At oObject(1&).cExcel_Application_GetClassObject
+
+    If thinBasic_CheckPoint_Optional Then
+      sSubItem = thinBasic_GetUnknownToken   
+    End If
+    
+    If thinBasic_ErrorFree Then
+      Select Case UCase$(sSubItem)
+        Case "CLOSE"
+          Select Case Long lAction
+
+            '---GET action happen usually when property is used inside an expression
+            Case %Class_Action_Get                                                  
+              '---Return value
+              Object Get lExcel_Application(1&).ActiveWindow.Close To vDummyVariant
+              Function = Variant$(vDummyVariant)
+              
+            '---SET action happen usually when property is used directly as first token in a source code line
+            Case %Class_Action_Set 
+              '---Here programmer has to parse equal (=) sign and than a numeric or string expression
+              '---But remember: equal sign can also be += &= -= *= /= \=
+              lEqualType = thinBasic_CheckEqualType_Mandatory
+              If thinBasic_ErrorFree Then
+                Select Case Long lEqualType
+      
+                  '---Assignment
+                  Case  %Equal_EQ
+                    vDummyVariant = thinBasic_Parse1Number
+                    Object Let lExcel_Application(1&).ActiveWindow.Close = vDummyVariant
+      
+      '            '---Assignment with concatenation      
+      '            Case  %Equal_PLUSEQUAL, _
+      '                  %Equal_CONCEQUAL, _
+      '                  %Equal_POINTEQUAL
+      '
+                  Case Else
+                    '---Not supperted for strings 
+                    MsgBox FuncName$ & Str$(lEqualType) 
+                    
+                End Select
+              End If
+                      
+            Case %Class_Action_None
+              '---Should not happen but ... I will leave in any case
+          End Select
+      
+      '  Case ???
+      
+      End Select  'UCase$(sSubItem)
+      
+    End If
+  End Function
 
 
 
