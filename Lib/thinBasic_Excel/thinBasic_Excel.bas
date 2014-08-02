@@ -27,7 +27,7 @@
 GLOBAL gPath AS STRING
 
 '---Every used defined thinBasic module must include this file
-#INCLUDE ONCE "..\thinCore.inc"
+#Include Once "\ThinBASIC\Lib\thinCore.inc"
 
 #INCLUDE ONCE "Excel.inc"
 #INCLUDE ONCE "thinBasic_Excel_Application.inc"
