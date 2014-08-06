@@ -388,3 +388,75 @@
       
     End If
   End Function
+
+  '--------------------------------------------------------------------------------------
+  Function cExcel_Workbook_Method_Name(ByVal pObject As Long, ByVal lAction As Long) As String
+  '--------------------------------------------------------------------------------------
+  '  Properties functions has 2 params:
+  '   pObject   is a pointer to module class or any other memory area handled by a pseudo class
+  '   lAction   can be %Class_Action_Get, %Class_Action_Set, %Class_Action_None
+  '             depending on how the property is used in the script
+  '             %Class_Action_Get   when property is used inside an expression
+  '             %Class_Action_Set   when property is used at the beginning of a line
+  '             %Class_Action_None  SHOULD NEVER HAPPEN
+  '--------------------------------------------------------------------------------------
+  ' Syntax:
+  '   
+  '--------------------------------------------------------------------------------------
+    Local lEqualType    As Long
+    Local vDummyVariant As variant
+    Local sSubItem      As String
+    
+    ReDim oObject(1& To 1&) As iExcel_Workbook At pObject
+    ReDim lExcel_Workbook(1& To 1&) As Excel_Workbook At oObject(1&).cExcel_Workbook_GetClassObject
+
+    If thinBasic_CheckPoint_Optional Then
+      sSubItem = thinBasic_GetUnknownToken   
+    End If
+    
+    If thinBasic_ErrorFree Then
+      Select Case UCase$(sSubItem)
+        Case ""                                                 
+          Object Get lExcel_Workbook(1&).Name To vDummyVariant'vDummyVariant
+          Function = Variant$(vDummyVariant)
+      
+      End Select  'UCase$(sSubItem)
+      
+    End If
+  End Function
+
+  '--------------------------------------------------------------------------------------
+  Function cExcel_Workbook_Method_FullName(ByVal pObject As Long, ByVal lAction As Long) As String
+  '--------------------------------------------------------------------------------------
+  '  Properties functions has 2 params:
+  '   pObject   is a pointer to module class or any other memory area handled by a pseudo class
+  '   lAction   can be %Class_Action_Get, %Class_Action_Set, %Class_Action_None
+  '             depending on how the property is used in the script
+  '             %Class_Action_Get   when property is used inside an expression
+  '             %Class_Action_Set   when property is used at the beginning of a line
+  '             %Class_Action_None  SHOULD NEVER HAPPEN
+  '--------------------------------------------------------------------------------------
+  ' Syntax:
+  '   
+  '--------------------------------------------------------------------------------------
+    Local lEqualType    As Long
+    Local vDummyVariant As variant
+    Local sSubItem      As String
+    
+    ReDim oObject(1& To 1&) As iExcel_Workbook At pObject
+    ReDim lExcel_Workbook(1& To 1&) As Excel_Workbook At oObject(1&).cExcel_Workbook_GetClassObject
+
+    If thinBasic_CheckPoint_Optional Then
+      sSubItem = thinBasic_GetUnknownToken   
+    End If
+    
+    If thinBasic_ErrorFree Then
+      Select Case UCase$(sSubItem)
+        Case ""                                                 
+          Object Get lExcel_Workbook(1&).FullName To vDummyVariant'vDummyVariant
+          Function = Variant$(vDummyVariant)
+      
+      End Select  'UCase$(sSubItem)
+      
+    End If
+  End Function

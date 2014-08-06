@@ -77,6 +77,9 @@ FUNCTION LoadLocalSymbols ALIAS "LoadLocalSymbols" (OPTIONAL BYVAL sPath AS STRI
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "ActiveWindow"            , %thinBasic_ReturnString     , CodePtr(cExcel_Application_Property_ActiveWindow            ))
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "Workbooks"               , %thinBasic_ReturnString     , CodePtr(cExcel_Application_Property_Workbooks               ))
 
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "ActiveWorkbook"          , %thinBasic_ReturnString     , CodePtr(cExcel_Application_Property_ActiveWorkbook          ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "ActiveSheet"             , %thinBasic_ReturnString     , CodePtr(cExcel_Application_Property_ActiveSheet             ))
+
       END IF
 
     '---
@@ -105,6 +108,8 @@ FUNCTION LoadLocalSymbols ALIAS "LoadLocalSymbols" (OPTIONAL BYVAL sPath AS STRI
         ' -- Common properties can take any name
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Workbook, "Worksheets"                 , %thinBasic_ReturnString     , CodePtr(cExcel_Workbook_Method_Worksheets ))
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Workbook, "ActiveSheet"                , %thinBasic_ReturnString     , CodePtr(cExcel_Workbook_Method_Activesheet))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Workbook, "Name"                       , %thinBasic_ReturnString     , CodePtr(cExcel_Workbook_Method_Name       ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Workbook, "FullName"                   , %thinBasic_ReturnString     , CodePtr(cExcel_Workbook_Method_FullName   ))
 
       END IF
 

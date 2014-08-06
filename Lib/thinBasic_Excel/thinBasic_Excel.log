@@ -3,14 +3,14 @@ Copyright (c) 1996-2012 PowerBasic Inc.
 Englewood, Florida USA
 All Rights Reserved
 
-Primary source:  C:\THDBED~1\THINBA~1\Lib\THINBA~1\thinBasic_Excel.bas   {14284 total lines}
+Primary source:  C:\THDBED~1\THINBA~1\Lib\THINBA~1\thinBasic_Excel.bas   {14450 total lines}
 Target compilation:  thinBasic_Excel.dll
-Compile time:  0.2 seconds, at 4285200 lines/minute
+Compile time:  0.2 seconds, at 4335000 lines/minute
 
-17744 bytes compiled code, 18012 bytes RTLibrary,
-544 bytes string literals, and 3268 bytes dgroup.
+20048 bytes compiled code, 18012 bytes RTLibrary,
+592 bytes string literals, and 3332 bytes dgroup.
 DLL does not require stack allocation.
-Disk image: 41488 bytes   Memory image: 21824 bytes.
+Disk image: 44048 bytes   Memory image: 21936 bytes.
 
 Component Files:
 ----------------
@@ -42,7 +42,6 @@ CLASS_DOCEVENTS:DEACTIVATE
 CLASS_DOCEVENTS:CALCULATE
 CLASS_DOCEVENTS:CHANGE
 CLASS_DOCEVENTS:FOLLOWHYPERLINK
-CLASS_WORKBOOKEVENTS:OPEN
 CLASS_WORKBOOKEVENTS:DEACTIVATE
 CLASS_WORKBOOKEVENTS:BEFORECLOSE
 CLASS_WORKBOOKEVENTS:BEFORESAVE

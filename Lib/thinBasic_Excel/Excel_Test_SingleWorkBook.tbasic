@@ -1,0 +1,89 @@
+#MINVERSION 1.9.13.0
+
+Uses "Excel"
+Uses "File"
+Uses "Console"
+
+Randomize Timer
+
+'--------------------------------------------------------------------
+Function Out(ByVal sMessage As String, Optional lLevel As Long, ByVal Wait As Long)
+'--------------------------------------------------------------------
+' Output some message
+'--------------------------------------------------------------------
+  PrintL Time$, String$(lLevel * 2, " ") & sMessage
+
+  If Wait = %TRUE Then
+    PrintL "---Press a key to continue---"
+    WaitKey
+  End If
+
+End Function
+
+'--------------------------------------------------------------------
+Function TBMain() As Long
+'--------------------------------------------------------------------
+  Dim sXlsFileName  As String
+  Dim xApp          As  Excel_Application
+  Dim xWorkBook     As  Excel_Workbook
+  Dim xSheet        As  Excel_Worksheet
+  Dim x, y          As  Long
+  
+  
+  sXlsFileName = APP_ScriptFullName & ".xlsx"
+
+  '---Create a new Excel Application COM Server instance
+  xApp = New Excel_Application
+  
+  '---Set Visible to TRUE so we can see what's going on
+  xApp.Visible = %TRUE       
+
+  '---Create Excel workbook
+  If FILE_Exists(sXlsFileName) Then
+    Out("Opening file: " & sXlsFileName)
+    xWorkBook = xApp.WorkBooks.Open(sXlsFileName)
+  Else
+    Out("Creating a new empty workbook")
+    xWorkBook = xApp.WorkBooks.Add
+  End If
+
+  Out("Workbook      name is: " & xWorkBook.Name)
+  Out("Workbook full name is: " & xWorkBook.FullName)
+
+  '---Get the activesheet
+  'xSheet = xWorkBook.Activesheet
+  xSheet = xApp.Activesheet
+  Out("Active sheet name is actually: " & xSheet.Name)
+   
+  '---Change Sheet name (here Set and Get of a Sheet Name)
+  xSheet.Name = "thinBasic_Test_" & Replace$(Timer, ".", "_")
+  Out("Changed sheet name to: " & xSheet.Name)
+  
+  '---Write some text into Excel sheet
+  Out("Start filling some cells. Timer start: " & Timer)
+  For y = 1 To 100
+    For x = 1 To 5
+      xSheet.Cells(y, x).Value = "Cell " & Chr$(x + Asc("A") - 1) & Format$(y)
+    Next
+    x = 6
+    xSheet.Cells(Y, X) = y + y / Rnd(1, 10)
+    x = 7
+    xSheet.Cells(Y, X) = Format$(Rnd(-1000,1000), "$#,.00")
+  Next
+  Out("End filling some cells. Timer End: " & Timer)
+  
+  '---Tells Excel application to not show alerts (in this case alert about file already exists before saving)
+  out("Saving file to: " & sXlsFileName)
+  xApp.DisplayAlerts = %FALSE
+  '---Save file name
+  xWorkBook.SaveAs(sXlsFileName)
+  '---Reset DisplayAlerts
+  xApp.DisplayAlerts = %TRUE
+
+
+  out("OK, test done. thinBasic will now close.", 0, %TRUE)
+
+  '---Close Excel Application
+  xApp.Quit                     
+
+End Function
