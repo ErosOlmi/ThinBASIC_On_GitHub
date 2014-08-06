@@ -1,10 +1,14 @@
+#MINVERSION 1.9.13.0
+
 Uses "Excel"
 
 Function TBMain() As Long
-  Dim xApp      As  Excel_Application
-  Dim xWorkBook As  Excel_Workbook
-  Dim xSheet    As  Excel_Worksheet
-  Dim x, y      As  Long
+  Dim xApp        As  Excel_Application
+  Dim xWorkBook1  As  Excel_Workbook
+  Dim xWorkBook2  As  Excel_Workbook
+  Dim xSheet1     As  Excel_Worksheet
+  Dim xSheet2     As  Excel_Worksheet
+  Dim x, y        As  Long
   
   '---Create a new Excel Application COM Server instance
   xApp = New Excel_Application
@@ -15,37 +19,63 @@ Function TBMain() As Long
   '---Set Visible to TRUE so we can see what's going on
   xApp.Visible = %TRUE       
 
-  '---Pass Excel Instance to create a Workbook
-  xWorkBook = New Excel_WorkBook(xApp)
-  
-  '---Pass Workbook instance to create a new sheet
-  xSheet = New Excel_Worksheet(xWorkBook)
+  '---Create 2 Excel workbooks 
+  xWorkBook1 = xApp.WorkBooks.Add
+  xWorkBook2 = xApp.WorkBooks.Add
+  MsgBox 0, "Number of open workbooks: " & xApp.WorkBooks.Count
+      
+  '---New sheets objects can be created in 2 ways
+  '---Here we just get the activesheet
+  xSheet1 = xWorkBook1.Activesheet
+  '---And here we create a new sheet using Add method
+  xSheet2 = xWorkBook1.Worksheets.Add
 
-  '---Change Sheet name (here Set and Get of a Sheet property takes place)
-  xSheet.Name = "thinBasic Test"
-  MsgBox 0, "Worksheet name: " & xSheet.Name
+  '---We want activate "Sheet1"
+  '---To be able to select a sheet in a workbook, workbook must be the activa one
+  xWorkbook1.Activate
+  xWorkbook1.Worksheets(2).Select
+    '---It is possible to pass also sheet name instead of sheet index
+    'xWorkbook1.Worksheets("Sheet1").Select
+    '---Or it is possible to use sheet directly (if instantiated) using sheet.activate
+    'xsheet1.Activate
+  
+  '---Change Sheet name (here Set and Get of a Sheet Name)
+  xSheet1.Name = "thinBasic Test 1"
+  xSheet2.Name = "thinBasic Test 2"
+  MsgBox 0, _
+            "In Workbook1 there are " & xWorkBook1.Worksheets.Count & " sheets" & $CRLF & 
+            "Worksheet name of sheet 1 is: " & xSheet1.Name & $CRLF & 
+            "Worksheet name of sheet 2 is: " & xSheet2.Name & $CRLF & 
+            ""
   
   '---Write some text into Excel sheet
   MsgBox 0, "Now we will fill some cells"
   For y = 1 To 50
     For x = 1 To 5
-      xSheet.Cells(y, x).Value = "Cell " & Chr$(x + 64) & Format$(y)
+      xSheet1.Cells(y, x).Value = "Cell " & Chr$(x + 64) & Format$(y)
+      xSheet2.Cells(y, x).Value = "Cell " & Chr$(x + 64) & Format$(y)
     Next
     x = 6
-    xSheet.Cells(Y, X) = y + y / 10
+    xSheet1.Cells(Y, X) = y + y / 10
+    xSheet2.Cells(Y, X) = y + y / 10
     x = 7
-    xSheet.Cells(Y, X) = Format$(Rnd(-1000,1000), "$#,.00")
+    xSheet1.Cells(Y, X) = Format$(Rnd(-1000,1000), "$#,.00")
+    xSheet2.Cells(Y, X) = Format$(Rnd(-1000,1000), "$#,.00")
   Next
   
   '---Read some text back
-  MsgBox 0, "Reading back Cell 2,2 = " & xSheet.Cells(2,2).Value
+  MsgBox 0, _
+            "Reading back Cell 2,2 of Sheet 1 = " & xSheet1.Cells(2,2).Value & $CRLF & 
+            "Reading back Cell 2,2 of Sheet 2 = " & xSheet1.Cells(2,2).Value & $CRLF & 
+            ""
 
-  'xSheet.PrintPreview
+  'xSheet1.PrintPreview
   
   '---Tells Excel application to not show alerts (in this case alert about file already exists before saving)
   xApp.DisplayAlerts = %FALSE
   '---Save file name
-  xWorkBook.SaveAs(APP_ScriptFullName & ".xlsx")
+  xWorkBook1.SaveAs(APP_ScriptFullName & "_1.xlsx")
+  xWorkBook2.SaveAs(APP_ScriptFullName & "_2.xlsx")
   '---Reset DisplayAlerts
   xApp.DisplayAlerts = %TRUE
 

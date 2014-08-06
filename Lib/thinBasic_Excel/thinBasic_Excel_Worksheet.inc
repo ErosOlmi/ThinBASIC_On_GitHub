@@ -26,6 +26,16 @@
       End Method
 
       '----------------------------------------------------------------------------
+      ' Creator Direct
+      '----------------------------------------------------------------------------
+      Method cExcel_Worksheet_Create_Direct(ByVal ptrToDirectSheet As Dword) As Dword
+        '---Here is the magic: we store at the memory address of pExcel_Worksheet (that is a Excel Worksheet COM pointer)
+        '---The address passed by the script. The address is usually returned by another Class method or property
+        '---Instructed to return an OBJPTR to an Excel Worksheet
+        Poke Dword, VarPtr(pExcel_Worksheet), ptrToDirectSheet
+      End Method
+
+      '----------------------------------------------------------------------------
       ' Destructor
       '----------------------------------------------------------------------------
       Method cExcel_Worksheet_Destroy() As Dword 
@@ -53,17 +63,6 @@
     Local pp          As Byte
     Local pWorkbook   As Ext
 
-    '---Optionally checks if there is a (
-'    LOCAL eSize           AS EXT
-'    Local KeyToUCase      As Ext
-'    
-'    pp = thinBasic_CheckOpenParens_Optional
-'    thinBasic_ParseString sConnect
-'    If thinBasic_CheckComma_Optional Then
-'      thinBasic_ParseNumber KeyToUCase
-'    End If
-'    If pp Then thinBasic_CheckCloseParens_Mandatory
-
     pp = thinBasic_CheckOpenParens_Optional
       thinBasic_ParseNumber pWorkbook
     If pp Then thinBasic_CheckCloseParens_Mandatory
@@ -81,12 +80,34 @@
       '---We call sSet in order to assign initial value
       oObject(1&).cExcel_Worksheet_Create(pWorkbook)
 
-
     'else
       '---emit some error
     End If
   End Sub
 
+  '----------------------------------------------------------------------------
+  Sub cExcel_Worksheet_Create_Direct( ByVal pObject As Long, ByVal pDirectClass As Dword)
+  '----------------------------------------------------------------------------
+    Local pp          As Byte
+    Local pWorkbook   As Ext
+
+    '---If all went fine ...
+    If thinBasic_ErrorFree Then
+
+      'Here is the magic !!!!!!!!!!!!
+      'Use the magic REDIM ... AT and the trick is done
+      'We are defining a new class interface variable at the pointer location allocated by thinBasic and passed to all methods
+      ReDim oObject(1& To 1&) As iExcel_Worksheet At pObject
+
+      '---We instantiate a new class
+      oObject(1&) = Class "cExcel_Worksheet"
+      '---We call sSet in order to assign initial value
+      oObject(1&).cExcel_Worksheet_Create_Direct(pDirectClass)
+
+    'else
+      '---emit some error
+    End If
+  End Sub
 
   '----------------------------------------------------------------------------
   Sub cExcel_Worksheet_Destroy(ByVal pObject As Long)
@@ -115,7 +136,7 @@
   '----------------------------------------------------------------------------
   Function cExcel_Worksheet_Method_PrintPreview(ByVal pObject As Long) As Ext
   '----------------------------------------------------------------------------
-    'If thinBasic_CheckOpenParens_Optional Then thinBasic_CheckCloseParens_Mandatory
+    If thinBasic_CheckOpenParens_Optional Then thinBasic_CheckCloseParens_Mandatory
 
     '---If all went fine ...
     If thinBasic_ErrorFree Then
@@ -123,6 +144,20 @@
       ReDim lExcel_Worksheet(1& To 1&) As Excel_Worksheet At oObject(1&).cExcel_Worksheet_GetClassObject
 
       Object Call lExcel_Worksheet(1&).PrintPreview
+    End If
+  End Function
+
+  '----------------------------------------------------------------------------
+  Function cExcel_Worksheet_Method_Activate(ByVal pObject As Long) As Ext
+  '----------------------------------------------------------------------------
+    If thinBasic_CheckOpenParens_Optional Then thinBasic_CheckCloseParens_Mandatory
+
+    '---If all went fine ...
+    If thinBasic_ErrorFree Then
+      ReDim oObject(1& To 1&) As iExcel_Worksheet At pObject
+      ReDim lExcel_Worksheet(1& To 1&) As Excel_Worksheet At oObject(1&).cExcel_Worksheet_GetClassObject
+
+      Object Call lExcel_Worksheet(1&).Activate
     End If
   End Function
 

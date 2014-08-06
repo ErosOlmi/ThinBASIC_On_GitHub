@@ -74,7 +74,8 @@ FUNCTION LoadLocalSymbols ALIAS "LoadLocalSymbols" (OPTIONAL BYVAL sPath AS STRI
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "Visible"                 , %thinBasic_ReturnCodeLong   , CODEPTR(cExcel_Application_Property_Visible ))
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "AlertBeforeOverwriting"  , %thinBasic_ReturnCodeLong   , CODEPTR(cExcel_Application_Property_AlertBeforeOverwriting  ))
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "DisplayAlerts"           , %thinBasic_ReturnCodeLong   , CODEPTR(cExcel_Application_Property_DisplayAlerts           ))
-        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "ActiveWindow"            , %thinBasic_ReturnString     , CODEPTR(cExcel_Application_Property_ActiveWindow            ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "ActiveWindow"            , %thinBasic_ReturnString     , CodePtr(cExcel_Application_Property_ActiveWindow            ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "Workbooks"               , %thinBasic_ReturnString     , CodePtr(cExcel_Application_Property_Workbooks               ))
 
       END IF
 
@@ -87,17 +88,23 @@ FUNCTION LoadLocalSymbols ALIAS "LoadLocalSymbols" (OPTIONAL BYVAL sPath AS STRI
       IF pClass_cExcel_Workbook THEN
 
         ' -- Constructor wrapper function needs to be linked in as _Create
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "_Create"           , %thinBasic_ReturnNone       , CODEPTR(cExcel_Workbook_Create            ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "_Create"                    , %thinBasic_ReturnNone       , CodePtr(cExcel_Workbook_Create            ))
+        ' -- Constructor wrapper function used for direct creation (without the use of NEW keyword) _CreateDirect
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "_CreateDirect"              , %thinBasic_ReturnNone       , CodePtr(cExcel_Workbook_Create_Direct     ))
+
         ' -- Destructor wrapper function needs to be linked in as _Destroy
         ' -- WARNING: You MUST supply destructor and set the object to NOTHING, otherwise you risk memory leak
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "_Destroy"          , %thinBasic_ReturnNone       , CODEPTR(cExcel_Workbook_Destroy           ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "_Destroy"                   , %thinBasic_ReturnNone       , CodePtr(cExcel_Workbook_Destroy           ))
         ' -- ClassObject
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "_GetClassObject"   , %thinBasic_ReturnNone       , CODEPTR(cExcel_Workbook_GetClassObject    ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "_GetClassObject"            , %thinBasic_ReturnNone       , CodePtr(cExcel_Workbook_GetClassObject    ))
 
         ' -- Common methods can take any name
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "SaveAs"             , %thinBasic_ReturnCodeLong   , CODEPTR(cExcel_Workbook_Method_SaveAs     ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "SaveAs"                     , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Workbook_Method_SaveAs     ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "Activate"                   , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Workbook_Method_Activate   ))
 
         ' -- Common properties can take any name
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Workbook, "Worksheets"                 , %thinBasic_ReturnString     , CodePtr(cExcel_Workbook_Method_Worksheets ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Workbook, "ActiveSheet"                , %thinBasic_ReturnString     , CodePtr(cExcel_Workbook_Method_Activesheet))
 
       END IF
 
@@ -110,7 +117,9 @@ FUNCTION LoadLocalSymbols ALIAS "LoadLocalSymbols" (OPTIONAL BYVAL sPath AS STRI
       IF pClass_cExcel_Worksheet THEN
 
         ' -- Constructor wrapper function needs to be linked in as _Create
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Worksheet, "_Create"           , %thinBasic_ReturnNone       , CODEPTR(cExcel_Worksheet_Create           ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Worksheet, "_Create"           , %thinBasic_ReturnNone       , CodePtr(cExcel_Worksheet_Create           ))
+        ' -- Constructor wrapper function needs to be linked in as _Create
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Worksheet, "_CreateDirect"     , %thinBasic_ReturnNone       , CodePtr(cExcel_Worksheet_Create_Direct    ))
         ' -- Destructor wrapper function needs to be linked in as _Destroy
         ' -- WARNING: You MUST supply destructor and set the object to NOTHING, otherwise you risk memory leak
         RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Worksheet, "_Destroy"          , %thinBasic_ReturnNone       , CODEPTR(cExcel_Worksheet_Destroy          ))
@@ -118,7 +127,8 @@ FUNCTION LoadLocalSymbols ALIAS "LoadLocalSymbols" (OPTIONAL BYVAL sPath AS STRI
         RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Worksheet, "_GetClassObject"   , %thinBasic_ReturnNone       , CODEPTR(cExcel_Worksheet_GetClassObject   ))
 
         ' -- Common methods can take any name
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Worksheet, "PrintPreview"      , %thinBasic_ReturnCodeLong   , CODEPTR(cExcel_Worksheet_Method_PrintPreview     ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Worksheet, "PrintPreview"      , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Worksheet_Method_PrintPreview     ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Worksheet, "Activate"          , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Worksheet_Method_Activate         ))
 
         ' -- Common properties can take any name
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Worksheet, "Cells"             , %thinBasic_ReturnString     , CODEPTR(cExcel_Worksheet_Property_Cells   ))
