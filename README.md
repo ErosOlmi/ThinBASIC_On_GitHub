@@ -23,3 +23,4 @@ http://www.thinbasic.com/community/forum.php
 
 All sources be compiled using PowerBASIC 10.04 Programming Language.
 Compilation of ThinBASIC sources needs PowerBASIC Compiler and ThinBASIC development Kit included in ThinBASIC distribution.
+At least ThinBasic version 1.9.13.0 is needed.
