@@ -4,19 +4,30 @@
 
 ThinBASIC is a BASIC Interpreter full of thousands of features and ... fast, very fast!
 
+...and you may wonder - why is it "thin" then? The reason is simple - the language core is really small, surrounded by number of focused modules.
+
+
 ### About
 
-ThinBASIC has been developed by Eros Olmi and Petr Screiber since 2004.
+ThinBASIC has been developed by Eros Olmi and Petr Schreiber since 2004.
 On GitHub we will release sources of some part of ThinBASIC like some ThinBASIC modules and libraries.
 
 ### Documentation
 
 Documentation can be found at [ThinBASIC web site](http://www.thinbasic.com/public/products/thinBasic/help/html/index.html).
 
-### Binary Downloads, Community, etc.
+### Download ThinBASIC Binaries
 
-Binary downloads, community, etc. can be found in ThinBASIC homepage:
+Download latest preview version of ThinBASIC installer here:
+http://www.thinbasic.com/community/showthread.php?12449-ThinBASIC-1-9-13-0&p=91374#post91374
 
+Download latest stable version of ThinBASIC installer here:
+http://www.thinbasic.com/community/showthread.php?11345
+
+
+### Community
+
+Comunity is the heart of thinBASIC, it drives our passion. Join the crew here:
 http://www.thinbasic.com/community/forum.php
 
 ### Compiling from Sources
