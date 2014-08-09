@@ -3,14 +3,14 @@ Copyright (c) 1996-2012 PowerBasic Inc.
 Englewood, Florida USA
 All Rights Reserved
 
-Primary source:  C:\THDBED~1\THINBA~1\Lib\THINBA~1\thinBasic_Excel.bas   {14450 total lines}
+Primary source:  C:\THDBED~1\THINBA~1\Lib\THINBA~1\thinBasic_Excel.bas   {15142 total lines}
 Target compilation:  thinBasic_Excel.dll
-Compile time:  0.2 seconds, at 4335000 lines/minute
+Compile time:  0.2 seconds, at 4542600 lines/minute
 
-20048 bytes compiled code, 18012 bytes RTLibrary,
-592 bytes string literals, and 3332 bytes dgroup.
+27136 bytes compiled code, 18076 bytes RTLibrary,
+764 bytes string literals, and 3532 bytes dgroup.
 DLL does not require stack allocation.
-Disk image: 44048 bytes   Memory image: 21936 bytes.
+Disk image: 51728 bytes   Memory image: 22372 bytes.
 
 Component Files:
 ----------------
@@ -20,6 +20,7 @@ C:\THINBASIC_ON_GITHUB\THINBASIC_ON_GITHUB\LIB\THINBASIC_EXCEL\EXCEL.INC
 C:\THINBASIC_ON_GITHUB\THINBASIC_ON_GITHUB\LIB\THINBASIC_EXCEL\THINBASIC_EXCEL_APPLICATION.INC
 C:\THINBASIC_ON_GITHUB\THINBASIC_ON_GITHUB\LIB\THINBASIC_EXCEL\THINBASIC_EXCEL_WORKBOOK.INC
 C:\THINBASIC_ON_GITHUB\THINBASIC_ON_GITHUB\LIB\THINBASIC_EXCEL\THINBASIC_EXCEL_WORKSHEET.INC
+C:\THINBASIC_ON_GITHUB\THINBASIC_ON_GITHUB\LIB\THINBASIC_EXCEL\THINBASIC_EXCEL_RANGE.INC
 
 
 Code Extracted:
@@ -60,6 +61,7 @@ CLASS_WORKBOOKEVENTS:SHEETDEACTIVATE
 CLASS_WORKBOOKEVENTS:SHEETCALCULATE
 CLASS_WORKBOOKEVENTS:SHEETCHANGE
 CLASS_WORKBOOKEVENTS:SHEETFOLLOWHYPERLINK
+CEXCEL_RANGE:CEXCEL_RANGE_CREATE
 <CLASS> CLASS_APPEVENTS
 <CLASS> CLASS_OLEOBJECTEVENTS
 <CLASS> CLASS_REFRESHEVENTS

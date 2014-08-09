@@ -29,7 +29,6 @@ Function TBMain() As Long
   Dim xSheet        As  Excel_Worksheet
   Dim x, y          As  Long
   
-  
   sXlsFileName = APP_ScriptFullName & ".xlsx"
 
   '---Create a new Excel Application COM Server instance
@@ -51,7 +50,6 @@ Function TBMain() As Long
   Out("Workbook full name is: " & xWorkBook.FullName)
 
   '---Get the activesheet
-  'xSheet = xWorkBook.Activesheet
   xSheet = xApp.Activesheet
   Out("Active sheet name is actually: " & xSheet.Name)
    
@@ -68,22 +66,67 @@ Function TBMain() As Long
     x = 6
     xSheet.Cells(Y, X) = y + y / Rnd(1, 10)
     x = 7
-    xSheet.Cells(Y, X) = Format$(Rnd(-1000,1000), "$#,.00")
+    xSheet.Cells(Y, X) = Format$(Rnd(-1000, 1000), "$#,.00")
   Next
   Out("End filling some cells. Timer End: " & Timer)
+
+  '---Working with sheet.range
+  Dim sRange As String
+  Dim xRange As Excel_Range
+  sRange = "A1:B3;D1:F10"
+  
+  out("Working with range: " & sRange)
+  xRange = xSheet.Range(sRange)
+  xRange.Select
+  xRange.Value = "X"
+  Sleep 1000
+  out("Range address " & xRange.Address)
+  xRange.Clear
+
+  out("Clearing A:Z")
+  xRange = xSheet.Range("A:Z")
+  xRange.Clear
+  xSheet.Range("A1").Select
+
+  out("Making some easy calculation")
+  xSheet.Cells(1, 1) = "Few random number"
+  For y = 1 To 20
+    xSheet.Cells(Y, 2) = Rnd(10, 2000)
+  Next
+  xSheet.Cells(22, 1) = "Total"
+  xRange = xSheet.Range("B22")
+  xRange.Formula = "=sum(B1:B20)"
+
+  xRange = xSheet.Range("D1:D20")
+  xRange.Formula = "=Sin(B1)"
+  xRange = xSheet.Range("D22")
+  xRange.Formula = "=sum(D1:D20)"
+  Sleep 3000
   
   '---Tells Excel application to not show alerts (in this case alert about file already exists before saving)
-  out("Saving file to: " & sXlsFileName)
-  xApp.DisplayAlerts = %FALSE
-  '---Save file name
-  xWorkBook.SaveAs(sXlsFileName)
-  '---Reset DisplayAlerts
-  xApp.DisplayAlerts = %TRUE
+  out("Checking if file must be saved")
+  If xWorkBook.Saved = %FALSE Then
+    out("Tells Excel not to bother with alerts")
+    xApp.DisplayAlerts = %FALSE
+    If FILE_Exists(sXlsFileName) Then
+      out("File already exists so just save")
+      xWorkBook.Save
+    Else
+      out("File does not exists so saving file to: " & sXlsFileName)
+      xWorkBook.SaveAs(sXlsFileName)
+    End If
+    out("Restoring standard alerts")
+    xApp.DisplayAlerts = %TRUE
+  End If
+
+  out("Closing active window")
+  xApp.ActiveWindow.Close
+  
+  out("Quitting Excel")
+  xApp.Quit                     
 
 
   out("OK, test done. thinBasic will now close.", 0, %TRUE)
 
-  '---Close Excel Application
-  xApp.Quit                     
 
 End Function

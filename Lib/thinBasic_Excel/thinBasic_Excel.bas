@@ -30,9 +30,10 @@ GLOBAL gPath AS STRING
 #Include Once "\ThinBASIC\Lib\thinCore.inc"
 
 #INCLUDE ONCE "Excel.inc"
-#INCLUDE ONCE "thinBasic_Excel_Application.inc"
-#INCLUDE ONCE "thinBasic_Excel_Workbook.inc"
-#INCLUDE ONCE "thinBasic_Excel_Worksheet.inc"
+#Include Once ".\thinBasic_Excel_Application.inc"
+#Include Once ".\thinBasic_Excel_Workbook.inc"
+#Include Once ".\thinBasic_Excel_Worksheet.inc"
+#Include Once ".\thinBasic_Excel_Range.inc"
 
 
 '----------------------------------------------------------------------------
@@ -45,7 +46,8 @@ FUNCTION LoadLocalSymbols ALIAS "LoadLocalSymbols" (OPTIONAL BYVAL sPath AS STRI
     LOCAL RetCode                   AS LONG
     LOCAL pClass_cExcel_Application AS LONG
     LOCAL pClass_cExcel_Workbook    AS LONG
-    LOCAL pClass_cExcel_Worksheet   AS LONG
+    Local pClass_cExcel_Worksheet   As Long
+    Local pClass_cExcel_Range       As Long
 
     ' -- Save DLL loading path to global var
     gPath = sPath
@@ -102,14 +104,16 @@ FUNCTION LoadLocalSymbols ALIAS "LoadLocalSymbols" (OPTIONAL BYVAL sPath AS STRI
         RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "_GetClassObject"            , %thinBasic_ReturnNone       , CodePtr(cExcel_Workbook_GetClassObject    ))
 
         ' -- Common methods can take any name
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "Save"                       , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Workbook_Method_Save       ))
         RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "SaveAs"                     , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Workbook_Method_SaveAs     ))
         RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "Activate"                   , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Workbook_Method_Activate   ))
 
         ' -- Common properties can take any name
-        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Workbook, "Worksheets"                 , %thinBasic_ReturnString     , CodePtr(cExcel_Workbook_Method_Worksheets ))
-        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Workbook, "ActiveSheet"                , %thinBasic_ReturnString     , CodePtr(cExcel_Workbook_Method_Activesheet))
-        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Workbook, "Name"                       , %thinBasic_ReturnString     , CodePtr(cExcel_Workbook_Method_Name       ))
-        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Workbook, "FullName"                   , %thinBasic_ReturnString     , CodePtr(cExcel_Workbook_Method_FullName   ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Workbook, "Worksheets"                 , %thinBasic_ReturnString     , CodePtr(cExcel_Workbook_Property_Worksheets ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Workbook, "ActiveSheet"                , %thinBasic_ReturnString     , CodePtr(cExcel_Workbook_Property_Activesheet))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Workbook, "Name"                       , %thinBasic_ReturnString     , CodePtr(cExcel_Workbook_Property_Name       ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Workbook, "FullName"                   , %thinBasic_ReturnString     , CodePtr(cExcel_Workbook_Property_FullName   ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Workbook, "Saved"                      , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Workbook_Property_Saved      ))
 
       END IF
 
@@ -137,9 +141,42 @@ FUNCTION LoadLocalSymbols ALIAS "LoadLocalSymbols" (OPTIONAL BYVAL sPath AS STRI
 
         ' -- Common properties can take any name
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Worksheet, "Cells"             , %thinBasic_ReturnString     , CODEPTR(cExcel_Worksheet_Property_Cells   ))
-        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Worksheet, "Name"              , %thinBasic_ReturnString     , CODEPTR(cExcel_Worksheet_Property_Name    ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Worksheet, "Name"              , %thinBasic_ReturnString     , CodePtr(cExcel_Worksheet_Property_Name    ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Worksheet, "Range"             , %thinBasic_ReturnString     , CodePtr(cExcel_Worksheet_Property_Range   ))
 
       END IF
+
+
+    '---
+    ' Excel Range Class
+    '---
+      pClass_cExcel_Range = thinBasic_Class_Add("Excel_Range", 0)
+
+      ' -- If class was created, define all methods and properties, each connected to a CODEPTR module function/sub
+      If pClass_cExcel_Range Then
+
+        ' -- Constructor wrapper function needs to be linked in as _Create
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "_Create"           , %thinBasic_ReturnNone       , CodePtr(cExcel_Range_Create           ))
+        ' -- Constructor wrapper function needs to be linked in as _Create
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "_CreateDirect"     , %thinBasic_ReturnNone       , CodePtr(cExcel_Range_Create_Direct    ))
+        ' -- Destructor wrapper function needs to be linked in as _Destroy
+        ' -- WARNING: You MUST supply destructor and set the object to NOTHING, otherwise you risk memory leak
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "_Destroy"          , %thinBasic_ReturnNone       , CodePtr(cExcel_Range_Destroy          ))
+        ' -- ClassObject
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "_GetClassObject"   , %thinBasic_ReturnNone       , CodePtr(cExcel_Range_GetClassObject   ))
+
+        ' -- Common methods can take any name
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "Select"            , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Method_Select     ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "Clear"             , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Method_Clear      ))
+'        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "Activate"          , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Worksheet_Method_Activate         ))
+'
+'        ' -- Common properties can take any name
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "Value"             , %thinBasic_ReturnString     , CodePtr(cExcel_Range_Property_Value   ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "Address"           , %thinBasic_ReturnString     , CodePtr(cExcel_Range_Property_Address ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "Formula"           , %thinBasic_ReturnString     , CodePtr(cExcel_Range_Property_Formula ))
+'        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "Name"              , %thinBasic_ReturnString     , CodePtr(cExcel_Worksheet_Property_Name    ))
+
+      End If
 
 END FUNCTION
 

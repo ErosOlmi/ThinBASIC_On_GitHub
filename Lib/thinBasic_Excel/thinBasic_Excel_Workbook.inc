@@ -180,8 +180,25 @@
     End If
   End Function
 
+  '----------------------------------------------------------------------------
+  Function cExcel_Workbook_Method_Save(ByVal pObject As Long) As Ext
+  '----------------------------------------------------------------------------
+    Dim pp        As Byte
+    Dim sFileName As String
+    Dim vFileName As variant
+    
+    '---If all went fine ...
+    If thinBasic_ErrorFree Then
+      ReDim oObject(1& To 1&) As iExcel_Workbook At pObject
+      ReDim lExcel_Workbook(1& To 1&) As Excel_Workbook At oObject(1&).cExcel_Workbook_GetClassObject
+
+      Object Call lExcel_Workbook(1&).Save
+      
+    End If
+  End Function
+
   '--------------------------------------------------------------------------------------
-  Function cExcel_Workbook_Method_Worksheets(ByVal pObject As Long, ByVal lAction As Long) As String
+  Function cExcel_Workbook_Property_Worksheets(ByVal pObject As Long, ByVal lAction As Long) As String
   '--------------------------------------------------------------------------------------
   '  Properties functions has 2 params:
   '   pObject   is a pointer to module class or any other memory area handled by a pseudo class
@@ -299,7 +316,7 @@
   End Function
 
   '--------------------------------------------------------------------------------------
-  Function cExcel_Workbook_Method_Activesheet(ByVal pObject As Long, ByVal lAction As Long) As String
+  Function cExcel_Workbook_Property_Activesheet(ByVal pObject As Long, ByVal lAction As Long) As String
   '--------------------------------------------------------------------------------------
   '  Properties functions has 2 params:
   '   pObject   is a pointer to module class or any other memory area handled by a pseudo class
@@ -315,6 +332,8 @@
     Local lEqualType    As Long
     Local vDummyVariant As variant
     Local sSubItem      As String
+    
+    Static lDummyExcelWorksheet As Excel_Worksheet
     
     ReDim oObject(1& To 1&) As iExcel_Workbook At pObject
     ReDim lExcel_Workbook(1& To 1&) As Excel_Workbook At oObject(1&).cExcel_Workbook_GetClassObject
@@ -343,7 +362,6 @@
 '              Function = Str$(@lDummyExcelWorkbookPtr)
 'MsgBox "5"
 
-              Static lDummyExcelWorksheet As Excel_Worksheet
               Object Get lExcel_Workbook(1&).Activesheet To lDummyExcelWorksheet'vDummyVariant
               'Set lDummyExcelWorksheet = vDummyVariant
 'Object Get lDummyExcelWorksheet.Name To vDummyVariant
@@ -390,7 +408,7 @@
   End Function
 
   '--------------------------------------------------------------------------------------
-  Function cExcel_Workbook_Method_Name(ByVal pObject As Long, ByVal lAction As Long) As String
+  Function cExcel_Workbook_Property_Name(ByVal pObject As Long, ByVal lAction As Long) As String
   '--------------------------------------------------------------------------------------
   '  Properties functions has 2 params:
   '   pObject   is a pointer to module class or any other memory area handled by a pseudo class
@@ -426,7 +444,7 @@
   End Function
 
   '--------------------------------------------------------------------------------------
-  Function cExcel_Workbook_Method_FullName(ByVal pObject As Long, ByVal lAction As Long) As String
+  Function cExcel_Workbook_Property_FullName(ByVal pObject As Long, ByVal lAction As Long) As String
   '--------------------------------------------------------------------------------------
   '  Properties functions has 2 params:
   '   pObject   is a pointer to module class or any other memory area handled by a pseudo class
@@ -459,4 +477,64 @@
       End Select  'UCase$(sSubItem)
       
     End If
+  End Function
+
+  '--------------------------------------------------------------------------------------
+  Function cExcel_Workbook_Property_Saved(ByVal pObject As Long, ByVal lAction As Long) As Long
+  '--------------------------------------------------------------------------------------
+  '  Properties functions has 2 params:
+  '   pObject   is a pointer to module class or any other memory area handled by a pseudo class
+  '   lAction   can be %Class_Action_Get, %Class_Action_Set, %Class_Action_None
+  '             depending on how the property is used in the script
+  '             %Class_Action_Get   when property is used inside an expression
+  '             %Class_Action_Set   when property is used at the beginning of a line
+  '             %Class_Action_None  SHOULD NEVER HAPPEN
+  '--------------------------------------------------------------------------------------
+  ' Syntax:
+  '   
+  '--------------------------------------------------------------------------------------
+    Local lEqualType    As Long
+    Local lSaved        As Long
+    Local vDummyVariant As variant
+    
+    ReDim oObject(1& To 1&) As iExcel_Workbook At pObject
+    ReDim lExcel_Workbook(1& To 1&) As Excel_Workbook At oObject(1&).cExcel_Workbook_GetClassObject
+
+    Select Case Long lAction
+    
+      '---GET action happen usually when property is used inside an expression
+      Case %Class_Action_Get                                                  
+        '---Return value
+        Object Get lExcel_Workbook(1&).Saved To vDummyVariant'vDummyVariant
+        Function = Variant#(vDummyVariant)
+        
+      '---SET action happen usually when property is used directly as first token in a source code line
+      Case %Class_Action_Set 
+        '---Here programmer has to parse equal (=) sign and than a numeric or string expression
+        '---But remember: equal sign can also be += &= -= *= /= \=
+        lEqualType = thinBasic_CheckEqualType_Mandatory
+        If thinBasic_ErrorFree Then
+          Select Case Long lEqualType
+    
+            '---Assignment
+            Case  %Equal_EQ
+              lSaved = thinBasic_Parse1Number
+              Object Let lExcel_Workbook(1&).Saved = lSaved
+    
+            '---Assignment with concatenation      
+            Case  %Equal_PLUSEQUAL, _
+                  %Equal_CONCEQUAL, _
+                  %Equal_POINTEQUAL
+            
+            Case Else
+              '---Not supperted for strings 
+              MsgBox FuncName$ & Str$(lEqualType) 
+              
+          End Select
+        End If
+                
+      Case %Class_Action_None
+        '---Should not happen but ... I will leave in any case
+    End Select
+
   End Function
