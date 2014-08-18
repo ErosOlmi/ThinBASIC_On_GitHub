@@ -24,10 +24,11 @@ End Function
 Function TBMain() As Long
 '--------------------------------------------------------------------
   Dim sXlsFileName  As String
-  Dim xApp          As  Excel_Application
-  Dim xWorkBook     As  Excel_Workbook
-  Dim xSheet        As  Excel_Worksheet
-  Dim x, y          As  Long
+  Dim xApp          As Excel_Application
+  Dim xWorkBook     As Excel_Workbook
+  Dim xSheet        As Excel_Worksheet
+  Dim xRange        As Excel_Range
+  Dim x, y          As Long
   
   sXlsFileName = APP_ScriptFullName & ".xlsx"
 
@@ -64,15 +65,14 @@ Function TBMain() As Long
       xSheet.Cells(y, x).Value = "Cell " & Chr$(x + Asc("A") - 1) & Format$(y)
     Next
     x = 6
-    xSheet.Cells(Y, X) = y + y / Rnd(1, 10)
+    xSheet.Cells(Y, X).Value = y + y / Rnd(1, 10)
     x = 7
-    xSheet.Cells(Y, X) = Format$(Rnd(-1000, 1000), "$#,.00")
+    xSheet.Cells(Y, X).Value = Format$(Rnd(-1000, 1000), "$#,.00")
   Next
   Out("End filling some cells. Timer End: " & Timer)
 
   '---Working with sheet.range
   Dim sRange As String
-  Dim xRange As Excel_Range
   sRange = "A1:B3;D1:F10"
   
   out("Working with range: " & sRange)
@@ -89,19 +89,50 @@ Function TBMain() As Long
   xSheet.Range("A1").Select
 
   out("Making some easy calculation")
-  xSheet.Cells(1, 1) = "Few random number"
+  xSheet.Cells(1, 1) = "Few random numbers"
   For y = 1 To 20
     xSheet.Cells(Y, 2) = Rnd(10, 2000)
   Next
   xSheet.Cells(22, 1) = "Total"
   xRange = xSheet.Range("B22")
-  xRange.Formula = "=sum(B1:B20)"
+  xRange.Formula = "=Sum(B1:B20)"
 
   xRange = xSheet.Range("D1:D20")
   xRange.Formula = "=Sin(B1)"
+  xRange.HorizontalAlignment = %XlHAlign_xlHAlignCenter
+  xRange.ColumnWidth = 25
+  
   xRange = xSheet.Range("D22")
-  xRange.Formula = "=sum(D1:D20)"
-  Sleep 3000
+  xRange.Formula = "=Sum(D1:D20)"
+
+  out("Change some cells color background")
+  xSheet.Cells(1, 8).Value = "Changing some randomized color"
+  Randomize Timer
+
+  Long ColorIndex
+  For y = 2 To 100
+    For x = 1 To 10
+      sRange = Chr$(Asc("G") + x) & y & ":" & Chr$(Asc("G") + x) & y
+      xRange = xSheet.Range(sRange)
+
+      '---Using ColorIndex property
+      'xRange.Interior.ColorIndex = ColorIndex
+      'xRange.Value = ColorIndex
+      'Incr ColorIndex
+      
+      '---Using color property
+      xRange.Interior.Color = Rgb(Rnd(0, 255), Rnd(0, 255), Rnd(0, 255))
+      'xRange.Interior.Color = Rgb(x * Y, x * y, Rnd(0, 255))
+    Next
+  Next
+
+  out("Sleeping some time in order to let see what's on video")
+  Sleep 5000
+
+  out("Clear color example area ...")
+  xRange = xSheet.Range("H:Z")
+  xRange.Clear
+      
   
   '---Tells Excel application to not show alerts (in this case alert about file already exists before saving)
   out("Checking if file must be saved")
