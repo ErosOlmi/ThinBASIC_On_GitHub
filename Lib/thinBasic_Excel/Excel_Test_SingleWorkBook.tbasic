@@ -95,7 +95,7 @@ Function TBMain() As Long
   Next
   xSheet.Cells(22, 1) = "Total"
   xRange = xSheet.Range("B22")
-  xRange.Formula = "=Sum(B1:B20)"
+  xRange.Formula = "=Sum(B1:B20)"  
 
   xRange = xSheet.Range("D1:D20")
   xRange.Formula = "=Sin(B1)"
@@ -104,6 +104,16 @@ Function TBMain() As Long
   
   xRange = xSheet.Range("D22")
   xRange.Formula = "=Sum(D1:D20)"
+  
+  '---Change some font properties
+  xRange.Font.Name = "Arial"
+  xRange.Font.Size = 14
+  xRange.Font.Bold = %TRUE
+  xRange.Font.Italic = %TRUE
+  xRange.Font.Underline = %XlUnderlineStyle_xlUnderlineStyleSingle
+  xRange.Font.Color = Rgb(255, 0, 0)
+  xRange.Interior.Color = Rgb(255, 255, 0)
+  Out("Current font style is: " & xRange.Font.FontStyle)
 
   out("Change some cells color background")
   xSheet.Cells(1, 8).Value = "Changing some randomized color"

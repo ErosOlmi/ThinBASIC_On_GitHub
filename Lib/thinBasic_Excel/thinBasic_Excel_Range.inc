@@ -826,3 +826,376 @@
 
     End If
   End Function
+
+  '----------------------------------------------------------------------------
+  Function cExcel_Range_Property_Font(ByVal pObject As Long, ByVal lAction As Long) As String
+  '----------------------------------------------------------------------------
+  '  Properties functions has 2 params:
+  '   pObject   is a pointer to module class or any other memory area handled by a pseudo class
+  '   lAction   can be %Class_Action_Get, %Class_Action_Set, %Class_Action_None
+  '             depending on how the property is used in the script
+  '             %Class_Action_Get   when property is used inside an expression
+  '             %Class_Action_Set   when property is used at the beginning of a line
+  '             %Class_Action_None  SHOULD NEVER HAPPEN
+  '--------------------------------------------------------------------------------------
+  ' Syntax:
+  '   
+  '--------------------------------------------------------------------------------------
+    Local sText       As String
+    Local eText       As Ext
+    Local vText       As variant
+                                
+    Local vResult     As variant
+    
+    Local lEqualType  As Long
+    Local sSubItem    As String 
+    
+    Local sRange      As String
+    Local vRange      As variant
+
+    Local ArrayPresent    As Long
+    Local ArrayName       As String
+    Local ArrayElements   As Long
+    Local ArrayPtr        As Long
+
+    Local pVar            As Long
+    Local pDirect         As Long
+    Local lMainType       As Long
+    Local lSubType        As Long
+    Local lIsArray        As Long 
+    Local Counter         As Long
+    Local lSize           As Long
+
+    Static lDummyExcelRange  As Range
+    
+    ReDim oObject(1& To 1&) As iExcel_Range At pObject
+    ReDim lExcel_Range(1& To 1&) As Range At oObject(1&).cExcel_Range_GetClassObject
+
+    'thinBasic_CheckOpenParens_Mandatory
+    'thinBasic_ParseString sRange
+    'Let vRange = sRange
+    'thinBasic_ParseNumber eY
+    'If thinBasic_CheckComma_Mandatory Then
+    '  thinBasic_ParseNumber eX
+    'End If
+    'thinBasic_CheckCloseParens_Mandatory
+    
+    If thinBasic_CheckPoint_Optional Then
+      sSubItem = thinBasic_GetUnknownToken   
+    End If
+    
+    If thinBasic_ErrorFree Then
+      Select Case UCase$(sSubItem) 
+'---Use when I will add Excel_Font class
+'        Case ""
+'          'Object Get lExcel_Application(1&).ActiveWorkbook To lDummyExcelWorkbook
+'          'Function = Str$(ObjPtr(lDummyExcelWorkbook))
+'          Object Get lExcel_Worksheet(1&).Range(vRange) To lDummyExcelRange
+'          Function = Str$(ObjPtr(lDummyExcelRange))
+'        
+'        Case "COLORINDEX"
+'          Object Call lExcel_Worksheet(1&).Range(vRange).Select
+'          'Function = Str$(Variant#(vResult))
+'
+'        Case "CLEAR"
+'          Object Call lExcel_Worksheet(1&).Range(vRange).Clear
+
+        Case "NAME"
+          Select Case Long lAction
+          
+            '---GET action happen usually when property is used inside an expression
+            Case %Class_Action_Get                                                  
+              '---Return value
+              Object Get lExcel_Range(1&).Font.Name To vText
+              Function = Variant$(vText)
+              
+            '---SET action happen usually when property is used directly as first token in a source code line
+            Case %Class_Action_Set 
+              '---Here programmer has to parse equal (=) sign and than a numeric or string expression
+              '---But remember: equal sign can also be += &= -= *= /= \=
+              lEqualType = thinBasic_CheckEqualType_Mandatory
+              If thinBasic_ErrorFree Then
+                Select Case Long lEqualType
+      
+                  '---Assignment
+                  Case %Equal_EQ
+
+'                    Select Case thinBasic_DetermineType
+'                      Case %thinBasic_ReturnNumber
+'                        thinBasic_ParseNumber eText
+'                        Let vText = eText As Double
+'                      Case %thinBasic_ReturnString
+                        thinBasic_ParseString sText
+                        vText = sText
+'                    End Select
+                    
+                    Object Let lExcel_Range(1&).Font.Name = vText
+             
+                  Case Else
+                    '---Not supperted for strings 
+                    MsgBox FuncName$ & Str$(lEqualType)
+                    
+                End Select
+              End If
+                      
+            Case %Class_Action_None
+              '---Should not happen but ... I will leave in any case
+          End Select
+
+        Case "FONTSTYLE"
+          Select Case Long lAction
+          
+            '---GET action happen usually when property is used inside an expression
+            Case %Class_Action_Get                                                  
+              '---Return value
+              Object Get lExcel_Range(1&).Font.FontStyle To vText
+              Function = Variant$(vText)
+              
+            '---SET action happen usually when property is used directly as first token in a source code line
+            Case %Class_Action_Set 
+              '---Here programmer has to parse equal (=) sign and than a numeric or string expression
+              '---But remember: equal sign can also be += &= -= *= /= \=
+              lEqualType = thinBasic_CheckEqualType_Mandatory
+              If thinBasic_ErrorFree Then
+                Select Case Long lEqualType
+      
+                  '---Assignment
+                  Case %Equal_EQ
+
+'                    Select Case thinBasic_DetermineType
+'                      Case %thinBasic_ReturnNumber
+'                        thinBasic_ParseNumber eText
+'                        Let vText = eText As Double
+'                      Case %thinBasic_ReturnString
+                        thinBasic_ParseString sText
+                        vText = sText
+'                    End Select
+                    
+                    Object Let lExcel_Range(1&).Font.FontStyle = vText
+             
+                  Case Else
+                    '---Not supperted for strings 
+                    MsgBox FuncName$ & Str$(lEqualType)
+                    
+                End Select
+              End If
+                      
+            Case %Class_Action_None
+              '---Should not happen but ... I will leave in any case
+          End Select
+
+
+        Case "SIZE"
+          Select Case Long lAction
+          
+            '---GET action happen usually when property is used inside an expression
+            Case %Class_Action_Get                                                  
+              '---Return value
+              Object Get lExcel_Range(1&).Font.Size To vText
+              Function = Format$(Variant#(vText))
+              
+            '---SET action happen usually when property is used directly as first token in a source code line
+            Case %Class_Action_Set 
+              '---Here programmer has to parse equal (=) sign and than a numeric or string expression
+              '---But remember: equal sign can also be += &= -= *= /= \=
+              lEqualType = thinBasic_CheckEqualType_Mandatory
+              If thinBasic_ErrorFree Then
+                Select Case Long lEqualType
+      
+                  '---Assignment
+                  Case %Equal_EQ
+
+'                    Select Case thinBasic_DetermineType
+'                      Case %thinBasic_ReturnNumber
+                        thinBasic_ParseNumber eText
+                        Let vText = eText As Long
+'                      Case %thinBasic_ReturnString
+'                        thinBasic_ParseString sText
+'                        vText = sText
+'                    End Select
+                    
+                    Object Let lExcel_Range(1&).Font.Size = vText
+             
+                  Case Else
+                    '---Not supperted for strings 
+                    MsgBox FuncName$ & Str$(lEqualType)
+                    
+                End Select
+              End If
+                      
+            Case %Class_Action_None
+              '---Should not happen but ... I will leave in any case
+          End Select
+
+        Case "BOLD"
+          Select Case Long lAction
+          
+            '---GET action happen usually when property is used inside an expression
+            Case %Class_Action_Get                                                  
+              '---Return value
+              Object Get lExcel_Range(1&).Font.Bold To vText
+              Function = Format$(Variant#(vText))
+              
+            '---SET action happen usually when property is used directly as first token in a source code line
+            Case %Class_Action_Set 
+              '---Here programmer has to parse equal (=) sign and than a numeric or string expression
+              '---But remember: equal sign can also be += &= -= *= /= \=
+              lEqualType = thinBasic_CheckEqualType_Mandatory
+              If thinBasic_ErrorFree Then
+                Select Case Long lEqualType
+      
+                  '---Assignment
+                  Case %Equal_EQ
+
+'                    Select Case thinBasic_DetermineType
+'                      Case %thinBasic_ReturnNumber
+                        thinBasic_ParseNumber eText
+                        Let vText = eText As Long
+'                      Case %thinBasic_ReturnString
+'                        thinBasic_ParseString sText
+'                        vText = sText
+'                    End Select
+                    
+                    Object Let lExcel_Range(1&).Font.Bold = vText
+             
+                  Case Else
+                    '---Not supperted for strings 
+                    MsgBox FuncName$ & Str$(lEqualType)
+                    
+                End Select
+              End If
+                      
+            Case %Class_Action_None
+              '---Should not happen but ... I will leave in any case
+          End Select
+
+        Case "ITALIC"
+          Select Case Long lAction
+          
+            '---GET action happen usually when property is used inside an expression
+            Case %Class_Action_Get                                                  
+              '---Return value
+              Object Get lExcel_Range(1&).Font.Italic To vText
+              Function = Format$(Variant#(vText))
+              
+            '---SET action happen usually when property is used directly as first token in a source code line
+            Case %Class_Action_Set 
+              '---Here programmer has to parse equal (=) sign and than a numeric or string expression
+              '---But remember: equal sign can also be += &= -= *= /= \=
+              lEqualType = thinBasic_CheckEqualType_Mandatory
+              If thinBasic_ErrorFree Then
+                Select Case Long lEqualType
+      
+                  '---Assignment
+                  Case %Equal_EQ
+
+'                    Select Case thinBasic_DetermineType
+'                      Case %thinBasic_ReturnNumber
+                        thinBasic_ParseNumber eText
+                        Let vText = eText As Long
+'                      Case %thinBasic_ReturnString
+'                        thinBasic_ParseString sText
+'                        vText = sText
+'                    End Select
+                    
+                    Object Let lExcel_Range(1&).Font.Italic = vText
+             
+                  Case Else
+                    '---Not supperted for strings 
+                    MsgBox FuncName$ & Str$(lEqualType)
+                    
+                End Select
+              End If
+                      
+            Case %Class_Action_None
+              '---Should not happen but ... I will leave in any case
+          End Select
+
+        Case "UNDERLINE"
+          Select Case Long lAction
+          
+            '---GET action happen usually when property is used inside an expression
+            Case %Class_Action_Get                                                  
+              '---Return value
+              Object Get lExcel_Range(1&).Font.Underline To vText
+              Function = Format$(Variant#(vText))
+              
+            '---SET action happen usually when property is used directly as first token in a source code line
+            Case %Class_Action_Set 
+              '---Here programmer has to parse equal (=) sign and than a numeric or string expression
+              '---But remember: equal sign can also be += &= -= *= /= \=
+              lEqualType = thinBasic_CheckEqualType_Mandatory
+              If thinBasic_ErrorFree Then
+                Select Case Long lEqualType
+      
+                  '---Assignment
+                  Case %Equal_EQ
+
+'                    Select Case thinBasic_DetermineType
+'                      Case %thinBasic_ReturnNumber
+                        thinBasic_ParseNumber eText
+                        Let vText = eText As Long
+'                      Case %thinBasic_ReturnString
+'                        thinBasic_ParseString sText
+'                        vText = sText
+'                    End Select
+                    
+                    Object Let lExcel_Range(1&).Font.Underline = vText
+             
+                  Case Else
+                    '---Not supperted for strings 
+                    MsgBox FuncName$ & Str$(lEqualType)
+                    
+                End Select
+              End If
+                      
+            Case %Class_Action_None
+              '---Should not happen but ... I will leave in any case
+          End Select
+
+        Case "COLOR"
+          Select Case Long lAction
+          
+            '---GET action happen usually when property is used inside an expression
+            Case %Class_Action_Get                                                  
+              '---Return value
+              Object Get lExcel_Range(1&).Font.Color To vText
+              Function = Format$(Variant#(vText))
+              
+            '---SET action happen usually when property is used directly as first token in a source code line
+            Case %Class_Action_Set 
+              '---Here programmer has to parse equal (=) sign and than a numeric or string expression
+              '---But remember: equal sign can also be += &= -= *= /= \=
+              lEqualType = thinBasic_CheckEqualType_Mandatory
+              If thinBasic_ErrorFree Then
+                Select Case Long lEqualType
+      
+                  '---Assignment
+                  Case %Equal_EQ
+
+'                    Select Case thinBasic_DetermineType
+'                      Case %thinBasic_ReturnNumber
+                        thinBasic_ParseNumber eText
+                        Let vText = eText As Long
+'                      Case %thinBasic_ReturnString
+'                        thinBasic_ParseString sText
+'                        vText = sText
+'                    End Select
+                    
+                    Object Let lExcel_Range(1&).Font.Color = vText
+             
+                  Case Else
+                    '---Not supperted for strings 
+                    MsgBox FuncName$ & Str$(lEqualType)
+                    
+                End Select
+              End If
+                      
+            Case %Class_Action_None
+              '---Should not happen but ... I will leave in any case
+          End Select
+          
+      End Select
+
+    End If
+  End Function

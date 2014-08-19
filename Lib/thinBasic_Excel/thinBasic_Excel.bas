@@ -121,7 +121,7 @@ GLOBAL gPath AS STRING
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Workbook, "FullName"                   , %thinBasic_ReturnString     , CodePtr(cExcel_Workbook_Property_FullName   ))
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Workbook, "Saved"                      , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Workbook_Property_Saved      ))
 
-      END IF
+      End If 
 
     '---
     ' Excel Worksheet Class
@@ -184,6 +184,7 @@ GLOBAL gPath AS STRING
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "Value"               , %thinBasic_ReturnString     , CodePtr(cExcel_Range_Property_Value     ))
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "Address"             , %thinBasic_ReturnString     , CodePtr(cExcel_Range_Property_Address   ))
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "Formula"             , %thinBasic_ReturnString     , CodePtr(cExcel_Range_Property_Formula   ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "Font"                , %thinBasic_ReturnString     , CodePtr(cExcel_Range_Property_Font      ))
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "HorizontalAlignment" , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Property_HorizontalAlignment ))
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "ColumnWidth"         , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Property_ColumnWidth    ))
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "Interior"            , %thinBasic_ReturnString     , CodePtr(cExcel_Range_Property_Interior  ))
@@ -201,6 +202,12 @@ GLOBAL gPath AS STRING
       
       thinBasic_AddEquate  "%XlColorIndex_xlColorIndexAutomatic"      , "", %XlColorIndex.xlColorIndexAutomatic                      
       thinBasic_AddEquate  "%XlColorIndex_xlColorIndexNone"           , "", %XlColorIndex.xlColorIndexNone
+
+      thinBasic_AddEquate  "%XlUnderlineStyle_xlUnderlineStyleDouble"           , "", %XlUnderlineStyle.xlUnderlineStyleDouble  
+      thinBasic_AddEquate  "%XlUnderlineStyle_xlUnderlineStyleDoubleAccounting" , "", %XlUnderlineStyle.xlUnderlineStyleDoubleAccounting
+      thinBasic_AddEquate  "%XlUnderlineStyle_xlUnderlineStyleNone"             , "", %XlUnderlineStyle.xlUnderlineStyleNone    
+      thinBasic_AddEquate  "%XlUnderlineStyle_xlUnderlineStyleSingle"           , "", %XlUnderlineStyle.xlUnderlineStyleSingle     
+      thinBasic_AddEquate  "%XlUnderlineStyle_xlUnderlineStyleSingleAccounting" , "", %XlUnderlineStyle.xlUnderlineStyleSingleAccounting
 
   End Function
 
