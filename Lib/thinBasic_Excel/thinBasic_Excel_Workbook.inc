@@ -138,9 +138,14 @@
   '----------------------------------------------------------------------------
   Function cExcel_Workbook_Method_SaveAs(ByVal pObject As Long) As Ext
   '----------------------------------------------------------------------------
-    Dim pp        As Byte
-    Dim sFileName As String
-    Dim vFileName As variant
+    Dim pp          As Byte
+    Dim sFileName   As String
+    Dim vFileName   As variant
+    Dim eFileFormat As Ext
+    Dim vFileFormat As variant
+    Dim sPassword   As String
+    Dim vPassword   As variant
+    
     
     '---If all went fine ...
     If thinBasic_ErrorFree Then
@@ -148,15 +153,24 @@
       ReDim lExcel_Workbook(1& To 1&) As Excel_Workbook At oObject(1&).cExcel_Workbook_GetClassObject
 
       pp = thinBasic_CheckOpenParens_Optional
-      thinBasic_ParseString sFileName
-      'If thinBasic_CheckComma_Mandatory Then
-      '  thinBasic_ParseNumber eX
-      'End If
+      thinBasic_ParseString sFileName    
+      eFileFormat = %XlFileFormat.xlWorkbookNormal
+'MsgBox sFileName
+      If thinBasic_CheckComma_Optional Then
+        thinBasic_ParseNumber eFileFormat
+'MsgBox Str$(eFileFormat)
+        If thinBasic_CheckComma_Optional Then
+          thinBasic_ParseString sPassword
+'MsgBox sPassword
+        End If
+      End If
       If pp Then thinBasic_CheckCloseParens_Mandatory
       
       If thinBasic_ErrorFree Then
-        vFileName = sFileName
-        Object Call lExcel_Workbook(1&).SaveAs(vFileName)
+        vFileName   = sFileName
+        vFileFormat = eFileFormat
+        vPassword   = sPassword
+        Object Call lExcel_Workbook(1&).SaveAs(vFileName, vFileFormat, vPassword)
 
       End If
       

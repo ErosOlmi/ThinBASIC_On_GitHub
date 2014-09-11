@@ -29,7 +29,7 @@ GLOBAL gPath AS STRING
 '---Every used defined thinBasic module must include this file
 #Include Once "\ThinBASIC\Lib\thinCore.inc"
 
-#INCLUDE ONCE "Excel.inc"
+#Include Once ".\Excel.inc"
 #Include Once ".\thinBasic_Excel_Application.inc"
 #Include Once ".\thinBasic_Excel_Workbook.inc"
 #Include Once ".\thinBasic_Excel_Worksheet.inc"
@@ -67,15 +67,16 @@ GLOBAL gPath AS STRING
       IF pClass_cExcel_Application THEN
 
         ' -- Constructor wrapper function needs to be linked in as _Create
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Application, "_Create"           , %thinBasic_ReturnNone       , CODEPTR(cExcel_Application_Create            ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Application, "_Create"           , %thinBasic_ReturnNone       , CodePtr(cExcel_Application_Create           ))
         ' -- Destructor wrapper function needs to be linked in as _Destroy
         ' -- WARNING: You MUST supply destructor and set the object to NOTHING, otherwise you risk memory leak
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Application, "_Destroy"          , %thinBasic_ReturnNone       , CODEPTR(cExcel_Application_Destroy           ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Application, "_Destroy"          , %thinBasic_ReturnNone       , CodePtr(cExcel_Application_Destroy          ))
         ' -- ClassObject
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Application, "_GetClassObject"   , %thinBasic_ReturnNone       , CODEPTR(cExcel_Application_GetClassObject    ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Application, "_GetClassObject"   , %thinBasic_ReturnNone       , CodePtr(cExcel_Application_GetClassObject   ))
 
         ' -- Common methods can take any name
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Application, "Quit"              , %thinBasic_ReturnCodeLong   , CODEPTR(cExcel_Application_Method_Quit     ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Application, "Quit"              , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Application_Method_Quit      ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Application, "SendKeys"          , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Application_Method_SendKeys  ))
 
         ' -- Common properties can take any name
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "Version"                 , %thinBasic_ReturnString     , CODEPTR(cExcel_Application_Property_Version ))
@@ -172,22 +173,23 @@ GLOBAL gPath AS STRING
         RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "_GetClassObject"   , %thinBasic_ReturnNone       , CodePtr(cExcel_Range_GetClassObject       ))
 
         ' -- Common methods can take any name
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "Select"            , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Method_Select        ))
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "Clear"             , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Method_Clear         ))
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "ClearContents"     , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Method_ClearContents ))
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "ClearFormats"      , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Method_ClearFormats  ))
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "ClearComments"     , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Method_ClearComments ))
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "ClearNotes"        , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Method_ClearNotes ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "Select"            , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Method_Select          ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "Clear"             , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Method_Clear           ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "ClearContents"     , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Method_ClearContents   ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "ClearFormats"      , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Method_ClearFormats    ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "ClearComments"     , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Method_ClearComments   ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "ClearNotes"        , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Method_ClearNotes      ))
 '        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "Activate"          , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Worksheet_Method_Activate         ))
 '
 '        ' -- Common properties can take any name
-        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "Value"               , %thinBasic_ReturnString     , CodePtr(cExcel_Range_Property_Value     ))
-        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "Address"             , %thinBasic_ReturnString     , CodePtr(cExcel_Range_Property_Address   ))
-        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "Formula"             , %thinBasic_ReturnString     , CodePtr(cExcel_Range_Property_Formula   ))
-        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "Font"                , %thinBasic_ReturnString     , CodePtr(cExcel_Range_Property_Font      ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "Value"               , %thinBasic_ReturnString     , CodePtr(cExcel_Range_Property_Value       ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "Address"             , %thinBasic_ReturnString     , CodePtr(cExcel_Range_Property_Address     ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "Formula"             , %thinBasic_ReturnString     , CodePtr(cExcel_Range_Property_Formula     ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "FormulaR1C1"         , %thinBasic_ReturnString     , CodePtr(cExcel_Range_Property_FormulaR1C1 ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "Font"                , %thinBasic_ReturnString     , CodePtr(cExcel_Range_Property_Font        ))
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "HorizontalAlignment" , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Property_HorizontalAlignment ))
-        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "ColumnWidth"         , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Property_ColumnWidth    ))
-        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "Interior"            , %thinBasic_ReturnString     , CodePtr(cExcel_Range_Property_Interior  ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "ColumnWidth"         , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Property_ColumnWidth ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "Interior"            , %thinBasic_ReturnString     , CodePtr(cExcel_Range_Property_Interior    ))
         
       End If
 
@@ -208,6 +210,63 @@ GLOBAL gPath AS STRING
       thinBasic_AddEquate  "%XlUnderlineStyle_xlUnderlineStyleNone"             , "", %XlUnderlineStyle.xlUnderlineStyleNone    
       thinBasic_AddEquate  "%XlUnderlineStyle_xlUnderlineStyleSingle"           , "", %XlUnderlineStyle.xlUnderlineStyleSingle     
       thinBasic_AddEquate  "%XlUnderlineStyle_xlUnderlineStyleSingleAccounting" , "", %XlUnderlineStyle.xlUnderlineStyleSingleAccounting
+
+      thinBasic_AddEquate  "%XlFileFormat_xlAddIn                      " , "", %XlFileFormat.xlAddIn                      
+      thinBasic_AddEquate  "%XlFileFormat_xlCSV                        " , "", %XlFileFormat.xlCSV                        
+      thinBasic_AddEquate  "%XlFileFormat_xlCSVMac                     " , "", %XlFileFormat.xlCSVMac                     
+      thinBasic_AddEquate  "%XlFileFormat_xlCSVMSDOS                   " , "", %XlFileFormat.xlCSVMSDOS                   
+      thinBasic_AddEquate  "%XlFileFormat_xlCSVWindows                 " , "", %XlFileFormat.xlCSVWindows                 
+      thinBasic_AddEquate  "%XlFileFormat_xlDBF2                       " , "", %XlFileFormat.xlDBF2                       
+      thinBasic_AddEquate  "%XlFileFormat_xlDBF3                       " , "", %XlFileFormat.xlDBF3                       
+      thinBasic_AddEquate  "%XlFileFormat_xlDBF4                       " , "", %XlFileFormat.xlDBF4                       
+      thinBasic_AddEquate  "%XlFileFormat_xlDIF                        " , "", %XlFileFormat.xlDIF                        
+      thinBasic_AddEquate  "%XlFileFormat_xlExcel2                     " , "", %XlFileFormat.xlExcel2                     
+      thinBasic_AddEquate  "%XlFileFormat_xlExcel2FarEast              " , "", %XlFileFormat.xlExcel2FarEast              
+      thinBasic_AddEquate  "%XlFileFormat_xlExcel3                     " , "", %XlFileFormat.xlExcel3                     
+      thinBasic_AddEquate  "%XlFileFormat_xlExcel4                     " , "", %XlFileFormat.xlExcel4                     
+      thinBasic_AddEquate  "%XlFileFormat_xlExcel5                     " , "", %XlFileFormat.xlExcel5                     
+      thinBasic_AddEquate  "%XlFileFormat_xlExcel7                     " , "", %XlFileFormat.xlExcel7                     
+      thinBasic_AddEquate  "%XlFileFormat_xlExcel9795                  " , "", %XlFileFormat.xlExcel9795                  
+      thinBasic_AddEquate  "%XlFileFormat_xlExcel4Workbook             " , "", %XlFileFormat.xlExcel4Workbook             
+      thinBasic_AddEquate  "%XlFileFormat_xlIntlAddIn                  " , "", %XlFileFormat.xlIntlAddIn                  
+      thinBasic_AddEquate  "%XlFileFormat_xlIntlMacro                  " , "", %XlFileFormat.xlIntlMacro                  
+      thinBasic_AddEquate  "%XlFileFormat_xlWorkbookNormal             " , "", %XlFileFormat.xlWorkbookNormal             
+      thinBasic_AddEquate  "%XlFileFormat_xlSYLK                       " , "", %XlFileFormat.xlSYLK                       
+      thinBasic_AddEquate  "%XlFileFormat_xlTemplate                   " , "", %XlFileFormat.xlTemplate                   
+      thinBasic_AddEquate  "%XlFileFormat_xlCurrentPlatformText        " , "", %XlFileFormat.xlCurrentPlatformText        
+      thinBasic_AddEquate  "%XlFileFormat_xlTextMac                    " , "", %XlFileFormat.xlTextMac                    
+      thinBasic_AddEquate  "%XlFileFormat_xlTextMSDOS                  " , "", %XlFileFormat.xlTextMSDOS                  
+      thinBasic_AddEquate  "%XlFileFormat_xlTextPrinter                " , "", %XlFileFormat.xlTextPrinter                
+      thinBasic_AddEquate  "%XlFileFormat_xlTextWindows                " , "", %XlFileFormat.xlTextWindows                
+      thinBasic_AddEquate  "%XlFileFormat_xlWJ2WD1                     " , "", %XlFileFormat.xlWJ2WD1                     
+      thinBasic_AddEquate  "%XlFileFormat_xlWK1                        " , "", %XlFileFormat.xlWK1                        
+      thinBasic_AddEquate  "%XlFileFormat_xlWK1ALL                     " , "", %XlFileFormat.xlWK1ALL                     
+      thinBasic_AddEquate  "%XlFileFormat_xlWK1FMT                     " , "", %XlFileFormat.xlWK1FMT                     
+      thinBasic_AddEquate  "%XlFileFormat_xlWK3                        " , "", %XlFileFormat.xlWK3                        
+      thinBasic_AddEquate  "%XlFileFormat_xlWK4                        " , "", %XlFileFormat.xlWK4                        
+      thinBasic_AddEquate  "%XlFileFormat_xlWK3FM3                     " , "", %XlFileFormat.xlWK3FM3                     
+      thinBasic_AddEquate  "%XlFileFormat_xlWKS                        " , "", %XlFileFormat.xlWKS                        
+      thinBasic_AddEquate  "%XlFileFormat_xlWorks2FarEast              " , "", %XlFileFormat.xlWorks2FarEast              
+      thinBasic_AddEquate  "%XlFileFormat_xlWQ1                        " , "", %XlFileFormat.xlWQ1                        
+      thinBasic_AddEquate  "%XlFileFormat_xlWJ3                        " , "", %XlFileFormat.xlWJ3                        
+      thinBasic_AddEquate  "%XlFileFormat_xlWJ3FJ3                     " , "", %XlFileFormat.xlWJ3FJ3                     
+      thinBasic_AddEquate  "%XlFileFormat_xlUnicodeText                " , "", %XlFileFormat.xlUnicodeText                
+      thinBasic_AddEquate  "%XlFileFormat_xlHtml                       " , "", %XlFileFormat.xlHtml                       
+      thinBasic_AddEquate  "%XlFileFormat_xlWebArchive                 " , "", %XlFileFormat.xlWebArchive                 
+      thinBasic_AddEquate  "%XlFileFormat_xlXMLSpreadsheet             " , "", %XlFileFormat.xlXMLSpreadsheet             
+      thinBasic_AddEquate  "%XlFileFormat_xlExcel12                    " , "", %XlFileFormat.xlExcel12                    
+      thinBasic_AddEquate  "%XlFileFormat_xlOpenXMLWorkbook            " , "", %XlFileFormat.xlOpenXMLWorkbook            
+      thinBasic_AddEquate  "%XlFileFormat_xlOpenXMLWorkbookMacroEnabled" , "", %XlFileFormat.xlOpenXMLWorkbookMacroEnabled
+      thinBasic_AddEquate  "%XlFileFormat_xlOpenXMLTemplateMacroEnabled" , "", %XlFileFormat.xlOpenXMLTemplateMacroEnabled
+      thinBasic_AddEquate  "%XlFileFormat_xlTemplate8                  " , "", %XlFileFormat.xlTemplate8                  
+      thinBasic_AddEquate  "%XlFileFormat_xlOpenXMLTemplate            " , "", %XlFileFormat.xlOpenXMLTemplate            
+      thinBasic_AddEquate  "%XlFileFormat_xlAddIn8                     " , "", %XlFileFormat.xlAddIn8                     
+      thinBasic_AddEquate  "%XlFileFormat_xlOpenXMLAddIn               " , "", %XlFileFormat.xlOpenXMLAddIn               
+      thinBasic_AddEquate  "%XlFileFormat_xlExcel8                     " , "", %XlFileFormat.xlExcel8                     
+      thinBasic_AddEquate  "%XlFileFormat_xlOpenDocumentSpreadsheet    " , "", %XlFileFormat.xlOpenDocumentSpreadsheet    
+      thinBasic_AddEquate  "%XlFileFormat_xlOpenXMLStrictWorkbook      " , "", %XlFileFormat.xlOpenXMLStrictWorkbook      
+      thinBasic_AddEquate  "%XlFileFormat_xlWorkbookDefault            " , "", %XlFileFormat.xlWorkbookDefault            
+       
 
   End Function
 

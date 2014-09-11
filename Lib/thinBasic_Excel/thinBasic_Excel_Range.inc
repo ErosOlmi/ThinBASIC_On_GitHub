@@ -456,6 +456,90 @@
   End Function
 
   '----------------------------------------------------------------------------
+  Function cExcel_Range_Property_FormulaR1C1(ByVal pObject As Long, ByVal lAction As Long) As String
+  '----------------------------------------------------------------------------
+  '  Properties functions has 2 params:
+  '   pObject   is a pointer to module class or any other memory area handled by a pseudo class
+  '   lAction   can be %Class_Action_Get, %Class_Action_Set, %Class_Action_None
+  '             depending on how the property is used in the script
+  '             %Class_Action_Get   when property is used inside an expression
+  '             %Class_Action_Set   when property is used at the beginning of a line
+  '             %Class_Action_None  SHOULD NEVER HAPPEN
+  '--------------------------------------------------------------------------------------
+  ' Syntax:
+  '   
+  '--------------------------------------------------------------------------------------
+    Local lEqualType  As Long
+    Local eValue      As Ext
+    Local sValue      As String
+    Local vValue      As variant
+    
+    ReDim oObject(1& To 1&) As iExcel_Range At pObject
+    ReDim lExcel_Range(1& To 1&) As Range At oObject(1&).cExcel_Range_GetClassObject
+
+'    thinBasic_CheckOpenParens_Mandatory
+'    thinBasic_ParseNumber eY
+'    If thinBasic_CheckComma_Mandatory Then
+'      thinBasic_ParseNumber eX
+'    End If
+'    thinBasic_CheckCloseParens_Mandatory
+'    
+'    If thinBasic_CheckPoint_Optional Then
+'      sSubItem = thinBasic_GetUnknownToken   
+'    End If
+'    
+'    vX = eX  
+'    vY = eY
+    
+    If thinBasic_ErrorFree Then
+'      Select Case UCase$(sSubItem)
+'        Case "VALUE", ""
+          Select Case Long lAction
+          
+            '---GET action happen usually when property is used inside an expression
+            Case %Class_Action_Get                                                  
+              '---Return value
+              Object Get lExcel_Range(1&).FormulaR1C1 To vValue
+              Function = Variant$(vValue)
+              
+            '---SET action happen usually when property is used directly as first token in a source code line
+            Case %Class_Action_Set 
+              '---Here programmer has to parse equal (=) sign and than a numeric or string expression
+              '---But remember: equal sign can also be += &= -= *= /= \=
+              lEqualType = thinBasic_CheckEqualType_Mandatory
+              If thinBasic_ErrorFree Then
+                Select Case Long lEqualType
+      
+                  '---Assignment
+                  Case  %Equal_EQ
+                    'Select Case thinBasic_DetermineType
+                    '  Case %thinBasic_ReturnNumber
+                    '    thinBasic_ParseNumber eValue
+                    '    Let vValue = eValue As Double
+                    '  Case %thinBasic_ReturnString
+                        thinBasic_ParseString sValue
+                        vValue = sValue
+                    'End Select
+      
+                    Object Let lExcel_Range(1&).FormulaR1C1 = vValue
+      
+                  Case Else
+                    '---Not supperted for strings 
+                    MsgBox FuncName$ & Str$(lEqualType)
+                    
+                End Select
+              End If
+                      
+            Case %Class_Action_None
+              '---Should not happen but ... I will leave in any case
+          End Select
+          
+'      End Select
+'
+    End If
+  End Function
+
+  '----------------------------------------------------------------------------
   Function cExcel_Range_Property_HorizontalAlignment(ByVal pObject As Long, ByVal lAction As Long) As Long
   '----------------------------------------------------------------------------
   '  Properties functions has 2 params:

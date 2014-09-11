@@ -24,10 +24,10 @@ End Function
 Function TBMain() As Long
 '--------------------------------------------------------------------
   Dim sXlsFileName  As String
-  Dim xApp          As Excel_Application
-  Dim xWorkBook     As Excel_Workbook
-  Dim xSheet        As Excel_Worksheet
-  Dim xRange        As Excel_Range
+  Dim xApp          As Excel_Application    '---This will instantiate the real Excel Application
+  Dim xWorkBook     As Excel_Workbook       '---An object representing an Excel Workbook (an excel file)
+  Dim xSheet        As Excel_Worksheet      '---An object representing a single Excel worksheet
+  Dim xRange        As Excel_Range          '---An object representing a Range. Will be used to point to different ranges when needed
   Dim x, y          As Long
   
   sXlsFileName = APP_ScriptFullName & ".xlsx"
@@ -41,7 +41,7 @@ Function TBMain() As Long
   '---Create Excel workbook
   If FILE_Exists(sXlsFileName) Then
     Out("Opening file: " & sXlsFileName)
-    xWorkBook = xApp.WorkBooks.Open(sXlsFileName)
+    xWorkBook = xApp.WorkBooks.Open(sXlsFileName, 2, %FALSE, 5, "")
   Else
     Out("Creating a new empty workbook")
     xWorkBook = xApp.WorkBooks.Add
@@ -89,6 +89,8 @@ Function TBMain() As Long
   xSheet.Range("A1").Select
 
   out("Making some easy calculation")
+  xRange = xSheet.Range("A1:A20")
+  xRange.ColumnWidth = 25
   xSheet.Cells(1, 1) = "Few random numbers"
   For y = 1 To 20
     xSheet.Cells(Y, 2) = Rnd(10, 2000)
@@ -102,6 +104,7 @@ Function TBMain() As Long
   xRange.HorizontalAlignment = %XlHAlign_xlHAlignCenter
   xRange.ColumnWidth = 25
   
+  '---Set forumla
   xRange = xSheet.Range("D22")
   xRange.Formula = "=Sum(D1:D20)"
   
@@ -114,6 +117,9 @@ Function TBMain() As Long
   xRange.Font.Color = Rgb(255, 0, 0)
   xRange.Interior.Color = Rgb(255, 255, 0)
   Out("Current font style is: " & xRange.Font.FontStyle)
+
+  Out("Current Formula is: " & xRange.Formula)
+  Out("Current Formula R1C1 is: " & xRange.FormulaR1C1)
 
   out("Change some cells color background")
   xSheet.Cells(1, 8).Value = "Changing some randomized color"
@@ -154,7 +160,7 @@ Function TBMain() As Long
       xWorkBook.Save
     Else
       out("File does not exists so saving file to: " & sXlsFileName)
-      xWorkBook.SaveAs(sXlsFileName)
+      xWorkBook.SaveAs(sXlsFileName, %XlFileFormat_xlOpenXMLWorkbook, "")
     End If
     out("Restoring standard alerts")
     xApp.DisplayAlerts = %TRUE
@@ -164,6 +170,8 @@ Function TBMain() As Long
   xApp.ActiveWindow.Close
   
   out("Quitting Excel")
+  '---Alternative is using Sendkeys to send Alt-File/Exit command
+  'xApp.SendKeys("%fx")
   xApp.Quit                     
 
 
