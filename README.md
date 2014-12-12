@@ -19,7 +19,7 @@ Documentation can be found at [ThinBASIC web site](http://www.thinbasic.com/publ
 ### Download ThinBASIC Binaries
 
 Download latest preview version of ThinBASIC installer here:
-http://www.thinbasic.com/community/showthread.php?12449-ThinBASIC-1-9-13-0&p=91374#post91374
+http://www.thinbasic.com/community/showthread.php?12478
 
 Download latest stable version of ThinBASIC installer here:
 http://www.thinbasic.com/community/showthread.php?11345
@@ -34,4 +34,4 @@ http://www.thinbasic.com/community/forum.php
 
 All sources be compiled using PowerBASIC 10.04 Programming Language.
 Compilation of ThinBASIC sources needs PowerBASIC Compiler and ThinBASIC development Kit included in ThinBASIC distribution.
-At least ThinBasic version 1.9.13.0 is needed.
+At least ThinBasic version 1.9.14.0 is needed.
