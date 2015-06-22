@@ -209,8 +209,15 @@
             Case %Class_Action_Get                                                  
               '---Return value
               Object Get lExcel_Worksheet(1&).Cells(vY, vX).Value To vText
-              Function = Variant$(vText)
-              
+              Select Case VariantVT(vText)
+                Case %VT_BStr, %VT_LPStr, %VT_LPWStr
+                  Function = Variant$(vText)
+                Case %VT_Date
+                  Function = Variant$(vText)
+                Case Else
+                  Function = Format$(Variant#(vText))
+              End Select
+                            
             '---SET action happen usually when property is used directly as first token in a source code line
             Case %Class_Action_Set 
               '---Here programmer has to parse equal (=) sign and than a numeric or string expression
