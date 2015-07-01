@@ -3,14 +3,14 @@ Copyright (c) 1996-2012 PowerBasic Inc.
 Englewood, Florida USA
 All Rights Reserved
 
-Primary source:  C:\ThinBASIC_On_GitHub\ThinBASIC_On_GitHub\Lib\thinBasic_Excel\thinBasic_Excel.bas   {16329 total lines}
+Primary source:  C:\ThinBASIC_On_GitHub\ThinBASIC_On_GitHub\Lib\thinBasic_Excel\thinBasic_Excel.bas   {16416 total lines}
 Target compilation:  thinBasic_Excel.dll
-Compile time:  0.2 seconds, at 4898700 lines/minute
+Compile time:  0.2 seconds, at 4924800 lines/minute
 
-40896 bytes compiled code, 18076 bytes RTLibrary,
-4520 bytes string literals, and 7588 bytes dgroup.
+41872 bytes compiled code, 18076 bytes RTLibrary,
+4556 bytes string literals, and 7624 bytes dgroup.
 DLL does not require stack allocation.
-Disk image: 70672 bytes   Memory image: 30184 bytes.
+Disk image: 71696 bytes   Memory image: 30256 bytes.
 
 Component Files:
 ----------------

@@ -179,6 +179,7 @@ GLOBAL gPath AS STRING
         RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "ClearFormats"      , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Method_ClearFormats    ))
         RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "ClearComments"     , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Method_ClearComments   ))
         RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "ClearNotes"        , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Method_ClearNotes      ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "AutoFit"           , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Method_AutoFit         ))
 '        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "Activate"          , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Worksheet_Method_Activate         ))
 '
 '        ' -- Common properties can take any name
@@ -190,6 +191,7 @@ GLOBAL gPath AS STRING
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "HorizontalAlignment" , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Property_HorizontalAlignment ))
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "ColumnWidth"         , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Property_ColumnWidth ))
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "Interior"            , %thinBasic_ReturnString     , CodePtr(cExcel_Range_Property_Interior    ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "NumberFormat"        , %thinBasic_ReturnString     , CodePtr(cExcel_Range_Property_NumberFormat))
         
       End If
 

@@ -99,10 +99,17 @@ Function TBMain() As Long
   xRange = xSheet.Range("B22")
   xRange.Formula = "=Sum(B1:B20)"  
 
+  '[breakpoint] <Any note here. Breakpoint will be set to line following this statement>
+  xRange = xSheet.Range("B:B")
+  xRange.Select
+  xRange.NumberFormat = "@"
+  'xRange.AutoFit
+  
   xRange = xSheet.Range("D1:D20")
   xRange.Formula = "=Sin(B1)"
   xRange.HorizontalAlignment = %XlHAlign_xlHAlignCenter
   xRange.ColumnWidth = 25
+
   
   '---Set forumla
   xRange = xSheet.Range("D22")
