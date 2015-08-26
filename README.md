@@ -1,5 +1,11 @@
 ![ThinBASIC](/Logo/TB_Logo1.png)
 
+Official site:      http://www.thinbasic.com/
+
+Forum:              http://www.thinbasic.com/community/
+
+Online manual:      http://www.thinbasic.com/public/products/thinBasic/help/html/index.html
+
 ### ThinBASIC
 
 ThinBASIC is a BASIC Interpreter full of thousands of features and ... fast, very fast!
