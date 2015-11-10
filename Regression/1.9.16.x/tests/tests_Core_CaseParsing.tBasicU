@@ -1,0 +1,30 @@
+Function test_SelectCase_UnusualOrder_CorrectProgramFlow()
+
+  Long i, inBracket      
+  String textIn = "Monsters (werewolves, dwarfs), are awesome"
+  String separator = "!"
+  String textOut = textIn
+   
+  For i = 1 To Len(textIn)
+   
+    Select Case Mid$(textIn, i, 1)
+      Case "("
+        inBracket = TRUE     
+        Iterate For     
+       
+      Case ")"
+        inBracket = FALSE
+        Iterate For     
+ 
+      Case ","
+        If inBracket = FALSE Then
+          Mid$(textOut, i, 1) = separator         
+        End If
+         
+    End Select
+     
+  Next
+   
+  ut_assertEqualText(textOut, "Monsters (werewolves, dwarfs)! are awesome")
+   
+End Function
