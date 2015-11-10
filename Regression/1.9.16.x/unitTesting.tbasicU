@@ -1,7 +1,7 @@
 '
 ' Concept library for unit testing
-' V1.5
-' Petr Schreiber, 2014
+' V1.6
+' Petr Schreiber, 2015
 '   
 
 ' -- Modules
@@ -262,7 +262,7 @@ Function ut_assertIsTrue(ByVal aValue As Number, Optional aComment As String ) A
     
   Else
   
-    internal_ut_RaiseFail("Expected " + aValue + " = " + Format$(TRUE) + "(= TRUE)" + IIf$(len(aComment), "[" + aComment + "]", ""))      
+    internal_ut_RaiseFail("Expected " + Format$(TRUE) + "(= TRUE), got " + Format$(aValue) + IIf$(Len(aComment), "[" + aComment + "]", ""))      
     Return FALSE
       
   End If
@@ -278,7 +278,7 @@ Function ut_assertIsFalse(ByVal aValue As Number, Optional aComment As String ) 
     
   Else
   
-    internal_ut_RaiseFail("Expected " + aValue + " = " + Format$(FALSE) + "(= FALSE)" + IIf$(len(aComment), "[" + aComment + "]", ""))      
+    internal_ut_RaiseFail("Expected " + Format$(FALSE) + "(= FALSE), got " + Format$(aValue) + IIf$(Len(aComment), "[" + aComment + "]", ""))      
     Return FALSE
       
   End If
@@ -363,7 +363,7 @@ Function ut_assertError(ByVal aValue As Number, Optional aComment As String ) As
       
   End If
 
-End Function      
+End Function 
 
 '[] Test information
 Function ut_GetFailureCount() As Long

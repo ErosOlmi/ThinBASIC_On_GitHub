@@ -1,0 +1,5 @@
+Function test_MZero_IsDefined_ExpectedTrue()
+
+  ut_assertIsTrue(VARIABLE_Exists(m_zero))
+   
+End Function
