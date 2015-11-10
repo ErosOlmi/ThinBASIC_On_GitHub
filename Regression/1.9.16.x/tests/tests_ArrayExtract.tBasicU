@@ -1,0 +1,145 @@
+Function test_ArrayExtract_StartsWithModifier_CorrectItemCount()
+
+  String items(5) = "Hi there", "Hello", "Howdy", "Ciao", "See ya" 
+  String processed()
+  
+  Array Extract items, StartsWith "H" InTo processed
+  
+  ut_AssertEqual(3, CountOf(processed))
+   
+End Function
+
+Function test_ArrayExtract_StartsWithModifier_CorrectItemContent()
+
+  String items(5) = "Hi there", "Hello", "Howdy", "Ciao", "See ya" 
+  String processed()
+  
+  Array Extract items, StartsWith "H" InTo processed
+  
+  ut_AssertEqualText(processed(1), "Hi there")
+  ut_AssertEqualText(processed(2), "Hello")
+  ut_AssertEqualText(processed(3), "Howdy")
+   
+End Function
+
+' --
+
+Function test_ArrayExtract_EndsWithModifier_CorrectItemCount()
+
+  String items(5) = "Hi there", "Hello", "Howdy", "Ciao", "See ya" 
+  String processed()
+  
+  Array Extract items, EndsWith "o" InTo processed
+  
+  ut_AssertEqual(2, CountOf(processed))
+   
+End Function
+
+Function test_ArrayExtract_EndsWithModifier_CorrectItemContent()
+
+  String items(5) = "Hi there", "Hello", "Howdy", "Ciao", "See ya" 
+  String processed()
+  
+  Array Extract items, EndsWith "o" InTo processed
+  
+  ut_AssertEqualText(processed(1), "Hello")
+  ut_AssertEqualText(processed(2), "Ciao")
+   
+End Function
+
+' -- 
+
+Function test_ArrayExtract_ContainsModifier_CorrectItemCount()
+
+  String items(5) = "Hi there", "Hello", "Howdy", "Ciao", "See ya" 
+  String processed()
+  
+  Array Extract items, Contains "ee" InTo processed
+  
+  ut_AssertEqual(1, CountOf(processed))
+   
+End Function
+
+Function test_ArrayExtract_ContainsModifier_CorrectItemContent()
+
+  String items(5) = "Hi there", "Hello", "Howdy", "Ciao", "See ya" 
+  String processed()
+  
+  Array Extract items, Contains "ee" InTo processed
+
+  ut_AssertEqualText(processed(1), "See ya")
+     
+End Function
+
+' --
+
+Function test_ArrayExtract_CUAndStartsWithModifier_CorrectItemCount()
+
+  String items(5) = "Hi there", "hello", "howdy", "Ciao", "See ya" 
+  String processed()
+  
+  Array Extract items, Collate Ucase, StartsWith "H" InTo processed
+  
+  ut_AssertEqual(3, CountOf(processed))
+   
+End Function
+
+Function test_ArrayExtract_CUAndStartsWithModifier_CorrectItemContent()
+
+  String items(5) = "Hi there", "hello", "howdy", "Ciao", "See ya" 
+  String processed()
+  
+  Array Extract items, Collate Ucase, StartsWith "H" InTo processed
+  
+  ut_AssertEqualText(processed(1), "Hi there")
+  ut_AssertEqualText(processed(2), "hello")
+  ut_AssertEqualText(processed(3), "howdy")
+   
+End Function
+
+' --
+
+Function test_ArrayExtract_CUAndEndsWithModifier_CorrectItemCount()
+
+  String items(5) = "Hi there", "HellO", "Howdy", "Ciao", "See ya" 
+  String processed()
+  
+  Array Extract items, Collate Ucase, EndsWith "o" InTo processed
+  
+  ut_AssertEqual(2, CountOf(processed))
+   
+End Function
+
+Function test_ArrayExtract_CUAndEndsWithModifier_CorrectItemContent()
+
+  String items(5) = "Hi there", "HellO", "Howdy", "Ciao", "See ya" 
+  String processed()
+  
+  Array Extract items, Collate Ucase, EndsWith "o" InTo processed
+  
+  ut_AssertEqualText(processed(1), "HellO")
+  ut_AssertEqualText(processed(2), "Ciao")
+   
+End Function
+
+' -- 
+
+Function test_ArrayExtract_CUAndContainsModifier_CorrectItemCount()
+
+  String items(5) = "Hi there", "Hello", "Howdy", "Ciao", "SEE ya" 
+  String processed()
+  
+  Array Extract items, Collate Ucase, Contains "ee" InTo processed
+  ut_AssertEqual(1, CountOf(processed))
+   
+End Function
+
+Function test_ArrayExtract_CUAndContainsModifier_CorrectItemContent()
+
+  String items(5) = "Hi there", "Hello", "Howdy", "Ciao", "SEE ya" 
+  String processed()
+  
+  Array Extract items, Collate Ucase, Contains "ee" InTo processed
+  ut_AssertEqualText(processed(1), "SEE ya")
+     
+End Function

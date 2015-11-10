@@ -1,0 +1,52 @@
+Uses "Console"
+
+#MINVERSION 1.9.16.0
+#INCLUDE "unitTesting.tBasicU"               
+#INCLUDE "tests/tests_*.tBasicU"
+
+Function TBMain()
+  
+  Print "Testing 1.9.16.x release feature set..."
+  ut_Initialize()
+
+  ut_LaunchTests("")
+  
+  ut_Release()
+  
+  If ut_FailCount Then               
+    ut_SaveLog()           
+    PrintL
+    PrintL
+    PrintL "See the following file for all the details:" In 15
+    PrintL ut_logFileName In 14
+    PrintL                     
+    PrintL "Brief overview of " + ut_FailCount + " failures:" In 11
+    PrintUnitTestIssues(ut_logFileName)    
+    
+  Else
+    PrintL "PASSED" In 10  
+  End If  
+  
+  WaitKey
+
+End Function
+
+Function PrintUnitTestIssues(sourceFile As String)
+
+  String content = FILE_Load(ut_logFileName)
+  String unitTest, failure
+  
+  Long   issueCount = Grab$(content, "<failCount>", "</failCount>")  
+    
+  Long i
+  For i = 1 To issueCount
+    unitTest = Grab$(content, "<testName>", "</testName>", i)
+    failure  = Grab$(content, "<description>", "</description>", i)
+  
+    PrintL unitTest In 15
+    PrintL failure In 12
+    PrintL
+    
+  Next          
+
+End Function

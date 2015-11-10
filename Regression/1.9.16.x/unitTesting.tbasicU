@@ -1,0 +1,443 @@
+'
+' Concept library for unit testing
+' V1.5
+' Petr Schreiber, 2014
+'   
+
+' -- Modules
+Uses "File"
+
+' -- API
+'----------------------------------------------------------------------------
+'thinBasic_StackGetList
+'----------------------------------------------------------------------------
+' Returns a string containing the names of the current nesting stack levels
+' As a minimum this function will return one string containing "GLOBAL"
+'----------------------------------------------------------------------------
+Declare Function thinBasic_StackGetList Lib "thinCore.dll" Alias "thinBasic_StackGetList"(Optional ByVal sSep As String) As String
+'----------------------------------------------------------------------------
+
+' -- Data
+String ut_logFileName    
+String ut_failLog     
+Long   ut_failCount   
+String ut_error  
+
+'[] Unit test interface
+' -- This MUST be called before performing tests
+Function ut_Initialize()
+
+  ut_failCount = 0  
+
+  ut_failLog = "<header>" + $CRLF + 
+               $TAB + "<version>1.4</version>" + $CRLF +
+               $TAB + "<date>" + Date$ + "</date>" + $CRLF +
+               $TAB + "<time>" + Time$ + "</time>" + $CRLF +
+               $TAB + "<failCount>0</failCount>" + $CRLF +  
+               "</header>" + $CRLF +
+               "<body>" + $CRLF
+  
+  ut_logFileName  = APP_SourcePath + "unitTest.txt"  
+ 
+End Function 
+
+' -- This SHOULD be called after performing tests
+' Returns the number of failed tests
+Function ut_Release() As Long
+  
+  Return ut_failCount
+  
+End Function 
+ 
+' -- This launches specified group of tests
+' For example: ut_LaunchTests("numeric") will automatically launch
+' all functions matching mask "numeric_test_*"   
+'
+' If there is function satisfying mask <aPrefix>_test_setup, or test_setup then
+' such a function is launched before each relevant text 
+Function ut_LaunchTests( Optional aPrefix As String )
+                                                                
+  If Len(aPrefix) Then
+    aPrefix = Ucase$(aPrefix)+"_TEST_"
+  Else              
+    ' -- When no prefix is specified, it runs all nonprefixed TESTs it finds
+    aPrefix = "TEST_"
+  End If 
+  
+  String sTestFunctions = Function_Names(%FUNCTION_USER, ",")
+  
+  String sValidFunctions, sFunction   
+  Long   i
+  
+  String setupFunction    = aPrefix+"SETUP"
+  String teardownFunction = aPrefix+"TEARDOWN"
+  For i = 1 To ParseCount(sTestFunctions, ",")
+    sFunction = Parse$(sTestFunctions, ",", i)   
+    
+    ' -- If it matches expected naming convention, but it is not setup function...
+    If StartsWith(sFunction, aPrefix) And sFunction <> setupFunction And sFunction <> teardownFunction Then          
+      sValidFunctions += sFunction + ","
+    End If
+  Next                                 
+  
+  sValidFunctions = RTrim$(sValidFunctions, ",")          
+  
+  If Len(sValidFunctions) Then
+    For i = 1 To ParseCount(sValidFunctions, ",") 
+      sFunction = Parse$(sValidFunctions, ",", i)            
+      
+      ' -- If setup routine exists, call it
+      Call_IfExists setupFunction() 
+      
+      ' -- Call the test itself
+      Call sFunction()
+      
+      ' -- If teardown routine exists, call it
+      Call_IfExists teardownFunction()       
+    Next
+  
+    Return ParseCount(sValidFunctions, ",")
+  Else
+    internal_ut_RaiseFail("No fixtures with prefix=" + $DQ + aPrefix + $DQ + " found")  
+    Return 0
+  End If
+  
+End Function           
+
+' -- This SHOULD be called after performing tests
+' Returns the number of failed tests
+Function ut_SaveLog( Optional sFileName As String ) As Long
+  
+  ut_failLog += "</body>"
+  
+  If ut_failCount Then
+    ut_failLog = Replace$(ut_failLog, "<failCount>0</failCount>", "<failCount>" + ut_failCount + "</failCount>")
+  End If
+  
+  If (Len(sFileName) = 0) Then
+    sFileName = ut_logFileName
+  End If
+  
+  FILE_Save(sFileName, ut_failLog)
+          
+  Return ut_failCount
+  
+End Function 
+
+'[] Asserts
+' -- Are two numbers equal?
+Function ut_assertEqual(ByVal aValue1 As Number, ByVal aValue2 As Number, Optional aComment As String ) As Long
+
+  If (aValue1 = aValue2) Then
+  
+    Return TRUE                 
+    
+  Else
+  
+    internal_ut_RaiseFail("Expected value=" + aValue1 + ", found value=" + aValue2 + IIf$(Len(aComment), "[" + aComment + "]", ""))      
+    Return FALSE
+      
+  End If
+
+End Function     
+
+' -- Are two numbers equal when rounded to specified number of decimals?
+Function ut_assertEqualRounded(ByVal aValue1 As Number, ByVal aValue2 As Number, ByVal aNumberOfDecimals As Number, Optional aComment As String ) As Long
+
+  If (Round(aValue1, aNumberOfDecimals) = Round(aValue2, aNumberOfDecimals)) Then
+  
+    Return TRUE                 
+    
+  Else
+  
+    internal_ut_RaiseFail("Expected value=" + Round(aValue1, aNumberOfDecimals) + ", found value=" + Round(aValue2, aNumberOfDecimals) + IIf$(Len(aComment), "[" + aComment + "]", ""))      
+    Return FALSE
+      
+  End If
+
+End Function  
+
+' -- Are two numbers equal when rounded to specified number of decimals?
+Function ut_assertEqualEpsilon(ByVal aValue1 As Number, ByVal aValue2 As Number, ByVal aEpsilon As Number, Optional aComment As String ) As Long
+  
+  If (Val(Format$(Abs(aValue1-aValue2))) <= Val(Format$(aEpsilon))) Then
+             
+    Return TRUE                 
+    
+  Else
+  
+    internal_ut_RaiseFail("Expected maximum difference=" + aEpsilon + ", found difference=" + Abs(aValue1-aValue2) + " for values " + aValue1 + " and " + aValue2 + IIf$(Len(aComment), "[" + aComment + "]", ""))      
+    Return FALSE
+      
+  End If
+
+End Function
+
+' -- Are two numbers not equal?
+Function ut_assertNotEqual(ByVal aValue1 As Number, ByVal aValue2 As Number, Optional aComment As String ) As Long
+
+  If Not(aValue1 = aValue2) Then
+    
+    Return TRUE             
+    
+  Else
+  
+    internal_ut_RaiseFail("Expected value=" + aValue1 + ", found value=" + aValue2 + IIf$(len(aComment), "[" + aComment + "]", ""))      
+    Return FALSE
+      
+  End If
+
+End Function       
+
+' -- Are two texts equal?
+Function ut_assertEqualText(ByVal aValue1 As String, ByVal aValue2 As String, Optional aComment As String ) As Long
+
+  If (aValue1 = aValue2) Then
+
+    Return TRUE                 
+    
+  Else
+    
+    internal_ut_RaiseFail("Expected text=" + $DQ + aValue1 + $DQ + ", found text=" + $DQ + aValue2 + $DQ + IIf$(len(aComment), "[" + aComment + "]", ""))  
+    Return FALSE
+ 
+  End If
+
+End Function
+
+' -- Are two texts not equal?
+Function ut_assertNotEqualText(ByVal aValue1 As String, ByVal aValue2 As String, Optional aComment As String ) As Long
+
+  If Not(aValue1 = aValue2) Then
+                 
+    Return TRUE                 
+    
+  Else
+    
+    internal_ut_RaiseFail("Expected text="+ $DQ + aValue1+ $DQ + ", found text="+ $DQ + aValue2 + $DQ + IIf$(len(aComment), "[" + aComment + "]", ""))  
+    Return FALSE
+  
+  End If
+
+End Function  
+
+' -- Is first number greater?
+Function ut_assertIsGreater(ByVal aValue1 As Number, ByVal aValue2 As Number, Optional aComment As String ) As Long
+
+  If (aValue1 > aValue2) Then
+  
+    Return TRUE                 
+    
+  Else
+  
+    internal_ut_RaiseFail("Expected " + aValue1 + " > " + aValue2 + IIf$(len(aComment), "[" + aComment + "]", ""))      
+    Return FALSE
+      
+  End If
+
+End Function
+
+' -- Is first number smaller?
+Function ut_assertIsLess(ByVal aValue1 As Number, ByVal aValue2 As Number, Optional aComment As String ) As Long
+
+  If (aValue1 < aValue2) Then
+    
+    Return TRUE             
+    
+  Else
+  
+    internal_ut_RaiseFail("Expected " + aValue1 + " < " + aValue2 + IIf$(len(aComment), "[" + aComment + "]", ""))      
+    Return FALSE
+      
+  End If
+
+End Function  
+
+' -- Is value TRUE?
+Function ut_assertIsTrue(ByVal aValue As Number, Optional aComment As String ) As Long
+
+  If (aValue = TRUE) Then
+    
+    Return TRUE             
+    
+  Else
+  
+    internal_ut_RaiseFail("Expected " + aValue + " = " + Format$(TRUE) + "(= TRUE)" + IIf$(len(aComment), "[" + aComment + "]", ""))      
+    Return FALSE
+      
+  End If
+
+End Function
+
+' -- Is value FALSE?
+Function ut_assertIsFalse(ByVal aValue As Number, Optional aComment As String ) As Long
+
+  If (aValue = FALSE) Then
+    
+    Return TRUE             
+    
+  Else
+  
+    internal_ut_RaiseFail("Expected " + aValue + " = " + Format$(FALSE) + "(= FALSE)" + IIf$(len(aComment), "[" + aComment + "]", ""))      
+    Return FALSE
+      
+  End If
+
+End Function     
+
+' -- Is value NULL?
+Function ut_assertIsNull(ByVal aValue As Number, Optional aComment As String ) As Long
+
+  If (aValue = NULL) Then
+    
+    Return TRUE             
+    
+  Else
+  
+    internal_ut_RaiseFail("Expected " + aValue + " = " + Format$(NULL) + "(= 0)" + IIf$(len(aComment), "[" + aComment + "]", ""))      
+    Return FALSE
+      
+  End If
+
+End Function 
+
+' -- Is value not NULL?
+Function ut_assertIsNotNull(ByVal aValue As Number, Optional aComment As String ) As Long
+
+  If (aValue <> NULL) Then
+    
+    Return TRUE             
+    
+  Else
+  
+    internal_ut_RaiseFail("Expected " + aValue + " <> " + Format$(NULL) + "(= 0)" + IIf$(len(aComment), "[" + aComment + "]", ""))      
+    Return FALSE
+      
+  End If
+
+End Function 
+
+' -- Is string empty?
+Function ut_assertIsEmpty(ByVal aValue As String, Optional aComment As String ) As Long
+
+  If (Len(aValue) = 0) Then
+    
+    Return TRUE             
+    
+  Else
+  
+    internal_ut_RaiseFail("Expected length of zero, instead found length of " + Len(aValue1) + IIf$(len(aComment), "[" + aComment + "]", ""))      
+    Return FALSE
+      
+  End If
+
+End Function
+
+' -- Is string not empty?
+Function ut_assertIsNotEmpty(ByVal aValue As String, Optional aComment As String ) As Long
+
+  If (Len(aValue) > 0) Then
+    
+    Return TRUE             
+    
+  Else
+  
+    internal_ut_RaiseFail("Expected non-zero length, instead found empty string" + IIf$(len(aComment), "[" + aComment + "]", ""))      
+    Return FALSE
+      
+  End If
+
+End Function   
+
+' -- Is ERR set to expected value
+Function ut_assertError(ByVal aValue As Number, Optional aComment As String ) As Long
+
+  If (Err = aValue) Then
+    
+    Return TRUE             
+    
+  Else
+  
+    internal_ut_RaiseFail("Expected ERR=" + aValue + ", found ERR=" + Err + " instead" + IIf$(Len(aComment), "[" + aComment + "]", ""))      
+    Return FALSE
+      
+  End If
+
+End Function      
+
+'[] Test information
+Function ut_GetFailureCount() As Long
+  Return ut_failCount
+End Function
+
+Function ut_GetFailureTestName( id As Long ) As String
+  
+  Return internal_ut_GetFailInfo("ut_GetFailureTestName", id, "testName")
+    
+End Function
+
+Function ut_GetFailureAssertType( id As Long ) As String
+
+  Return internal_ut_GetFailInfo("ut_GetFailureTestName", id, "assertType")
+
+End Function
+
+Function ut_GetFailureDescription( id As Long ) As String
+
+  Return internal_ut_GetFailInfo("ut_GetFailureTestName", id, "description")
+  
+End Function
+
+Function ut_GetFailureComment( id As Long ) As String                         
+
+  Return internal_ut_GetFailInfo("ut_GetFailureTestName", id, "comment")
+
+End Function
+
+'[] Error handling
+Function ut_GetLastError() As String
+  Return ut_error
+End Function
+
+'[] Internal
+' -- Responsible for logging the failed tests
+Function internal_ut_RaiseFail( aDescription As String )
+
+  String sStack = thinBasic_StackGetList($TAB)
+  String sFunc() 
+  Long   nFunc  = Parse(sStack, sFunc, $TAB)           
+  
+  String sAssertSource = sFunc(UBound(sFunc)-1)
+  String sTestMethod   = sFunc(UBound(sFunc)-2)
+  
+  ut_failCount += 1
+               
+  ut_failLog += $TAB + "<fail>" + $CRLF +
+                $TAB(2) + "<id>" + ut_failCount + "</id>" + $CRLF + 
+                $TAB(2) + "<testName>" + sTestMethod + "</testName>" + $CRLF + 
+                $TAB(2) + "<assertType>" + sAssertSource + "</assertType>" + $CRLF + 
+                $TAB(2) + "<description>" + Parse$(aDescription, "[", 1) + "</description>" + $CRLF +
+                $TAB(2) + "<comment>" + Trim$(Remain$(aDescription, "["), "]") + "</comment>" + $CRLF +
+                $TAB + "</fail>" + $CRLF
+
+End Function                             
+
+Function internal_ut_GetFailInfo( sSource As String, id As Long, sField As String ) As String
+ 
+  If (ut_failCount = 0) Then
+    ut_error = sSource + ": No failures found"
+    Exit Function
+  End If
+
+  If Outside(id, 1, ut_failCount) Then
+    ut_error = sSource + ": The id must be in range 1.." + ut_failCount
+    Exit Function
+  End If
+  
+  String sTemp = Grab$(ut_failLog, "<fail>" + $CRLF + $TAB(2) + "<id>" + id + "</id>", "</fail>")
+  
+  sTemp = Grab$(sTemp, "<" + sField + ">", "</" + sField + ">")
+
+  Return sTemp
+  
+End Function
