@@ -16,9 +16,9 @@ Function test_ArrayExtract_StartsWithModifier_CorrectItemContent()
   
   Array Extract items, StartsWith "H" InTo processed
   
-  ut_AssertEqualText(processed(1), "Hi there")
-  ut_AssertEqualText(processed(2), "Hello")
-  ut_AssertEqualText(processed(3), "Howdy")
+  ut_AssertEqualText("Hi there", processed(1))
+  ut_AssertEqualText("Hello"   , processed(2))
+  ut_AssertEqualText("Howdy"   , processed(3))
    
 End Function
 
@@ -42,8 +42,8 @@ Function test_ArrayExtract_EndsWithModifier_CorrectItemContent()
   
   Array Extract items, EndsWith "o" InTo processed
   
-  ut_AssertEqualText(processed(1), "Hello")
-  ut_AssertEqualText(processed(2), "Ciao")
+  ut_AssertEqualText("Hello", processed(1))
+  ut_AssertEqualText("Ciao" , processed(2))
    
 End Function
 
@@ -67,7 +67,7 @@ Function test_ArrayExtract_ContainsModifier_CorrectItemContent()
   
   Array Extract items, Contains "ee" InTo processed
 
-  ut_AssertEqualText(processed(1), "See ya")
+  ut_AssertEqualText("See ya", processed(1))
      
 End Function
 
@@ -91,9 +91,9 @@ Function test_ArrayExtract_CUAndStartsWithModifier_CorrectItemContent()
   
   Array Extract items, Collate Ucase, StartsWith "H" InTo processed
   
-  ut_AssertEqualText(processed(1), "Hi there")
-  ut_AssertEqualText(processed(2), "hello")
-  ut_AssertEqualText(processed(3), "howdy")
+  ut_AssertEqualText("Hi there", processed(1))
+  ut_AssertEqualText("hello"   , processed(2))
+  ut_AssertEqualText("howdy"   , processed(3))
    
 End Function
 
@@ -117,8 +117,8 @@ Function test_ArrayExtract_CUAndEndsWithModifier_CorrectItemContent()
   
   Array Extract items, Collate Ucase, EndsWith "o" InTo processed
   
-  ut_AssertEqualText(processed(1), "HellO")
-  ut_AssertEqualText(processed(2), "Ciao")
+  ut_AssertEqualText("HellO", processed(1))
+  ut_AssertEqualText("Ciao" , processed(2))
    
 End Function
 
@@ -140,6 +140,6 @@ Function test_ArrayExtract_CUAndContainsModifier_CorrectItemContent()
   String processed()
   
   Array Extract items, Collate Ucase, Contains "ee" InTo processed
-  ut_AssertEqualText(processed(1), "SEE ya")
+  ut_AssertEqualText("SEE ya", processed(1))
      
 End Function
