@@ -16,6 +16,16 @@ Function test_Hour_CalledForNow_ExpectedValue()
   
   ut_AssertEqual(hourPart, Hour(dateTimeStamp))
    
+End Function 
+
+Function test_Hour_CalledWithoutParameter_ExpectedValue()
+
+  String dateTimeStamp = Now
+  String timePart = Parse$(dateTimeStamp, " ", 2)
+  Long   hourPart = Parse$(timePart, ":", 1) 
+  
+  ut_AssertEqual(hourPart, Hour)
+   
 End Function
 
 Function test_Minute_CalledForNow_ExpectedValue()
@@ -26,6 +36,16 @@ Function test_Minute_CalledForNow_ExpectedValue()
   
   ut_AssertEqual(minutePart, Minute(dateTimeStamp))
    
+End Function   
+
+Function test_Minute_CalledWithoutParameter_ExpectedValue()
+
+  String dateTimeStamp = Now
+  String timePart = Parse$(dateTimeStamp, " ", 2)
+  Long   minutePart = Parse$(timePart, ":", 2) 
+  
+  ut_AssertEqual(minutePart, Minute)
+   
 End Function
 
 Function test_Second_CalledForNow_ExpectedValue()
@@ -35,6 +55,16 @@ Function test_Second_CalledForNow_ExpectedValue()
   Long   secondPart = Parse$(timePart, ":", 3) 
   
   ut_AssertEqual(secondPart, Second(dateTimeStamp))
+   
+End Function
+
+Function test_Second_CalledWithoutParameter_ExpectedValue()
+
+  String dateTimeStamp = Now
+  String timePart = Parse$(dateTimeStamp, " ", 2)
+  Long   secondPart = Parse$(timePart, ":", 3) 
+  
+  ut_AssertEqual(secondPart, Second)
    
 End Function
 
@@ -58,6 +88,16 @@ Function test_Day_CalledForNow_ExpectedValue()
    
 End Function
 
+Function test_Day_CalledWithoutParameter_ExpectedValue()
+
+  String dateTimeStamp = Now
+  String datePart = Parse$(dateTimeStamp, " ", 1)
+  Long   dayPart = Parse$(datePart, "/", 1) 
+  
+  ut_AssertEqual(dayPart, Day)
+   
+End Function
+
 Function test_Month_CalledForNow_ExpectedValue()
 
   String dateTimeStamp = Now
@@ -65,6 +105,16 @@ Function test_Month_CalledForNow_ExpectedValue()
   Long   monthPart = Parse$(datePart, "/", 2) 
   
   ut_AssertEqual(monthPart, Month(dateTimeStamp))
+   
+End Function
+
+Function test_Month_CalledWithoutParameter_ExpectedValue()
+
+  String dateTimeStamp = Now
+  String datePart = Parse$(dateTimeStamp, " ", 1)
+  Long   monthPart = Parse$(datePart, "/", 2) 
+  
+  ut_AssertEqual(monthPart, Month)
    
 End Function
 
@@ -77,3 +127,14 @@ Function test_Year_CalledForNow_ExpectedValue()
   ut_AssertEqual(yearPart, Year(dateTimeStamp))
    
 End Function
+
+Function test_Year_CalledWithoutParameter_ExpectedValue()
+
+  String dateTimeStamp = Now
+  String datePart = Parse$(dateTimeStamp, " ", 1)
+  Long   yearPart = Parse$(datePart, "/", 3) 
+  
+  ut_AssertEqual(yearPart, Year)
+   
+End Function
+                         
