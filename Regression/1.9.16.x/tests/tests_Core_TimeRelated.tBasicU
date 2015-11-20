@@ -1,0 +1,79 @@
+'[i] Time
+Function test_Now_Called_ReturnsTimeInCorrectFormat()
+
+  String dateTimeStamp = Now
+  String timePart = Parse$(dateTimeStamp, " ", 2)
+  
+  ut_AssertEqual(2, Tally(timePart, ":"))
+   
+End Function
+
+Function test_Hour_CalledForNow_ExpectedValue()
+
+  String dateTimeStamp = Now
+  String timePart = Parse$(dateTimeStamp, " ", 2)
+  Long   hourPart = Parse$(timePart, ":", 1) 
+  
+  ut_AssertEqual(hourPart, Hour(dateTimeStamp))
+   
+End Function
+
+Function test_Minute_CalledForNow_ExpectedValue()
+
+  String dateTimeStamp = Now
+  String timePart = Parse$(dateTimeStamp, " ", 2)
+  Long   minutePart = Parse$(timePart, ":", 2) 
+  
+  ut_AssertEqual(minutePart, Minute(dateTimeStamp))
+   
+End Function
+
+Function test_Second_CalledForNow_ExpectedValue()
+
+  String dateTimeStamp = Now
+  String timePart = Parse$(dateTimeStamp, " ", 2)
+  Long   secondPart = Parse$(timePart, ":", 3) 
+  
+  ut_AssertEqual(secondPart, Second(dateTimeStamp))
+   
+End Function
+
+'[i] Date
+Function test_Now_Called_ReturnsDateInCorrectFormat()
+
+  String dateTimeStamp = Now
+  String datePart = Parse$(dateTimeStamp, " ", 1)
+            
+  ut_AssertEqual(2, Tally(datePart, "/"))
+   
+End Function
+
+Function test_Day_CalledForNow_ExpectedValue()
+
+  String dateTimeStamp = Now
+  String datePart = Parse$(dateTimeStamp, " ", 1)
+  Long   dayPart = Parse$(datePart, "/", 1) 
+  
+  ut_AssertEqual(dayPart, Day(dateTimeStamp))
+   
+End Function
+
+Function test_Month_CalledForNow_ExpectedValue()
+
+  String dateTimeStamp = Now
+  String datePart = Parse$(dateTimeStamp, " ", 1)
+  Long   monthPart = Parse$(datePart, "/", 2) 
+  
+  ut_AssertEqual(monthPart, Month(dateTimeStamp))
+   
+End Function
+
+Function test_Year_CalledForNow_ExpectedValue()
+
+  String dateTimeStamp = Now
+  String datePart = Parse$(dateTimeStamp, " ", 1)
+  Long   yearPart = Parse$(datePart, "/", 3) 
+  
+  ut_AssertEqual(yearPart, Year(dateTimeStamp))
+   
+End Function
