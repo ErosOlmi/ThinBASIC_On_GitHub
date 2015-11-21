@@ -37,7 +37,11 @@ Function ut_Initialize()
                "</header>" + $CRLF +
                "<body>" + $CRLF
   
-  ut_logFileName  = APP_SourcePath + "unitTest.txt"  
+  ut_logFileName  = APP_SourcePath + "unitTest.txt" 
+  
+  If FILE_Exists(ut_logFileName) Then
+    FILE_Kill(ut_logFileName)
+  End If
  
 End Function 
 

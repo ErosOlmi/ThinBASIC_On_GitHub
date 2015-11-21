@@ -1,0 +1,23 @@
+Function test_AppIsBundled_ExecutedFromPlainScript_False()
+
+  ut_AssertIsFalse(APP_IsBundled)
+   
+End Function
+
+Function test_AppName_ExecutedFromPlainScript_False()
+
+  ut_AssertEqualText("thinBasic.exe", APP_Name)
+   
+End Function
+
+Function test_AppIsIsolated_ExecutedFromPlainScript_False()
+
+  ut_AssertIsFalse(APP_IsIsolated)
+   
+End Function
+
+Function test_AppIsolationPath_ExecutedFromPlainScript_Empty()
+                 
+  ut_AssertEqualText("", APP_IsolationPath)
+   
+End Function

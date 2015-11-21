@@ -1,0 +1,10 @@
+Uses "COMM"
+
+Function test_CommOpen_InvalidPortSpecified_NonZeroReturnValue()
+  
+  Long hComm = COMM_FreeFile
+  Long retVal = COMM_Open("\\.\COM1984", hComm)
+
+  ut_AssertIsFalse(retVal = 0)
+   
+End Function

@@ -1,0 +1,38 @@
+Function test_ArraySort_FileNamesPassed_ExpectedOutput()
+
+  String items(4) = "Image1.jpg", "Image20.jpg", "Image2.jpg", "Image10.jpg"
+  
+  Array Sort items
+    
+  ut_AssertEqualText("Image1.jpg" , items(1))
+  ut_AssertEqualText("Image10.jpg", items(2))
+  ut_AssertEqualText("Image2.jpg" , items(3))
+  ut_AssertEqualText("Image20.jpg", items(4))
+   
+End Function
+
+Function test_ArraySort_FileNamesPassedWithAsFile_ExpectedOutput()
+
+  String items(4) = "Image1.jpg", "Image20.jpg", "Image2.jpg", "Image10.jpg"
+  
+  Array Sort items, AsFiles
+    
+  ut_AssertEqualText("Image1.jpg" , items(1))
+  ut_AssertEqualText("Image2.jpg" , items(2))
+  ut_AssertEqualText("Image10.jpg", items(3))
+  ut_AssertEqualText("Image20.jpg", items(4))
+   
+End Function
+
+Function test_ArraySort_ItemsWithCollateUcase_ExpectedOutput()
+
+  String items(4) = "beast", "Allosaurus", "Beautiful", "ananas"
+  
+  Array Sort items, Collate Ucase
+    
+  ut_AssertEqualText("Allosaurus"    , items(1))
+  ut_AssertEqualText("ananas", items(2))
+  ut_AssertEqualText("beast"     , items(3))
+  ut_AssertEqualText("Beautiful" , items(4))
+   
+End Function                                 
