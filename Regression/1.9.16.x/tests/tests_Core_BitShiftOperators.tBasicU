@@ -1,0 +1,15 @@
+Function test_ShiftLeftOperator_8by1_Got16()
+
+  Byte result = 8 << 1
+
+  ut_assertEqual(16, result)
+   
+End Function
+
+Function test_ShiftRightOperator_8by1_Got4()
+
+  Byte result = 8 >> 1
+
+  ut_assertEqual(4, result)
+   
+End Function
