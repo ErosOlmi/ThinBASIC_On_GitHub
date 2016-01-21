@@ -1,4 +1,4 @@
-Function txest_ExitDo_ReneSample_ShouldFinishOkay()
+Function test_ExitDo_ReneSample_ShouldFinishOkay()
 
   String sText = "test(1)."
   String sRight = ""
