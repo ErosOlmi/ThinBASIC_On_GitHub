@@ -1,0 +1,111 @@
+Function txest_ExitDo_ReneSample_ShouldFinishOkay()
+
+  String sText = "test(1)."
+  String sRight = ""
+
+  String sToComplete, sVariable
+  Boolean bVariable, bSpace, bParens
+  Long lKW, lAll, lParens, i, lStart
+  Byte bChar At 0
+
+  SetAt(bChar, StrPtr(sText) + StrPtrLen(StrPtr(sText)) - 1)
+
+  While GetAt(bChar) >= StrPtr(sText)
+    i += 1
+
+    Select Case bChar
+      Case 32
+        If i > 1 Or bSpace Or StrPtrLen(StrPtr(sRight)) Then Exit While
+        bSpace = TRUE
+
+      Case 35, 36, 37
+        If bVariable Then
+
+          bVariable   = FALSE
+          sVariable   = ""
+
+          sToComplete = ""
+          Exit While
+        Else
+          sToComplete = Chr$(bChar) & sToComplete
+        EndIf
+      Case 44
+        bSpace = TRUE
+        sToComplete = sFirst
+        Exit While
+      Case 40
+        If i = 1 Then
+          bParens = TRUE
+        Else
+          Exit While
+        EndIf
+      Case 46
+        If All( Not bVariable, Not bParens) Then
+
+          If GetAt(bChar) > StrPtr(sText) Then
+            Select Case Peek(Byte, GetAt(bChar) - 1 )
+              Case 32, 38, 42, 43, 44, 45, 47, 60, 61, 62, 92
+                Exit While
+              Case 41
+                Do
+                  SetAt(bChar, GetAt(bChar) - 1)
+
+                  Select Case bChar
+                    Case 40
+                      lParens -= 1
+                    Case 41
+                      lParens += 1
+                    Case Else
+                      If lParens = 0 Then
+                        SetAt(bChar, GetAt(bChar) + 1)
+                        Exit Do
+                      EndIf
+                  End Select
+                  If GetAt(bChar) <= StrPtr(sText) Then
+                    Exit Do
+                  EndIf
+                Loop
+            End Select
+
+            bVariable = TRUE
+
+          EndIf
+        Else
+
+          sVariable   = ""
+          sToComplete = ""
+          Exit While
+        EndIf
+      Case 48 To 57
+        If Not bVariable Then
+          sToComplete = Chr$(bChar) & sToComplete
+        Else
+          sVariable = Chr$(bChar) & sVariable
+        EndIf
+      Case 65 To 90
+        If Not bVariable Then
+          sToComplete = Chr$(bChar) & sToComplete
+        Else
+          sVariable = Chr$(bChar) & sVariable
+        EndIf
+      Case 95
+        If Not bVariable Then
+          sToComplete = Chr$(bChar) & sToComplete
+        Else
+          sVariable = Chr$(bChar) & sVariable
+        EndIf
+      Case 97 To 122
+        If Not bVariable Then
+          sToComplete = Chr$(bChar) & sToComplete
+        Else
+          sVariable = Chr$(bChar) & sVariable
+        EndIf
+      Case Else
+        Exit While
+    End Select
+
+    SetAt(bChar, GetAt(bChar) - 1)
+  Wend
+
+End Function
+  
