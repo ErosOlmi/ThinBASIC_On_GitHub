@@ -126,7 +126,7 @@
   End Sub
 
   '----------------------------------------------------------------------------
-  Function cExcel_Range_GetClassObject(ByVal pObject As Long) As Ext
+  Function cExcel_Range_GetClassObject(ByVal pObject As Long) As Dword
   '----------------------------------------------------------------------------
     'If thinBasic_CheckOpenParens_Optional Then thinBasic_CheckCloseParens_Mandatory
 
@@ -138,7 +138,7 @@
   End Function
 
   '----------------------------------------------------------------------------
-  Function cExcel_Range_Method_Select(ByVal pObject As Long) As Ext
+  Function cExcel_Range_Method_Select(ByVal pObject As Long) As Long
   '----------------------------------------------------------------------------
     'If thinBasic_CheckOpenParens_Optional Then thinBasic_CheckCloseParens_Mandatory
 
@@ -152,7 +152,21 @@
   End Function
 
   '----------------------------------------------------------------------------
-  Function cExcel_Range_Method_Clear(ByVal pObject As Long) As Ext
+  Function cExcel_Range_Method_Insert(ByVal pObject As Long) As Long
+  '----------------------------------------------------------------------------
+    'If thinBasic_CheckOpenParens_Optional Then thinBasic_CheckCloseParens_Mandatory
+
+    '---If all went fine ...
+    If thinBasic_ErrorFree Then
+      ReDim oObject(1& To 1&) As iExcel_Range At pObject
+      ReDim lExcel_Range(1& To 1&) As Range At oObject(1&).cExcel_Range_GetClassObject
+
+      Object Call lExcel_Range(1&).Insert
+    End If
+  End Function
+
+  '----------------------------------------------------------------------------
+  Function cExcel_Range_Method_Clear(ByVal pObject As Long) As Long
   '----------------------------------------------------------------------------
     'If thinBasic_CheckOpenParens_Optional Then thinBasic_CheckCloseParens_Mandatory
 
@@ -166,7 +180,7 @@
   End Function
 
   '----------------------------------------------------------------------------
-  Function cExcel_Range_Method_ClearContents(ByVal pObject As Long) As Ext
+  Function cExcel_Range_Method_ClearContents(ByVal pObject As Long) As Long
   '----------------------------------------------------------------------------
     'If thinBasic_CheckOpenParens_Optional Then thinBasic_CheckCloseParens_Mandatory
 
@@ -180,7 +194,7 @@
   End Function
 
   '----------------------------------------------------------------------------
-  Function cExcel_Range_Method_ClearFormats(ByVal pObject As Long) As Ext
+  Function cExcel_Range_Method_ClearFormats(ByVal pObject As Long) As Long
   '----------------------------------------------------------------------------
     'If thinBasic_CheckOpenParens_Optional Then thinBasic_CheckCloseParens_Mandatory
 
@@ -194,7 +208,7 @@
   End Function
 
   '----------------------------------------------------------------------------
-  Function cExcel_Range_Method_ClearComments(ByVal pObject As Long) As Ext
+  Function cExcel_Range_Method_ClearComments(ByVal pObject As Long) As Long
   '----------------------------------------------------------------------------
     'If thinBasic_CheckOpenParens_Optional Then thinBasic_CheckCloseParens_Mandatory
 
@@ -208,7 +222,7 @@
   End Function
 
   '----------------------------------------------------------------------------
-  Function cExcel_Range_Method_ClearNotes(ByVal pObject As Long) As Ext
+  Function cExcel_Range_Method_ClearNotes(ByVal pObject As Long) As Long
   '----------------------------------------------------------------------------
     'If thinBasic_CheckOpenParens_Optional Then thinBasic_CheckCloseParens_Mandatory
 
@@ -251,8 +265,12 @@
   '--------------------------------------------------------------------------------------
     Local lEqualType  As Long
     Local eValue      As Ext
-    Local sValue      As String
+    Local sValue      As String 
+    Local sBuffer     As String
+    Local sLines()    As String
     Local vValue      As variant
+    Local paValues    As IPowerArray
+    Local i, j        As Long
     
     ReDim oObject(1& To 1&) As iExcel_Range At pObject
     ReDim lExcel_Range(1& To 1&) As Range At oObject(1&).cExcel_Range_GetClassObject
@@ -264,7 +282,62 @@
         Case %Class_Action_Get                                                  
           '---Return value
           Object Get lExcel_Range(1&).Value To vValue
-          Function = Variant$(vValue)
+'MsgBox "Tipo: " & Str$(VariantVT(vValue))         
+          
+          If VariantVT(vValue) >= %VT_Array Then'= %VT_Array Then
+'MsgBox "PowerArray"
+            paValues = Class "PowerArray"
+            
+            paValues.CopyFromVariant(vValue)           
+            Let vValue = Empty 
+             
+            ReDim sLines(1 To paValues.UBound(1) )
+
+'MsgBox _
+'        Str$(paValues.LBound(1)) &  Str$(paValues.UBound(1)) & $CrLf & _
+'        Str$(paValues.LBound(2)) &  Str$(paValues.UBound(2)) & $CrLf & _
+'        ""
+
+            For i = paValues.LBound(1) To paValues.UBound(1)
+              sBuffer = ""
+              For j = paValues.LBound(2) To paValues.UBound(2)
+
+                ' Retreive the value in the PowerArray
+                paValues.ValueGet(vValue, i, j)
+
+                Select Case VariantVT(vValue)
+                  Case  %VT_I2 To %VT_Cy, _
+                        %VT_Bool, _
+                        %VT_DECIMAL To %VT_UInt
+                    sValue = Format$(Variant#(vValue))
+                    
+                  Case %VT_Date
+                    sValue = Excel_DateFromVariantDate(vValue) 
+
+                  Case %VT_BStr
+                    sValue = Variant$(vValue) 
+
+                End Select
+
+                If j < paValues.UBound(2) Then
+                  sBuffer += sValue & $Tab
+                Else                      
+                  sBuffer += sValue
+                End If
+                
+              Next j
+              sLines(i) = sBuffer
+            Next i
+
+            Function = Join$(sLines(), $CrLf)
+
+            paValues.Erase    
+
+          Else
+          
+            Function = Variant$(vValue)
+          
+          End If
           
         '---SET action happen usually when property is used directly as first token in a source code line
         Case %Class_Action_Set 
@@ -293,6 +366,133 @@
                 
             End Select
           End If
+                  
+        Case %Class_Action_None
+          '---Should not happen but ... I will leave in any case
+      End Select
+          
+    End If
+  End Function
+
+  '----------------------------------------------------------------------------
+  Function cExcel_Range_Property_Copy(ByVal pObject As Long, ByVal lAction As Long) As String
+  '----------------------------------------------------------------------------
+  '  Properties functions has 2 params:
+  '   pObject   is a pointer to module class or any other memory area handled by a pseudo class
+  '   lAction   can be %Class_Action_Get, %Class_Action_Set, %Class_Action_None
+  '             depending on how the property is used in the script
+  '             %Class_Action_Get   when property is used inside an expression
+  '             %Class_Action_Set   when property is used at the beginning of a line
+  '             %Class_Action_None  SHOULD NEVER HAPPEN
+  '--------------------------------------------------------------------------------------
+  ' Syntax:
+  '   
+  '--------------------------------------------------------------------------------------
+    Local lEqualType  As Long
+    Local eValue      As Ext
+    Local sValue      As String 
+    Local sBuffer     As String
+    Local sLines()    As String
+    Local vValue      As variant
+    Local paValues    As IPowerArray
+    Local i, j        As Long
+    
+    ReDim oObject(1& To 1&) As iExcel_Range At pObject
+    ReDim lExcel_Range(1& To 1&) As Range At oObject(1&).cExcel_Range_GetClassObject
+
+    If thinBasic_ErrorFree Then
+      Select Case Long lAction
+      
+        '---GET action happen usually when property is used inside an expression
+        Case %Class_Action_Get                                                  
+          '---Return value
+          Object Get lExcel_Range(1&).Copy To vValue
+'MsgBox "Tipo: " & Str$(VariantVT(vValue))         
+          
+          Function = Variant$(vValue)
+          
+'          If VariantVT(vValue) >= %VT_Array Then'= %VT_Array Then
+''MsgBox "PowerArray"
+'            paValues = Class "PowerArray"
+'            
+'            paValues.CopyFromVariant(vValue)           
+'            Let vValue = Empty 
+'             
+'            ReDim sLines(1 To paValues.UBound(1) )
+'
+''MsgBox _
+''        Str$(paValues.LBound(1)) &  Str$(paValues.UBound(1)) & $CrLf & _
+''        Str$(paValues.LBound(2)) &  Str$(paValues.UBound(2)) & $CrLf & _
+''        ""
+'
+'            For i = paValues.LBound(1) To paValues.UBound(1)
+'              sBuffer = ""
+'              For j = paValues.LBound(2) To paValues.UBound(2)
+'
+'                ' Retreive the value in the PowerArray
+'                paValues.ValueGet(vValue, i, j)
+'
+'                Select Case VariantVT(vValue)
+'                  Case  %VT_I2 To %VT_Cy, _
+'                        %VT_Bool, _
+'                        %VT_DECIMAL To %VT_UInt
+'                    sValue = Format$(Variant#(vValue))
+'                    
+'                  Case %VT_Date
+'                    sValue = Excel_DateFromVariantDate(vValue) 
+'
+'                  Case %VT_BStr
+'                    sValue = Variant$(vValue) 
+'
+'                End Select
+'
+'                If j < paValues.UBound(2) Then
+'                  sBuffer += sValue & $Tab
+'                Else                      
+'                  sBuffer += sValue
+'                End If
+'                
+'              Next j
+'              sLines(i) = sBuffer
+'            Next i
+'
+'            Function = Join$(sLines(), $CrLf)
+'
+'            paValues.Erase    
+'
+'          Else
+'          
+'            Function = Variant$(vValue)
+'          
+'          End If
+          
+'        '---SET action happen usually when property is used directly as first token in a source code line
+'        Case %Class_Action_Set 
+'          '---Here programmer has to parse equal (=) sign and than a numeric or string expression
+'          '---But remember: equal sign can also be += &= -= *= /= \=
+'          lEqualType = thinBasic_CheckEqualType_Mandatory
+'          If thinBasic_ErrorFree Then
+'            Select Case Long lEqualType
+'  
+'              '---Assignment
+'              Case  %Equal_EQ
+'                Select Case thinBasic_DetermineType
+'                  Case %thinBasic_ReturnNumber
+'                    thinBasic_ParseNumber eValue
+'                    Let vValue = eValue As Double
+'                  Case %thinBasic_ReturnString
+'                    thinBasic_ParseString sValue
+'                    vValue = sValue
+'                End Select
+'  
+'                Object Let lExcel_Range(1&).Value = vValue
+'  
+'              Case Else
+'                '---Not supperted for strings 
+'                MsgBox FuncName$ & Str$(lEqualType)
+'                
+'            End Select
+'          End If
                   
         Case %Class_Action_None
           '---Should not happen but ... I will leave in any case
@@ -375,6 +575,146 @@
                     
                 End Select
               End If
+                      
+            Case %Class_Action_None
+              '---Should not happen but ... I will leave in any case
+          End Select
+          
+'      End Select
+'
+    End If
+  End Function
+
+  '----------------------------------------------------------------------------
+  Function cExcel_Range_Property_Column(ByVal pObject As Long, ByVal lAction As Long) As Long
+  '----------------------------------------------------------------------------
+  '  Properties functions has 2 params:
+  '   pObject   is a pointer to module class or any other memory area handled by a pseudo class
+  '   lAction   can be %Class_Action_Get, %Class_Action_Set, %Class_Action_None
+  '             depending on how the property is used in the script
+  '             %Class_Action_Get   when property is used inside an expression
+  '             %Class_Action_Set   when property is used at the beginning of a line
+  '             %Class_Action_None  SHOULD NEVER HAPPEN
+  '--------------------------------------------------------------------------------------
+  ' Syntax:
+  '   
+  '--------------------------------------------------------------------------------------
+    Local lEqualType  As Long
+'    Local eValue      As Ext
+    'Local sValue      As String
+    Local vValue      As variant
+    
+    ReDim oObject(1& To 1&) As iExcel_Range At pObject
+    ReDim lExcel_Range(1& To 1&) As Range At oObject(1&).cExcel_Range_GetClassObject
+
+    If thinBasic_ErrorFree Then
+'      Select Case UCase$(sSubItem)
+'        Case "VALUE", ""
+          Select Case Long lAction
+          
+            '---GET action happen usually when property is used inside an expression
+            Case %Class_Action_Get                                                  
+              '---Return value
+              Object Get lExcel_Range(1&).Column To vValue
+              Function = Variant#(vValue)
+              
+            '---SET action happen usually when property is used directly as first token in a source code line
+            Case %Class_Action_Set 
+'              '---Here programmer has to parse equal (=) sign and than a numeric or string expression
+'              '---But remember: equal sign can also be += &= -= *= /= \=
+'              lEqualType = thinBasic_CheckEqualType_Mandatory
+'              If thinBasic_ErrorFree Then
+'                Select Case Long lEqualType
+'      
+'                  '---Assignment
+'                  Case  %Equal_EQ
+'                    Select Case thinBasic_DetermineType
+'                      Case %thinBasic_ReturnNumber
+'                        thinBasic_ParseNumber eValue
+'                        Let vValue = eValue As Double
+'                      Case %thinBasic_ReturnString
+'                        thinBasic_ParseString sValue
+'                        vValue = sValue
+'                    End Select
+'      
+'                    Object Let lExcel_Range(1&).Address = vValue
+'      
+'                  Case Else
+'                    '---Not supperted for strings 
+'                    MsgBox FuncName$ & Str$(lEqualType)
+'                    
+'                End Select
+'              End If
+                      
+            Case %Class_Action_None
+              '---Should not happen but ... I will leave in any case
+          End Select
+          
+'      End Select
+'
+    End If
+  End Function
+
+  '----------------------------------------------------------------------------
+  Function cExcel_Range_Property_Row(ByVal pObject As Long, ByVal lAction As Long) As Long
+  '----------------------------------------------------------------------------
+  '  Properties functions has 2 params:
+  '   pObject   is a pointer to module class or any other memory area handled by a pseudo class
+  '   lAction   can be %Class_Action_Get, %Class_Action_Set, %Class_Action_None
+  '             depending on how the property is used in the script
+  '             %Class_Action_Get   when property is used inside an expression
+  '             %Class_Action_Set   when property is used at the beginning of a line
+  '             %Class_Action_None  SHOULD NEVER HAPPEN
+  '--------------------------------------------------------------------------------------
+  ' Syntax:
+  '   
+  '--------------------------------------------------------------------------------------
+    Local lEqualType  As Long
+'    Local eValue      As Ext
+    'Local sValue      As String
+    Local vValue      As variant
+    
+    ReDim oObject(1& To 1&) As iExcel_Range At pObject
+    ReDim lExcel_Range(1& To 1&) As Range At oObject(1&).cExcel_Range_GetClassObject
+
+    If thinBasic_ErrorFree Then
+'      Select Case UCase$(sSubItem)
+'        Case "VALUE", ""
+          Select Case Long lAction
+          
+            '---GET action happen usually when property is used inside an expression
+            Case %Class_Action_Get                                                  
+              '---Return value
+              Object Get lExcel_Range(1&).Column To vValue
+              Function = Variant#(vValue)
+              
+            '---SET action happen usually when property is used directly as first token in a source code line
+            Case %Class_Action_Set 
+'              '---Here programmer has to parse equal (=) sign and than a numeric or string expression
+'              '---But remember: equal sign can also be += &= -= *= /= \=
+'              lEqualType = thinBasic_CheckEqualType_Mandatory
+'              If thinBasic_ErrorFree Then
+'                Select Case Long lEqualType
+'      
+'                  '---Assignment
+'                  Case  %Equal_EQ
+'                    Select Case thinBasic_DetermineType
+'                      Case %thinBasic_ReturnNumber
+'                        thinBasic_ParseNumber eValue
+'                        Let vValue = eValue As Double
+'                      Case %thinBasic_ReturnString
+'                        thinBasic_ParseString sValue
+'                        vValue = sValue
+'                    End Select
+'      
+'                    Object Let lExcel_Range(1&).Address = vValue
+'      
+'                  Case Else
+'                    '---Not supperted for strings 
+'                    MsgBox FuncName$ & Str$(lEqualType)
+'                    
+'                End Select
+'              End If
                       
             Case %Class_Action_None
               '---Should not happen but ... I will leave in any case
@@ -543,6 +883,93 @@
                     
                 End Select
               End If
+                      
+            Case %Class_Action_None
+              '---Should not happen but ... I will leave in any case
+          End Select
+          
+'      End Select
+'
+    End If
+  End Function
+
+  '----------------------------------------------------------------------------
+  Function cExcel_Range_Property_End(ByVal pObject As Long, ByVal lAction As Long) As Long
+  '----------------------------------------------------------------------------
+  '  Properties functions has 2 params:
+  '   pObject   is a pointer to module class or any other memory area handled by a pseudo class
+  '   lAction   can be %Class_Action_Get, %Class_Action_Set, %Class_Action_None
+  '             depending on how the property is used in the script
+  '             %Class_Action_Get   when property is used inside an expression
+  '             %Class_Action_Set   when property is used at the beginning of a line
+  '             %Class_Action_None  SHOULD NEVER HAPPEN
+  '--------------------------------------------------------------------------------------
+  ' Syntax:
+  '   
+  '--------------------------------------------------------------------------------------
+    Local lEqualType  As Long
+    Local eValue      As Ext
+    Local eDirection  As Ext
+    Local lDirection  As Long
+    Local sValue      As String
+    Local vValue      As variant
+    
+    ReDim oObject(1& To 1&) As iExcel_Range At pObject
+    ReDim lExcel_Range(1& To 1&) As Range At oObject(1&).cExcel_Range_GetClassObject
+
+    thinBasic_CheckOpenParens_Mandatory
+    thinBasic_ParseNumber eDirection
+'    If thinBasic_CheckComma_Mandatory Then
+'      thinBasic_ParseNumber eX
+'    End If
+    thinBasic_CheckCloseParens_Mandatory
+'    
+'    If thinBasic_CheckPoint_Optional Then
+'      sSubItem = thinBasic_GetUnknownToken   
+'    End If
+'    
+'    vX = eX  
+'    vY = eY
+    
+    If thinBasic_ErrorFree Then
+'      Select Case UCase$(sSubItem)
+'        Case "VALUE", ""
+          Select Case Long lAction
+          
+            '---GET action happen usually when property is used inside an expression
+            Case %Class_Action_Get                                                  
+              '---Return value
+              lDirection = eDirection
+              Object Get lExcel_Range(1&).End(lDirection).Row To vValue
+              Function = Variant#(vValue)
+'              
+'            '---SET action happen usually when property is used directly as first token in a source code line
+'            Case %Class_Action_Set 
+'              '---Here programmer has to parse equal (=) sign and than a numeric or string expression
+'              '---But remember: equal sign can also be += &= -= *= /= \=
+'              lEqualType = thinBasic_CheckEqualType_Mandatory
+'              If thinBasic_ErrorFree Then
+'                Select Case Long lEqualType
+'      
+'                  '---Assignment
+'                  Case  %Equal_EQ
+'                    Select Case thinBasic_DetermineType
+'                      Case %thinBasic_ReturnNumber
+'                        thinBasic_ParseNumber eValue
+'                        Let vValue = eValue As Double
+'                      Case %thinBasic_ReturnString
+'                        thinBasic_ParseString sValue
+'                        vValue = sValue
+'                    End Select
+'      
+'                    Object Let lExcel_Range(1&).Formula = vValue
+'      
+'                  Case Else
+'                    '---Not supperted for strings 
+'                    MsgBox FuncName$ & Str$(lEqualType)
+'                    
+'                End Select
+'              End If
                       
             Case %Class_Action_None
               '---Should not happen but ... I will leave in any case

@@ -41,6 +41,12 @@
         Method = VarPtr(pExcel_Application)
       End Method
 
+      '----------------------------------------------------------------------------
+      ' IsObject
+      '----------------------------------------------------------------------------
+      Method cExcel_Application_IsNothing() As Dword 
+        Method = IsNothing(pExcel_Application)
+      End Method
 
     End Interface
 
@@ -85,12 +91,34 @@
   End Sub
 
   '----------------------------------------------------------------------------
-  Function cExcel_Application_GetClassObject(ByVal pObject As Long) As Ext
+  Function cExcel_Application_GetClassObject(ByVal pObject As Long) As Dword
   '----------------------------------------------------------------------------
     '---If all went fine ...
     If thinBasic_ErrorFree Then
       ReDim oObject(1& To 1&) As iExcel_Application At pObject
       Function = oObject(1&).cExcel_Application_GetClassObject()
+    End If
+  End Function
+
+  '----------------------------------------------------------------------------
+  Function cExcel_Application_Method_IsNothing(ByVal pObject As Long) As Long
+  '----------------------------------------------------------------------------
+    Local lIsObject As Long
+    If thinBasic_CheckOpenParens_Optional Then thinBasic_CheckCloseParens_Mandatory
+
+    '---If all went fine ...
+    If thinBasic_ErrorFree Then
+      ReDim oObject(1& To 1&) As iExcel_Application At pObject
+     
+      lIsObject = oObject(1&).cExcel_Application_IsNothing
+      If IsTrue(lIsObject) Then
+        lIsObject = %TRUE
+      Else
+        lIsObject = %FALSE
+      End If
+      
+      Function = lIsObject
+      
     End If
   End Function
 
@@ -697,6 +725,136 @@
         Case ""
           Object Get lExcel_Application(1&).ActiveSheet To lDummyExcelWorksheet
           Function = Str$(ObjPtr(lDummyExcelWorksheet))
+
+'        Case ""
+'          Object Call lExcel_Application(1&).ActiveWorkbook To lDummyExcelWorkbook
+'          Function = Str$(ObjPtr(lDummyExcelWorkbook))
+'
+'        Case "COUNT"
+'          Object Get lExcel_Application(1&).Workbooks.Count To vDummyVariant
+'          Function = Str$(Variant#(vDummyVariant))
+'          
+'        Case "ADD"
+'          Object Call lExcel_Application(1&).Workbooks.Add To lDummyExcelWorkbook
+'          Function = Str$(ObjPtr(lDummyExcelWorkbook))
+'
+'        Case "OPEN"            
+'          pp = thinBasic_CheckOpenParens_Optional
+'          thinBasic_ParseString sFileName
+'          If pp Then thinBasic_CheckCloseParens_Mandatory              
+'          
+'          If thinBasic_ErrorFree Then
+'            vFileName = sFileName
+'            Object Call lExcel_Application(1&).Workbooks.Open(vFileName) To lDummyExcelWorkbook
+'            Function = Str$(ObjPtr(lDummyExcelWorkbook))
+'          End If
+              
+      End Select  'UCase$(sSubItem)
+      
+    End If
+  End Function
+
+  '--------------------------------------------------------------------------------------
+  Function cExcel_Application_Property_Selection(ByVal pObject As Long, ByVal lAction As Long) As String
+  '--------------------------------------------------------------------------------------
+  '  Properties functions has 2 params:
+  '   pObject   is a pointer to module class or any other memory area handled by a pseudo class
+  '   lAction   can be %Class_Action_Get, %Class_Action_Set, %Class_Action_None
+  '             depending on how the property is used in the script
+  '             %Class_Action_Get   when property is used inside an expression
+  '             %Class_Action_Set   when property is used at the beginning of a line
+  '             %Class_Action_None  SHOULD NEVER HAPPEN
+  '--------------------------------------------------------------------------------------
+  ' Syntax:
+  '   
+  '--------------------------------------------------------------------------------------
+    Local lEqualType    As Long
+    Local vDummyVariant As variant
+    Local sSubItem      As String
+    Local sFileName     As String
+    Local vFileName     As variant
+    Local pp            As Byte
+    
+    Static lDummyExcelWorkbook  As Excel_Workbook
+    Static lDummyExcelRange As Range
+    
+    ReDim oObject(1& To 1&) As iExcel_Application At pObject
+    ReDim lExcel_Application(1& To 1&) As Excel_Application At oObject(1&).cExcel_Application_GetClassObject
+
+    'If thinBasic_CheckPoint_Optional Then
+    '  sSubItem = thinBasic_GetUnknownToken   
+    'End If
+    
+    If thinBasic_ErrorFree Then
+      Select Case UCase$(sSubItem)
+        Case ""
+          Object Get lExcel_Application(1&).Selection To lDummyExcelRange
+          Function = Str$(ObjPtr(lDummyExcelRange))
+
+'        Case ""
+'          Object Call lExcel_Application(1&).ActiveWorkbook To lDummyExcelWorkbook
+'          Function = Str$(ObjPtr(lDummyExcelWorkbook))
+'
+'        Case "COUNT"
+'          Object Get lExcel_Application(1&).Workbooks.Count To vDummyVariant
+'          Function = Str$(Variant#(vDummyVariant))
+'          
+'        Case "ADD"
+'          Object Call lExcel_Application(1&).Workbooks.Add To lDummyExcelWorkbook
+'          Function = Str$(ObjPtr(lDummyExcelWorkbook))
+'
+'        Case "OPEN"            
+'          pp = thinBasic_CheckOpenParens_Optional
+'          thinBasic_ParseString sFileName
+'          If pp Then thinBasic_CheckCloseParens_Mandatory              
+'          
+'          If thinBasic_ErrorFree Then
+'            vFileName = sFileName
+'            Object Call lExcel_Application(1&).Workbooks.Open(vFileName) To lDummyExcelWorkbook
+'            Function = Str$(ObjPtr(lDummyExcelWorkbook))
+'          End If
+              
+      End Select  'UCase$(sSubItem)
+      
+    End If
+  End Function
+
+  '--------------------------------------------------------------------------------------
+  Function cExcel_Application_Property_ActiveCell(ByVal pObject As Long, ByVal lAction As Long) As String
+  '--------------------------------------------------------------------------------------
+  '  Properties functions has 2 params:
+  '   pObject   is a pointer to module class or any other memory area handled by a pseudo class
+  '   lAction   can be %Class_Action_Get, %Class_Action_Set, %Class_Action_None
+  '             depending on how the property is used in the script
+  '             %Class_Action_Get   when property is used inside an expression
+  '             %Class_Action_Set   when property is used at the beginning of a line
+  '             %Class_Action_None  SHOULD NEVER HAPPEN
+  '--------------------------------------------------------------------------------------
+  ' Syntax:
+  '   
+  '--------------------------------------------------------------------------------------
+    Local lEqualType    As Long
+    Local vDummyVariant As variant
+    Local sSubItem      As String
+    Local sFileName     As String
+    Local vFileName     As variant
+    Local pp            As Byte
+    
+    Static lDummyExcelWorkbook  As Excel_Workbook
+    Static lDummyExcelRange     As Range 'Excel_Range
+    
+    ReDim oObject(1& To 1&) As iExcel_Application At pObject
+    ReDim lExcel_Application(1& To 1&) As Excel_Application At oObject(1&).cExcel_Application_GetClassObject
+
+    If thinBasic_CheckPoint_Optional Then
+      sSubItem = thinBasic_GetUnknownToken   
+    End If
+    
+    If thinBasic_ErrorFree Then
+      Select Case UCase$(sSubItem)
+        Case ""
+          Object Get lExcel_Application(1&).ActiveCell To lDummyExcelRange
+          Function = Str$(ObjPtr(lDummyExcelRange))
 
 '        Case ""
 '          Object Call lExcel_Application(1&).ActiveWorkbook To lDummyExcelWorkbook

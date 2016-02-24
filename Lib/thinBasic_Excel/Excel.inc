@@ -7634,78 +7634,78 @@ END INTERFACE
 ' Interface Name  : Rectangle
 ' This Interface cannot be created directly it can only
 ' be returned by a Method or Property in this library.
-INTERFACE IDBIND Rectangle
-  MEMBER GET Application <148> () AS IDISPATCH
-  MEMBER GET Creator <149> () AS LONG
-  MEMBER GET Parent <150> () AS IDISPATCH
-  MEMBER GET BottomRightCell <615> () AS RANGE
-  MEMBER CALL BringToFront <602> () AS VARIANT
-  MEMBER CALL Copy <551> () AS VARIANT
-  MEMBER CALL CopyPicture <213> (OPT IN Appearance AS LONG<0>, OPT IN Format AS LONG<1>) AS VARIANT
-  MEMBER CALL Cut <565> () AS VARIANT
-  MEMBER CALL Delete <117> () AS VARIANT
-  MEMBER CALL Duplicate <1039> () AS IDISPATCH
-  MEMBER GET Enabled <600> () AS INTEGER
-  MEMBER LET Enabled <600> (IN Rhs AS INTEGER<0>)
-  MEMBER GET Height <123> () AS DOUBLE
-  MEMBER LET Height <123> (IN Rhs AS DOUBLE<0>)
-  MEMBER GET Index <486> () AS LONG
-  MEMBER GET Left <127> () AS DOUBLE
-  MEMBER LET Left <127> (IN Rhs AS DOUBLE<0>)
-  MEMBER GET Locked <269> () AS INTEGER
-  MEMBER LET Locked <269> (IN Rhs AS INTEGER<0>)
-  MEMBER GET Name <110> () AS WSTRING
-  MEMBER LET Name <110> (IN Rhs AS WSTRING<0>)
-  MEMBER GET OnAction <596> () AS WSTRING
-  MEMBER LET OnAction <596> (IN Rhs AS WSTRING<0>)
-  MEMBER GET Placement <617> () AS VARIANT
-  MEMBER LET Placement <617> (IN Rhs AS VARIANT<0>)
-  MEMBER GET PrintObject <618> () AS INTEGER
-  MEMBER LET PrintObject <618> (IN Rhs AS INTEGER<0>)
-  MEMBER CALL Select <235> (OPT IN PB_Replace AS VARIANT<0>) AS VARIANT
-  MEMBER CALL SendToBack <605> () AS VARIANT
-  MEMBER GET Top <126> () AS DOUBLE
-  MEMBER LET Top <126> (IN Rhs AS DOUBLE<0>)
-  MEMBER GET TopLeftCell <620> () AS RANGE
-  MEMBER GET Visible <558> () AS INTEGER
-  MEMBER LET Visible <558> (IN Rhs AS INTEGER<0>)
-  MEMBER GET Width <122> () AS DOUBLE
-  MEMBER LET Width <122> (IN Rhs AS DOUBLE<0>)
-  MEMBER GET ZOrder <622> () AS LONG
-  MEMBER GET ShapeRange <1528> () AS ShapeRange
-  MEMBER GET AddIndent <1063> () AS INTEGER
-  MEMBER LET AddIndent <1063> (IN Rhs AS INTEGER<0>)
-  MEMBER GET AutoScaleFont <1525> () AS VARIANT
-  MEMBER LET AutoScaleFont <1525> (IN Rhs AS VARIANT<0>)
-  MEMBER GET AutoSize <614> () AS INTEGER
-  MEMBER LET AutoSize <614> (IN Rhs AS INTEGER<0>)
-  MEMBER GET Caption <139> () AS WSTRING
-  MEMBER LET Caption <139> (IN Rhs AS WSTRING<0>)
-  MEMBER GET Characters <603> (OPT IN Start AS VARIANT<0>, OPT IN Length AS VARIANT<1>) AS Characters
-  MEMBER CALL CheckSpelling <505> (OPT IN CustomDictionary AS VARIANT<0>, OPT IN IgnoreUppercase AS VARIANT<1>, OPT IN _
-    AlwaysSuggest AS VARIANT<2>, OPT IN SpellLang AS VARIANT<3>) AS VARIANT
-  MEMBER GET Font <146> () AS ExcelFont
-  MEMBER GET Formula <261> () AS WSTRING
-  MEMBER LET Formula <261> (IN Rhs AS WSTRING<0>)
-  MEMBER GET HorizontalAlignment <136> () AS VARIANT
-  MEMBER LET HorizontalAlignment <136> (IN Rhs AS VARIANT<0>)
-  MEMBER GET LockedText <616> () AS INTEGER
-  MEMBER LET LockedText <616> (IN Rhs AS INTEGER<0>)
-  MEMBER GET Orientation <134> () AS VARIANT
-  MEMBER LET Orientation <134> (IN Rhs AS VARIANT<0>)
-  MEMBER GET Text <138> () AS WSTRING
-  MEMBER LET Text <138> (IN Rhs AS WSTRING<0>)
-  MEMBER GET VerticalAlignment <137> () AS VARIANT
-  MEMBER LET VerticalAlignment <137> (IN Rhs AS VARIANT<0>)
-  MEMBER GET ReadingOrder <975> () AS LONG
-  MEMBER LET ReadingOrder <975> (IN Rhs AS LONG<0>)
-  MEMBER GET Border <128> () AS BORDER
-  MEMBER GET Interior <129> () AS Interior
-  MEMBER GET Shadow <103> () AS INTEGER
-  MEMBER LET Shadow <103> (IN Rhs AS INTEGER<0>)
-  MEMBER GET RoundedCorners <619> () AS INTEGER
-  MEMBER LET RoundedCorners <619> (IN Rhs AS INTEGER<0>)
-END INTERFACE
+'Interface IDBIND Rectangle
+'  MEMBER GET Application <148> () AS IDISPATCH
+'  MEMBER GET Creator <149> () AS LONG
+'  MEMBER GET Parent <150> () AS IDISPATCH
+'  MEMBER GET BottomRightCell <615> () AS RANGE
+'  MEMBER CALL BringToFront <602> () AS VARIANT
+'  MEMBER CALL Copy <551> () AS VARIANT
+'  MEMBER CALL CopyPicture <213> (OPT IN Appearance AS LONG<0>, OPT IN Format AS LONG<1>) AS VARIANT
+'  MEMBER CALL Cut <565> () AS VARIANT
+'  MEMBER CALL Delete <117> () AS VARIANT
+'  MEMBER CALL Duplicate <1039> () AS IDISPATCH
+'  MEMBER GET Enabled <600> () AS INTEGER
+'  MEMBER LET Enabled <600> (IN Rhs AS INTEGER<0>)
+'  MEMBER GET Height <123> () AS DOUBLE
+'  MEMBER LET Height <123> (IN Rhs AS DOUBLE<0>)
+'  MEMBER GET Index <486> () AS LONG
+'  MEMBER GET Left <127> () AS DOUBLE
+'  MEMBER LET Left <127> (IN Rhs AS DOUBLE<0>)
+'  MEMBER GET Locked <269> () AS INTEGER
+'  MEMBER LET Locked <269> (IN Rhs AS INTEGER<0>)
+'  MEMBER GET Name <110> () AS WSTRING
+'  MEMBER LET Name <110> (IN Rhs AS WSTRING<0>)
+'  MEMBER GET OnAction <596> () AS WSTRING
+'  MEMBER LET OnAction <596> (IN Rhs AS WSTRING<0>)
+'  MEMBER GET Placement <617> () AS VARIANT
+'  MEMBER LET Placement <617> (IN Rhs AS VARIANT<0>)
+'  MEMBER GET PrintObject <618> () AS INTEGER
+'  MEMBER LET PrintObject <618> (IN Rhs AS INTEGER<0>)
+'  MEMBER CALL Select <235> (OPT IN PB_Replace AS VARIANT<0>) AS VARIANT
+'  MEMBER CALL SendToBack <605> () AS VARIANT
+'  MEMBER GET Top <126> () AS DOUBLE
+'  MEMBER LET Top <126> (IN Rhs AS DOUBLE<0>)
+'  MEMBER GET TopLeftCell <620> () AS RANGE
+'  MEMBER GET Visible <558> () AS INTEGER
+'  MEMBER LET Visible <558> (IN Rhs AS INTEGER<0>)
+'  MEMBER GET Width <122> () AS DOUBLE
+'  MEMBER LET Width <122> (IN Rhs AS DOUBLE<0>)
+'  MEMBER GET ZOrder <622> () AS LONG
+'  MEMBER GET ShapeRange <1528> () AS ShapeRange
+'  MEMBER GET AddIndent <1063> () AS INTEGER
+'  MEMBER LET AddIndent <1063> (IN Rhs AS INTEGER<0>)
+'  MEMBER GET AutoScaleFont <1525> () AS VARIANT
+'  MEMBER LET AutoScaleFont <1525> (IN Rhs AS VARIANT<0>)
+'  MEMBER GET AutoSize <614> () AS INTEGER
+'  MEMBER LET AutoSize <614> (IN Rhs AS INTEGER<0>)
+'  MEMBER GET Caption <139> () AS WSTRING
+'  MEMBER LET Caption <139> (IN Rhs AS WSTRING<0>)
+'  MEMBER GET Characters <603> (OPT IN Start AS VARIANT<0>, OPT IN Length AS VARIANT<1>) AS Characters
+'  MEMBER CALL CheckSpelling <505> (OPT IN CustomDictionary AS VARIANT<0>, OPT IN IgnoreUppercase AS VARIANT<1>, OPT IN _
+'    AlwaysSuggest AS VARIANT<2>, OPT IN SpellLang AS VARIANT<3>) AS VARIANT
+'  MEMBER GET Font <146> () AS ExcelFont
+'  MEMBER GET Formula <261> () AS WSTRING
+'  MEMBER LET Formula <261> (IN Rhs AS WSTRING<0>)
+'  MEMBER GET HorizontalAlignment <136> () AS VARIANT
+'  MEMBER LET HorizontalAlignment <136> (IN Rhs AS VARIANT<0>)
+'  MEMBER GET LockedText <616> () AS INTEGER
+'  MEMBER LET LockedText <616> (IN Rhs AS INTEGER<0>)
+'  MEMBER GET Orientation <134> () AS VARIANT
+'  MEMBER LET Orientation <134> (IN Rhs AS VARIANT<0>)
+'  MEMBER GET Text <138> () AS WSTRING
+'  MEMBER LET Text <138> (IN Rhs AS WSTRING<0>)
+'  MEMBER GET VerticalAlignment <137> () AS VARIANT
+'  MEMBER LET VerticalAlignment <137> (IN Rhs AS VARIANT<0>)
+'  MEMBER GET ReadingOrder <975> () AS LONG
+'  MEMBER LET ReadingOrder <975> (IN Rhs AS LONG<0>)
+'  MEMBER GET Border <128> () AS BORDER
+'  MEMBER GET Interior <129> () AS Interior
+'  MEMBER GET Shadow <103> () AS INTEGER
+'  MEMBER LET Shadow <103> (IN Rhs AS INTEGER<0>)
+'  MEMBER GET RoundedCorners <619> () AS INTEGER
+'  MEMBER LET RoundedCorners <619> (IN Rhs AS INTEGER<0>)
+'END INTERFACE
 
 ' Interface Name  : Rectangles
 ' This Interface cannot be created directly it can only
@@ -7780,8 +7780,8 @@ INTERFACE IDBIND Rectangles
   MEMBER LET Shadow <103> (IN Rhs AS INTEGER<0>)
   MEMBER GET RoundedCorners <619> () AS INTEGER
   MEMBER LET RoundedCorners <619> (IN Rhs AS INTEGER<0>)
-  MEMBER CALL Add <181> (IN PB_Left AS DOUBLE<0>, IN Top AS DOUBLE<1>, IN PB_Width AS DOUBLE<2>, IN Height AS DOUBLE<3>) _
-    AS Rectangle
+'  MEMBER CALL Add <181> (IN PB_Left AS DOUBLE<0>, IN Top AS DOUBLE<1>, IN PB_Width AS DOUBLE<2>, IN Height AS DOUBLE<3>) _
+'    AS Rectangle
   MEMBER GET Count <118> () AS LONG
   MEMBER CALL Group <46> () AS GroupObject
   MEMBER CALL Item <170> (IN Index AS VARIANT<0>) AS IDISPATCH
@@ -7944,152 +7944,152 @@ END INTERFACE
 ' Interface Name  : Arc
 ' This Interface cannot be created directly it can only
 ' be returned by a Method or Property in this library.
-INTERFACE IDBIND ARC
-  MEMBER GET Application <148> () AS IDISPATCH
-  MEMBER GET Creator <149> () AS LONG
-  MEMBER GET Parent <150> () AS IDISPATCH
-  MEMBER GET BottomRightCell <615> () AS RANGE
-  MEMBER CALL BringToFront <602> () AS VARIANT
-  MEMBER CALL Copy <551> () AS VARIANT
-  MEMBER CALL CopyPicture <213> (OPT IN Appearance AS LONG<0>, OPT IN Format AS LONG<1>) AS VARIANT
-  MEMBER CALL Cut <565> () AS VARIANT
-  MEMBER CALL Delete <117> () AS VARIANT
-  MEMBER CALL Duplicate <1039> () AS IDISPATCH
-  MEMBER GET Enabled <600> () AS INTEGER
-  MEMBER LET Enabled <600> (IN Rhs AS INTEGER<0>)
-  MEMBER GET Height <123> () AS DOUBLE
-  MEMBER LET Height <123> (IN Rhs AS DOUBLE<0>)
-  MEMBER GET Index <486> () AS LONG
-  MEMBER GET Left <127> () AS DOUBLE
-  MEMBER LET Left <127> (IN Rhs AS DOUBLE<0>)
-  MEMBER GET Locked <269> () AS INTEGER
-  MEMBER LET Locked <269> (IN Rhs AS INTEGER<0>)
-  MEMBER GET Name <110> () AS WSTRING
-  MEMBER LET Name <110> (IN Rhs AS WSTRING<0>)
-  MEMBER GET OnAction <596> () AS WSTRING
-  MEMBER LET OnAction <596> (IN Rhs AS WSTRING<0>)
-  MEMBER GET Placement <617> () AS VARIANT
-  MEMBER LET Placement <617> (IN Rhs AS VARIANT<0>)
-  MEMBER GET PrintObject <618> () AS INTEGER
-  MEMBER LET PrintObject <618> (IN Rhs AS INTEGER<0>)
-  MEMBER CALL Select <235> (OPT IN PB_Replace AS VARIANT<0>) AS VARIANT
-  MEMBER CALL SendToBack <605> () AS VARIANT
-  MEMBER GET Top <126> () AS DOUBLE
-  MEMBER LET Top <126> (IN Rhs AS DOUBLE<0>)
-  MEMBER GET TopLeftCell <620> () AS RANGE
-  MEMBER GET Visible <558> () AS INTEGER
-  MEMBER LET Visible <558> (IN Rhs AS INTEGER<0>)
-  MEMBER GET Width <122> () AS DOUBLE
-  MEMBER LET Width <122> (IN Rhs AS DOUBLE<0>)
-  MEMBER GET ZOrder <622> () AS LONG
-  MEMBER GET ShapeRange <1528> () AS ShapeRange
-  MEMBER GET AddIndent <1063> () AS INTEGER
-  MEMBER LET AddIndent <1063> (IN Rhs AS INTEGER<0>)
-  MEMBER GET AutoScaleFont <1525> () AS VARIANT
-  MEMBER LET AutoScaleFont <1525> (IN Rhs AS VARIANT<0>)
-  MEMBER GET AutoSize <614> () AS INTEGER
-  MEMBER LET AutoSize <614> (IN Rhs AS INTEGER<0>)
-  MEMBER GET Caption <139> () AS WSTRING
-  MEMBER LET Caption <139> (IN Rhs AS WSTRING<0>)
-  MEMBER GET Characters <603> (OPT IN Start AS VARIANT<0>, OPT IN Length AS VARIANT<1>) AS Characters
-  MEMBER CALL CheckSpelling <505> (OPT IN CustomDictionary AS VARIANT<0>, OPT IN IgnoreUppercase AS VARIANT<1>, OPT IN _
-    AlwaysSuggest AS VARIANT<2>, OPT IN SpellLang AS VARIANT<3>) AS VARIANT
-  MEMBER GET Font <146> () AS ExcelFont
-  MEMBER GET Formula <261> () AS WSTRING
-  MEMBER LET Formula <261> (IN Rhs AS WSTRING<0>)
-  MEMBER GET HorizontalAlignment <136> () AS VARIANT
-  MEMBER LET HorizontalAlignment <136> (IN Rhs AS VARIANT<0>)
-  MEMBER GET LockedText <616> () AS INTEGER
-  MEMBER LET LockedText <616> (IN Rhs AS INTEGER<0>)
-  MEMBER GET Orientation <134> () AS VARIANT
-  MEMBER LET Orientation <134> (IN Rhs AS VARIANT<0>)
-  MEMBER GET Text <138> () AS WSTRING
-  MEMBER LET Text <138> (IN Rhs AS WSTRING<0>)
-  MEMBER GET VerticalAlignment <137> () AS VARIANT
-  MEMBER LET VerticalAlignment <137> (IN Rhs AS VARIANT<0>)
-  MEMBER GET ReadingOrder <975> () AS LONG
-  MEMBER LET ReadingOrder <975> (IN Rhs AS LONG<0>)
-  MEMBER GET Border <128> () AS BORDER
-  MEMBER GET Interior <129> () AS Interior
-  MEMBER CALL Meth__Dummy43 <65579> ()
-END INTERFACE
+'INTERFACE IDBIND ARC
+'  MEMBER GET Application <148> () AS IDISPATCH
+'  MEMBER GET Creator <149> () AS LONG
+'  MEMBER GET Parent <150> () AS IDISPATCH
+'  MEMBER GET BottomRightCell <615> () AS RANGE
+'  MEMBER CALL BringToFront <602> () AS VARIANT
+'  MEMBER CALL Copy <551> () AS VARIANT
+'  MEMBER CALL CopyPicture <213> (OPT IN Appearance AS LONG<0>, OPT IN Format AS LONG<1>) AS VARIANT
+'  MEMBER CALL Cut <565> () AS VARIANT
+'  MEMBER CALL Delete <117> () AS VARIANT
+'  MEMBER CALL Duplicate <1039> () AS IDISPATCH
+'  MEMBER GET Enabled <600> () AS INTEGER
+'  MEMBER LET Enabled <600> (IN Rhs AS INTEGER<0>)
+'  MEMBER GET Height <123> () AS DOUBLE
+'  MEMBER LET Height <123> (IN Rhs AS DOUBLE<0>)
+'  MEMBER GET Index <486> () AS LONG
+'  MEMBER GET Left <127> () AS DOUBLE
+'  MEMBER LET Left <127> (IN Rhs AS DOUBLE<0>)
+'  MEMBER GET Locked <269> () AS INTEGER
+'  MEMBER LET Locked <269> (IN Rhs AS INTEGER<0>)
+'  MEMBER GET Name <110> () AS WSTRING
+'  MEMBER LET Name <110> (IN Rhs AS WSTRING<0>)
+'  MEMBER GET OnAction <596> () AS WSTRING
+'  MEMBER LET OnAction <596> (IN Rhs AS WSTRING<0>)
+'  MEMBER GET Placement <617> () AS VARIANT
+'  MEMBER LET Placement <617> (IN Rhs AS VARIANT<0>)
+'  MEMBER GET PrintObject <618> () AS INTEGER
+'  MEMBER LET PrintObject <618> (IN Rhs AS INTEGER<0>)
+'  MEMBER CALL Select <235> (OPT IN PB_Replace AS VARIANT<0>) AS VARIANT
+'  MEMBER CALL SendToBack <605> () AS VARIANT
+'  MEMBER GET Top <126> () AS DOUBLE
+'  MEMBER LET Top <126> (IN Rhs AS DOUBLE<0>)
+'  MEMBER GET TopLeftCell <620> () AS RANGE
+'  MEMBER GET Visible <558> () AS INTEGER
+'  MEMBER LET Visible <558> (IN Rhs AS INTEGER<0>)
+'  MEMBER GET Width <122> () AS DOUBLE
+'  MEMBER LET Width <122> (IN Rhs AS DOUBLE<0>)
+'  MEMBER GET ZOrder <622> () AS LONG
+'  MEMBER GET ShapeRange <1528> () AS ShapeRange
+'  MEMBER GET AddIndent <1063> () AS INTEGER
+'  MEMBER LET AddIndent <1063> (IN Rhs AS INTEGER<0>)
+'  MEMBER GET AutoScaleFont <1525> () AS VARIANT
+'  MEMBER LET AutoScaleFont <1525> (IN Rhs AS VARIANT<0>)
+'  MEMBER GET AutoSize <614> () AS INTEGER
+'  MEMBER LET AutoSize <614> (IN Rhs AS INTEGER<0>)
+'  MEMBER GET Caption <139> () AS WSTRING
+'  MEMBER LET Caption <139> (IN Rhs AS WSTRING<0>)
+'  MEMBER GET Characters <603> (OPT IN Start AS VARIANT<0>, OPT IN Length AS VARIANT<1>) AS Characters
+'  MEMBER CALL CheckSpelling <505> (OPT IN CustomDictionary AS VARIANT<0>, OPT IN IgnoreUppercase AS VARIANT<1>, OPT IN _
+'    AlwaysSuggest AS VARIANT<2>, OPT IN SpellLang AS VARIANT<3>) AS VARIANT
+'  MEMBER GET Font <146> () AS ExcelFont
+'  MEMBER GET Formula <261> () AS WSTRING
+'  MEMBER LET Formula <261> (IN Rhs AS WSTRING<0>)
+'  MEMBER GET HorizontalAlignment <136> () AS VARIANT
+'  MEMBER LET HorizontalAlignment <136> (IN Rhs AS VARIANT<0>)
+'  MEMBER GET LockedText <616> () AS INTEGER
+'  MEMBER LET LockedText <616> (IN Rhs AS INTEGER<0>)
+'  MEMBER GET Orientation <134> () AS VARIANT
+'  MEMBER LET Orientation <134> (IN Rhs AS VARIANT<0>)
+'  MEMBER GET Text <138> () AS WSTRING
+'  MEMBER LET Text <138> (IN Rhs AS WSTRING<0>)
+'  MEMBER GET VerticalAlignment <137> () AS VARIANT
+'  MEMBER LET VerticalAlignment <137> (IN Rhs AS VARIANT<0>)
+'  MEMBER GET ReadingOrder <975> () AS LONG
+'  MEMBER LET ReadingOrder <975> (IN Rhs AS LONG<0>)
+'  MEMBER GET Border <128> () AS BORDER
+'  MEMBER GET Interior <129> () AS Interior
+'  MEMBER CALL Meth__Dummy43 <65579> ()
+'END INTERFACE
 
 ' Interface Name  : Arcs
 ' This Interface cannot be created directly it can only
 ' be returned by a Method or Property in this library.
-INTERFACE IDBIND Arcs
-  MEMBER GET Application <148> () AS IDISPATCH
-  MEMBER GET Creator <149> () AS LONG
-  MEMBER GET Parent <150> () AS IDISPATCH
-  MEMBER CALL Meth__Dummy3 <65539> ()
-  MEMBER CALL BringToFront <602> () AS VARIANT
-  MEMBER CALL Copy <551> () AS VARIANT
-  MEMBER CALL CopyPicture <213> (OPT IN Appearance AS LONG<0>, OPT IN Format AS LONG<1>) AS VARIANT
-  MEMBER CALL Cut <565> () AS VARIANT
-  MEMBER CALL Delete <117> () AS VARIANT
-  MEMBER CALL Duplicate <1039> () AS IDISPATCH
-  MEMBER GET Enabled <600> () AS INTEGER
-  MEMBER LET Enabled <600> (IN Rhs AS INTEGER<0>)
-  MEMBER GET Height <123> () AS DOUBLE
-  MEMBER LET Height <123> (IN Rhs AS DOUBLE<0>)
-  MEMBER CALL Meth__Dummy12 <65548> ()
-  MEMBER GET Left <127> () AS DOUBLE
-  MEMBER LET Left <127> (IN Rhs AS DOUBLE<0>)
-  MEMBER GET Locked <269> () AS INTEGER
-  MEMBER LET Locked <269> (IN Rhs AS INTEGER<0>)
-  MEMBER CALL Meth__Dummy15 <65551> ()
-  MEMBER GET OnAction <596> () AS WSTRING
-  MEMBER LET OnAction <596> (IN Rhs AS WSTRING<0>)
-  MEMBER GET Placement <617> () AS VARIANT
-  MEMBER LET Placement <617> (IN Rhs AS VARIANT<0>)
-  MEMBER GET PrintObject <618> () AS INTEGER
-  MEMBER LET PrintObject <618> (IN Rhs AS INTEGER<0>)
-  MEMBER CALL Select <235> (OPT IN PB_Replace AS VARIANT<0>) AS VARIANT
-  MEMBER CALL SendToBack <605> () AS VARIANT
-  MEMBER GET Top <126> () AS DOUBLE
-  MEMBER LET Top <126> (IN Rhs AS DOUBLE<0>)
-  MEMBER CALL Meth__Dummy22 <65558> ()
-  MEMBER GET Visible <558> () AS INTEGER
-  MEMBER LET Visible <558> (IN Rhs AS INTEGER<0>)
-  MEMBER GET Width <122> () AS DOUBLE
-  MEMBER LET Width <122> (IN Rhs AS DOUBLE<0>)
-  MEMBER GET ZOrder <622> () AS LONG
-  MEMBER GET ShapeRange <1528> () AS ShapeRange
-  MEMBER GET AddIndent <1063> () AS INTEGER
-  MEMBER LET AddIndent <1063> (IN Rhs AS INTEGER<0>)
-  MEMBER GET AutoScaleFont <1525> () AS VARIANT
-  MEMBER LET AutoScaleFont <1525> (IN Rhs AS VARIANT<0>)
-  MEMBER GET AutoSize <614> () AS INTEGER
-  MEMBER LET AutoSize <614> (IN Rhs AS INTEGER<0>)
-  MEMBER GET Caption <139> () AS WSTRING
-  MEMBER LET Caption <139> (IN Rhs AS WSTRING<0>)
-  MEMBER GET Characters <603> (OPT IN Start AS VARIANT<0>, OPT IN Length AS VARIANT<1>) AS Characters
-  MEMBER CALL CheckSpelling <505> (OPT IN CustomDictionary AS VARIANT<0>, OPT IN IgnoreUppercase AS VARIANT<1>, OPT IN _
-    AlwaysSuggest AS VARIANT<2>, OPT IN SpellLang AS VARIANT<3>) AS VARIANT
-  MEMBER GET Font <146> () AS ExcelFont
-  MEMBER GET Formula <261> () AS WSTRING
-  MEMBER LET Formula <261> (IN Rhs AS WSTRING<0>)
-  MEMBER GET HorizontalAlignment <136> () AS VARIANT
-  MEMBER LET HorizontalAlignment <136> (IN Rhs AS VARIANT<0>)
-  MEMBER GET LockedText <616> () AS INTEGER
-  MEMBER LET LockedText <616> (IN Rhs AS INTEGER<0>)
-  MEMBER GET Orientation <134> () AS VARIANT
-  MEMBER LET Orientation <134> (IN Rhs AS VARIANT<0>)
-  MEMBER GET Text <138> () AS WSTRING
-  MEMBER LET Text <138> (IN Rhs AS WSTRING<0>)
-  MEMBER GET VerticalAlignment <137> () AS VARIANT
-  MEMBER LET VerticalAlignment <137> (IN Rhs AS VARIANT<0>)
-  MEMBER GET ReadingOrder <975> () AS LONG
-  MEMBER LET ReadingOrder <975> (IN Rhs AS LONG<0>)
-  MEMBER GET Border <128> () AS BORDER
-  MEMBER GET Interior <129> () AS Interior
-  MEMBER CALL Meth__Dummy43 <65579> ()
-  MEMBER CALL Add <181> (IN X1 AS DOUBLE<0>, IN Y1 AS DOUBLE<1>, IN X2 AS DOUBLE<2>, IN Y2 AS DOUBLE<3>) AS ARC
-  MEMBER GET Count <118> () AS LONG
-  MEMBER CALL Group <46> () AS GroupObject
-  MEMBER CALL Item <170> (IN Index AS VARIANT<0>) AS IDISPATCH
-  MEMBER CALL Meth__NewEnum <-4> () AS IUNKNOWN
-END INTERFACE
+'INTERFACE IDBIND Arcs
+'  MEMBER GET Application <148> () AS IDISPATCH
+'  MEMBER GET Creator <149> () AS LONG
+'  MEMBER GET Parent <150> () AS IDISPATCH
+'  MEMBER CALL Meth__Dummy3 <65539> ()
+'  MEMBER CALL BringToFront <602> () AS VARIANT
+'  MEMBER CALL Copy <551> () AS VARIANT
+'  MEMBER CALL CopyPicture <213> (OPT IN Appearance AS LONG<0>, OPT IN Format AS LONG<1>) AS VARIANT
+'  MEMBER CALL Cut <565> () AS VARIANT
+'  MEMBER CALL Delete <117> () AS VARIANT
+'  MEMBER CALL Duplicate <1039> () AS IDISPATCH
+'  MEMBER GET Enabled <600> () AS INTEGER
+'  MEMBER LET Enabled <600> (IN Rhs AS INTEGER<0>)
+'  MEMBER GET Height <123> () AS DOUBLE
+'  MEMBER LET Height <123> (IN Rhs AS DOUBLE<0>)
+'  MEMBER CALL Meth__Dummy12 <65548> ()
+'  MEMBER GET Left <127> () AS DOUBLE
+'  MEMBER LET Left <127> (IN Rhs AS DOUBLE<0>)
+'  MEMBER GET Locked <269> () AS INTEGER
+'  MEMBER LET Locked <269> (IN Rhs AS INTEGER<0>)
+'  MEMBER CALL Meth__Dummy15 <65551> ()
+'  MEMBER GET OnAction <596> () AS WSTRING
+'  MEMBER LET OnAction <596> (IN Rhs AS WSTRING<0>)
+'  MEMBER GET Placement <617> () AS VARIANT
+'  MEMBER LET Placement <617> (IN Rhs AS VARIANT<0>)
+'  MEMBER GET PrintObject <618> () AS INTEGER
+'  MEMBER LET PrintObject <618> (IN Rhs AS INTEGER<0>)
+'  MEMBER CALL Select <235> (OPT IN PB_Replace AS VARIANT<0>) AS VARIANT
+'  MEMBER CALL SendToBack <605> () AS VARIANT
+'  MEMBER GET Top <126> () AS DOUBLE
+'  MEMBER LET Top <126> (IN Rhs AS DOUBLE<0>)
+'  MEMBER CALL Meth__Dummy22 <65558> ()
+'  MEMBER GET Visible <558> () AS INTEGER
+'  MEMBER LET Visible <558> (IN Rhs AS INTEGER<0>)
+'  MEMBER GET Width <122> () AS DOUBLE
+'  MEMBER LET Width <122> (IN Rhs AS DOUBLE<0>)
+'  MEMBER GET ZOrder <622> () AS LONG
+'  MEMBER GET ShapeRange <1528> () AS ShapeRange
+'  MEMBER GET AddIndent <1063> () AS INTEGER
+'  MEMBER LET AddIndent <1063> (IN Rhs AS INTEGER<0>)
+'  MEMBER GET AutoScaleFont <1525> () AS VARIANT
+'  MEMBER LET AutoScaleFont <1525> (IN Rhs AS VARIANT<0>)
+'  MEMBER GET AutoSize <614> () AS INTEGER
+'  MEMBER LET AutoSize <614> (IN Rhs AS INTEGER<0>)
+'  MEMBER GET Caption <139> () AS WSTRING
+'  MEMBER LET Caption <139> (IN Rhs AS WSTRING<0>)
+'  MEMBER GET Characters <603> (OPT IN Start AS VARIANT<0>, OPT IN Length AS VARIANT<1>) AS Characters
+'  MEMBER CALL CheckSpelling <505> (OPT IN CustomDictionary AS VARIANT<0>, OPT IN IgnoreUppercase AS VARIANT<1>, OPT IN _
+'    AlwaysSuggest AS VARIANT<2>, OPT IN SpellLang AS VARIANT<3>) AS VARIANT
+'  MEMBER GET Font <146> () AS ExcelFont
+'  MEMBER GET Formula <261> () AS WSTRING
+'  MEMBER LET Formula <261> (IN Rhs AS WSTRING<0>)
+'  MEMBER GET HorizontalAlignment <136> () AS VARIANT
+'  MEMBER LET HorizontalAlignment <136> (IN Rhs AS VARIANT<0>)
+'  MEMBER GET LockedText <616> () AS INTEGER
+'  MEMBER LET LockedText <616> (IN Rhs AS INTEGER<0>)
+'  MEMBER GET Orientation <134> () AS VARIANT
+'  MEMBER LET Orientation <134> (IN Rhs AS VARIANT<0>)
+'  MEMBER GET Text <138> () AS WSTRING
+'  MEMBER LET Text <138> (IN Rhs AS WSTRING<0>)
+'  MEMBER GET VerticalAlignment <137> () AS VARIANT
+'  MEMBER LET VerticalAlignment <137> (IN Rhs AS VARIANT<0>)
+'  MEMBER GET ReadingOrder <975> () AS LONG
+'  MEMBER LET ReadingOrder <975> (IN Rhs AS LONG<0>)
+'  MEMBER GET Border <128> () AS BORDER
+'  MEMBER GET Interior <129> () AS Interior
+'  MEMBER CALL Meth__Dummy43 <65579> ()
+'  MEMBER CALL Add <181> (IN X1 AS DOUBLE<0>, IN Y1 AS DOUBLE<1>, IN X2 AS DOUBLE<2>, IN Y2 AS DOUBLE<3>) AS ARC
+'  MEMBER GET Count <118> () AS LONG
+'  MEMBER CALL Group <46> () AS GroupObject
+'  MEMBER CALL Item <170> (IN Index AS VARIANT<0>) AS IDISPATCH
+'  MEMBER CALL Meth__NewEnum <-4> () AS IUNKNOWN
+'END INTERFACE
 
 ' Interface Name  : OLEObjectEvents
 ' ClassID         : $CLSID_Excel_Event_OLEObjectEvents

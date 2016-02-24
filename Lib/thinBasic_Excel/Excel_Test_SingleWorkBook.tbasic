@@ -3,6 +3,9 @@
 Uses "Excel"
 Uses "File"
 Uses "Console"
+Uses "OS"
+
+Global sListSep As String = OS_GetListSeparator
 
 Randomize Timer
 
@@ -34,6 +37,13 @@ Function TBMain() As Long
 
   '---Create a new Excel Application COM Server instance
   xApp = New Excel_Application
+
+  If xApp.IsNothing Then  
+    PrintL "Excel seems not installed"
+    PrintL "---Press a key to end---"
+    WaitKey
+    Exit Function
+  End If
   
   '---Set Visible to TRUE so we can see what's going on
   xApp.Visible = %TRUE       
@@ -73,7 +83,7 @@ Function TBMain() As Long
 
   '---Working with sheet.range
   Dim sRange As String
-  sRange = "A1:B3;D1:F10"
+  sRange = "A1:B3" & sListSep & "D1:F10" '<---Change to "A1:B3,D1:F10" based on your OS regional settings
   
   out("Working with range: " & sRange)
   xRange = xSheet.Range(sRange)
@@ -163,8 +173,9 @@ Function TBMain() As Long
     out("Tells Excel not to bother with alerts")
     xApp.DisplayAlerts = %FALSE
     If FILE_Exists(sXlsFileName) Then
-      out("File already exists so just save")
+      out("File already exists so just save ...")
       xWorkBook.Save
+      out("File saved")
     Else
       out("File does not exists so saving file to: " & sXlsFileName)
       xWorkBook.SaveAs(sXlsFileName, %XlFileFormat_xlOpenXMLWorkbook, "")

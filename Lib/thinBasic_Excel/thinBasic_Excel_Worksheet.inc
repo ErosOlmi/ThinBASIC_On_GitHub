@@ -122,7 +122,7 @@
   End Sub
 
   '----------------------------------------------------------------------------
-  Function cExcel_Worksheet_GetClassObject(ByVal pObject As Long) As Ext
+  Function cExcel_Worksheet_GetClassObject(ByVal pObject As Long) As Dword
   '----------------------------------------------------------------------------
     'If thinBasic_CheckOpenParens_Optional Then thinBasic_CheckCloseParens_Mandatory
 
@@ -379,6 +379,7 @@
           'Function = Str$(ObjPtr(lDummyExcelWorkbook))
           Object Get lExcel_Worksheet(1&).Range(vRange) To lDummyExcelRange
           Function = Str$(ObjPtr(lDummyExcelRange))
+'MsgBox Str$(ObjPtr(lDummyExcelRange)) & variant$(vRange)
         
         Case "SELECT"
           Object Call lExcel_Worksheet(1&).Range(vRange).Select

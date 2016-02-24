@@ -1,0 +1,103 @@
+#MINVERSION 1.9.13.0
+
+Uses "Excel"
+Uses "Console"
+
+
+Function TBMain() As Long
+  Dim xApp        As  Excel_Application
+  Dim xWorkBook1  As  Excel_Workbook
+  Dim xWorkBook2  As  Excel_Workbook
+  Dim xSheet1     As  Excel_Worksheet
+  Dim xSheet2     As  Excel_Worksheet
+  Dim x, y        As  Long
+  
+  '---Create a new Excel Application COM Server instance
+  xApp = New Excel_Application
+  
+  '---Get back Excel Version
+  cOut "Excel version is: " + xApp.Version
+  
+  '---Set Visible to TRUE so we can see what's going on
+  xApp.Visible = %TRUE       
+
+  '---Create 2 Excel workbooks 
+  xWorkBook1 = xApp.WorkBooks.Add
+  xWorkBook2 = xApp.WorkBooks.Add
+  cOut "Number of open workbooks: " & xApp.WorkBooks.Count
+      
+  '---New sheets objects can be created in 2 ways
+  '---Here we just get the activesheet
+  xSheet1 = xWorkBook1.Activesheet
+  '---And here we create a new sheet using Add method
+  xSheet2 = xWorkBook1.Worksheets.Add
+
+  '---We want activate "Sheet1"
+  '---To be able to select a sheet in a workbook, workbook must be the activa one
+  xWorkbook1.Activate
+  xWorkbook1.Worksheets(2).Select
+    '---It is possible to pass also sheet name instead of sheet index
+    'xWorkbook1.Worksheets("Sheet1").Select
+    '---Or it is possible to use sheet directly (if instantiated) using sheet.activate
+    'xsheet1.Activate
+  
+  '---Change Sheet name (here Set and Get of a Sheet Name)
+  xSheet1.Name = "thinBasic Test 1"
+  xSheet2.Name = "thinBasic Test 2"
+  cOut _
+            "In Workbook1 there are " & xWorkBook1.Worksheets.Count & " sheets" & $CRLF & 
+            "Worksheet name of sheet 1 is: " & xSheet1.Name & $CRLF & 
+            "Worksheet name of sheet 2 is: " & xSheet2.Name & $CRLF & 
+            ""
+  
+  '---Write some text into Excel sheet
+  cOut "Now we will fill some cells"
+  For y = 1 To 50
+    For x = 1 To 5
+      xSheet1.Cells(y, x).Value = "Cell " & Chr$(x + 64) & Format$(y)
+      xSheet2.Cells(y, x).Value = "Cell " & Chr$(x + 64) & Format$(y)
+    Next
+    x = 6
+    xSheet1.Cells(Y, X) = y + y / 10
+    xSheet2.Cells(Y, X) = y + y / 10
+    x = 7
+    xSheet1.Cells(Y, X) = Format$(Rnd(-1000,1000), "$#,.00")
+    xSheet2.Cells(Y, X) = Format$(Rnd(-1000,1000), "$#,.00")
+  Next
+  
+  '---Read some text back
+  cOut _
+            "Reading back Cell 2,2 of Sheet 1 = " & xSheet1.Cells(2,2).Value & $CRLF & 
+            "Reading back Cell 2,2 of Sheet 2 = " & xSheet1.Cells(2,2).Value & $CRLF & 
+            ""
+
+  'xSheet1.PrintPreview
+  
+  '---Tells Excel application to not show alerts (in this case alert about file already exists before saving)
+  xApp.DisplayAlerts = %FALSE
+  '---Save file name
+  xWorkBook1.SaveAs(APP_ScriptFullName & "_1.xlsx")
+  xWorkBook2.SaveAs(APP_ScriptFullName & "_2.xlsx")
+  '---Reset DisplayAlerts
+  xApp.DisplayAlerts = %TRUE
+
+  '---Close Excel Application
+  xApp.Quit                     
+
+  cOut("OK, test done. thinBasic will now close.", 0, %TRUE)
+
+End Function
+
+
+'--------------------------------------------------------------------
+' Output some message
+'--------------------------------------------------------------------
+Function cOut(ByVal sMessage As String, Optional lLevel As Long, ByVal Wait As Long)
+  PrintL Time$, String$(lLevel * 2, " ") & sMessage
+
+  If Wait = %TRUE Then
+    PrintL "---Press a key to continue---"
+    WaitKey
+  End If
+
+End Function

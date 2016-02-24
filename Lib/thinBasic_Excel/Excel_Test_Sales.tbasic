@@ -1,0 +1,187 @@
+#MINVERSION 1.9.15.0
+
+Uses "Excel"
+Uses "File"
+Uses "Console"
+
+Randomize Timer
+
+'--------------------------------------------------------------------
+Function Out(ByVal sMessage As String, Optional lLevel As Long, ByVal Wait As Long)
+'--------------------------------------------------------------------
+' Output some message
+'--------------------------------------------------------------------
+  PrintL Time$, String$(lLevel * 2, " ") & sMessage
+
+  If Wait = %TRUE Then
+    PrintL "---Press a key to continue---"
+    WaitKey
+  End If
+
+End Function
+
+'--------------------------------------------------------------------
+Function TBMain() As Long
+'--------------------------------------------------------------------
+  Dim xApp          As Excel_Application    '---This will instantiate the real Excel Application
+  Dim xWorkBook     As Excel_Workbook       '---An object representing an Excel Workbook (an excel file)
+  Dim xSheet        As Excel_Worksheet      '---An object representing a single Excel worksheet
+  Dim xRange        As Excel_Range          '---An object representing a Range. Will be used to point to different ranges when needed
+  Dim x, y          As Long
+
+  Dim lMonth        As Long
+  Dim lYear         As Long
+    
+  '---Create a new Excel Application COM Server instance
+  xApp = New Excel_Application
+  
+  '---Set Visible to TRUE so we can see what's going on
+  xApp.Visible = %TRUE       
+
+  Out("Creating a new empty workbook")
+  xWorkBook = xApp.WorkBooks.Add
+
+  Out("Workbook      name is: " & xWorkBook.Name)
+  Out("Workbook full name is: " & xWorkBook.FullName)
+
+  '---Get the activesheet
+  xSheet = xApp.Activesheet
+  Out("Active sheet name is actually: " & xSheet.Name)
+   
+  '---Change Sheet name (here Set and Get of a Sheet Name)
+  xSheet.Name = "Sales_" & Replace$(Timer, ".", "_")
+  Out("Changed sheet name to: " & xSheet.Name)
+  
+  '---Write some text into Excel sheet
+  Out("Start filling some cells. Timer start: " & Timer)
+  For lYear = 1 To 5
+    xSheet.Cells(2, lYear).Value = year(now) + lYear
+
+    For lMonth = 1 To 12
+      'xSheet.Cells(y, x).Value = "Cell " & Chr$(x + Asc("A") - 1) & Format$(y)
+    Next
+
+'    x = 6
+'    xSheet.Cells(Y, X).Value = y + y / Rnd(1, 10)
+'    x = 7
+'    xSheet.Cells(Y, X).Value = Format$(Rnd(-1000, 1000), "$#,.00")
+  Next
+  Out("End filling some cells. Timer End: " & Timer)
+
+'  '---Working with sheet.range
+'  Dim sRange As String
+'  sRange = "A1:B3;D1:F10"
+'  
+'  out("Working with range: " & sRange)
+'  xRange = xSheet.Range(sRange)
+'  xRange.Select
+'  xRange.Value = "X"
+'  Sleep 1000
+'  out("Range address " & xRange.Address)
+'  xRange.Clear
+'
+'  out("Clearing A:Z")
+'  xRange = xSheet.Range("A:Z")
+'  xRange.Clear
+'  xSheet.Range("A1").Select
+'
+'  out("Making some easy calculation")
+'  xRange = xSheet.Range("A1:A20")
+'  xRange.ColumnWidth = 25
+'  xSheet.Cells(1, 1) = "Few random numbers"
+'  For y = 1 To 20
+'    xSheet.Cells(Y, 2) = Rnd(10, 2000)
+'  Next
+'  xSheet.Cells(22, 1) = "Total"
+'  xRange = xSheet.Range("B22")
+'  xRange.Formula = "=Sum(B1:B20)"  
+'
+'  '[breakpoint] <Any note here. Breakpoint will be set to line following this statement>
+'  xRange = xSheet.Range("B:B")
+'  xRange.Select
+'  xRange.NumberFormat = "@"
+'  'xRange.AutoFit
+'  
+'  xRange = xSheet.Range("D1:D20")
+'  xRange.Formula = "=Sin(B1)"
+'  xRange.HorizontalAlignment = %XlHAlign_xlHAlignCenter
+'  xRange.ColumnWidth = 25
+'
+'  
+'  '---Set forumla
+'  xRange = xSheet.Range("D22")
+'  xRange.Formula = "=Sum(D1:D20)"
+'  
+'  '---Change some font properties
+'  xRange.Font.Name = "Arial"
+'  xRange.Font.Size = 14
+'  xRange.Font.Bold = %TRUE
+'  xRange.Font.Italic = %TRUE
+'  xRange.Font.Underline = %XlUnderlineStyle_xlUnderlineStyleSingle
+'  xRange.Font.Color = Rgb(255, 0, 0)
+'  xRange.Interior.Color = Rgb(255, 255, 0)
+'  Out("Current font style is: " & xRange.Font.FontStyle)
+'
+'  Out("Current Formula is: " & xRange.Formula)
+'  Out("Current Formula R1C1 is: " & xRange.FormulaR1C1)
+'
+'  out("Change some cells color background")
+'  xSheet.Cells(1, 8).Value = "Changing some randomized color"
+'  Randomize Timer
+'
+'  Long ColorIndex
+'  For y = 2 To 100
+'    For x = 1 To 10
+'      sRange = Chr$(Asc("G") + x) & y & ":" & Chr$(Asc("G") + x) & y
+'      xRange = xSheet.Range(sRange)
+'
+'      '---Using ColorIndex property
+'      'xRange.Interior.ColorIndex = ColorIndex
+'      'xRange.Value = ColorIndex
+'      'Incr ColorIndex
+'      
+'      '---Using color property
+'      xRange.Interior.Color = Rgb(Rnd(0, 255), Rnd(0, 255), Rnd(0, 255))
+'      'xRange.Interior.Color = Rgb(x * Y, x * y, Rnd(0, 255))
+'    Next
+'  Next
+'
+'  out("Sleeping some time in order to let see what's on video")
+'  Sleep 5000
+'
+'  out("Clear color example area ...")
+'  xRange = xSheet.Range("H:Z")
+'  xRange.Clear
+'      
+'  
+'  '---Tells Excel application to not show alerts (in this case alert about file already exists before saving)
+'  out("Checking if file must be saved")
+'  If xWorkBook.Saved = %FALSE Then
+'    out("Tells Excel not to bother with alerts")
+'    xApp.DisplayAlerts = %FALSE
+'    If FILE_Exists(sXlsFileName) Then
+'      out("File already exists so just save")
+'      xWorkBook.Save
+'    Else
+'      out("File does not exists so saving file to: " & sXlsFileName)
+'      xWorkBook.SaveAs(sXlsFileName, %XlFileFormat_xlOpenXMLWorkbook, "")
+'    End If
+'    out("Restoring standard alerts")
+'    xApp.DisplayAlerts = %TRUE
+'  End If
+
+
+  out("Closing active window, press a key", 0, %TRUE)
+  xApp.DisplayAlerts = %FALSE
+  xApp.ActiveWindow.Close
+  
+  out("Quitting Excel")
+  '---Alternative is using Sendkeys to send Alt-File/Exit command
+  'xApp.SendKeys("%fx")
+  xApp.Quit                     
+
+
+  out("OK, test done. thinBasic will now close.")
+
+
+End Function

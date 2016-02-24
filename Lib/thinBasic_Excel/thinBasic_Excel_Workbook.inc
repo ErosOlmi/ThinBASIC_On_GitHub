@@ -123,7 +123,7 @@
   End Sub
 
   '----------------------------------------------------------------------------
-  Function cExcel_Workbook_GetClassObject(ByVal pObject As Long) As Ext
+  Function cExcel_Workbook_GetClassObject(ByVal pObject As Long) As Dword
   '----------------------------------------------------------------------------
     'If thinBasic_CheckOpenParens_Optional Then thinBasic_CheckCloseParens_Mandatory
 
@@ -136,7 +136,7 @@
 
 
   '----------------------------------------------------------------------------
-  Function cExcel_Workbook_Method_SaveAs(ByVal pObject As Long) As Ext
+  Function cExcel_Workbook_Method_SaveAs(ByVal pObject As Long) As Long
   '----------------------------------------------------------------------------
     Dim pp          As Byte
     Dim sFileName   As String
@@ -178,7 +178,7 @@
   End Function
 
   '----------------------------------------------------------------------------
-  Function cExcel_Workbook_Method_Activate(ByVal pObject As Long) As Ext
+  Function cExcel_Workbook_Method_Activate(ByVal pObject As Long) As Long
   '----------------------------------------------------------------------------
     Dim pp        As Byte
     Dim sFileName As String
@@ -195,7 +195,7 @@
   End Function
 
   '----------------------------------------------------------------------------
-  Function cExcel_Workbook_Method_Save(ByVal pObject As Long) As Ext
+  Function cExcel_Workbook_Method_Save(ByVal pObject As Long) As Long
   '----------------------------------------------------------------------------
     Dim pp        As Byte
     Dim sFileName As String

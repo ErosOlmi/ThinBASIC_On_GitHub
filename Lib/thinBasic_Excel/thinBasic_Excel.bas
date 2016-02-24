@@ -26,6 +26,8 @@
 
 GLOBAL gPath AS STRING
 
+#Include Once "WIN32API.INC"
+
 '---Every used defined thinBasic module must include this file
 #Include Once "\ThinBASIC\Lib\thinCore.inc"
 
@@ -33,7 +35,9 @@ GLOBAL gPath AS STRING
 #Include Once ".\thinBasic_Excel_Application.inc"
 #Include Once ".\thinBasic_Excel_Workbook.inc"
 #Include Once ".\thinBasic_Excel_Worksheet.inc"
-#Include Once ".\thinBasic_Excel_Range.inc"
+#Include Once ".\thinBasic_Excel_Range.inc" 
+#Include Once ".\thinBasic_Excel_Utilities.inc" 
+
 
 
   '----------------------------------------------------------------------------
@@ -58,6 +62,7 @@ GLOBAL gPath AS STRING
     ' -- Save DLL loading path to global var
     gPath = sPath
 
+'msgbox str$(%LOCALE_SLIST)
     '---
     ' Excel Application Class
     '---
@@ -72,9 +77,10 @@ GLOBAL gPath AS STRING
         ' -- WARNING: You MUST supply destructor and set the object to NOTHING, otherwise you risk memory leak
         RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Application, "_Destroy"          , %thinBasic_ReturnNone       , CodePtr(cExcel_Application_Destroy          ))
         ' -- ClassObject
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Application, "_GetClassObject"   , %thinBasic_ReturnNone       , CodePtr(cExcel_Application_GetClassObject   ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Application, "_GetClassObject"   , %thinBasic_ReturnCodedWord  , CodePtr(cExcel_Application_GetClassObject   ))
 
         ' -- Common methods can take any name
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Application, "IsNothing"         , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Application_Method_IsNothing ))
         RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Application, "Quit"              , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Application_Method_Quit      ))
         RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Application, "SendKeys"          , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Application_Method_SendKeys  ))
 
@@ -88,6 +94,8 @@ GLOBAL gPath AS STRING
 
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "ActiveWorkbook"          , %thinBasic_ReturnString     , CodePtr(cExcel_Application_Property_ActiveWorkbook          ))
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "ActiveSheet"             , %thinBasic_ReturnString     , CodePtr(cExcel_Application_Property_ActiveSheet             ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "ActiveCell"              , %thinBasic_ReturnString     , CodePtr(cExcel_Application_Property_ActiveCell              ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Application, "Selection"               , %thinBasic_ReturnString     , CodePtr(cExcel_Application_Property_Selection               ))
 
       END IF
 
@@ -108,7 +116,7 @@ GLOBAL gPath AS STRING
         ' -- WARNING: You MUST supply destructor and set the object to NOTHING, otherwise you risk memory leak
         RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "_Destroy"                   , %thinBasic_ReturnNone       , CodePtr(cExcel_Workbook_Destroy           ))
         ' -- ClassObject
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "_GetClassObject"            , %thinBasic_ReturnNone       , CodePtr(cExcel_Workbook_GetClassObject    ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "_GetClassObject"            , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Workbook_GetClassObject    ))
 
         ' -- Common methods can take any name
         RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Workbook, "Save"                       , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Workbook_Method_Save       ))
@@ -140,7 +148,7 @@ GLOBAL gPath AS STRING
         ' -- WARNING: You MUST supply destructor and set the object to NOTHING, otherwise you risk memory leak
         RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Worksheet, "_Destroy"          , %thinBasic_ReturnNone       , CODEPTR(cExcel_Worksheet_Destroy          ))
         ' -- ClassObject
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Worksheet, "_GetClassObject"   , %thinBasic_ReturnNone       , CODEPTR(cExcel_Worksheet_GetClassObject   ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Worksheet, "_GetClassObject"   , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Worksheet_GetClassObject   ))
 
         ' -- Common methods can take any name
         RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Worksheet, "PrintPreview"      , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Worksheet_Method_PrintPreview     ))
@@ -170,7 +178,7 @@ GLOBAL gPath AS STRING
         ' -- WARNING: You MUST supply destructor and set the object to NOTHING, otherwise you risk memory leak
         RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "_Destroy"          , %thinBasic_ReturnNone       , CodePtr(cExcel_Range_Destroy              ))
         ' -- ClassObject
-        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "_GetClassObject"   , %thinBasic_ReturnNone       , CodePtr(cExcel_Range_GetClassObject       ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "_GetClassObject"   , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_GetClassObject       ))
 
         ' -- Common methods can take any name
         RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "Select"            , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Method_Select          ))
@@ -180,6 +188,7 @@ GLOBAL gPath AS STRING
         RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "ClearComments"     , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Method_ClearComments   ))
         RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "ClearNotes"        , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Method_ClearNotes      ))
         RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "AutoFit"           , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Method_AutoFit         ))
+        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "Insert"            , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Method_Insert          ))
 '        RetCode = thinBasic_Class_AddMethod   (pClass_cExcel_Range, "Activate"          , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Worksheet_Method_Activate         ))
 '
 '        ' -- Common properties can take any name
@@ -192,6 +201,11 @@ GLOBAL gPath AS STRING
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "ColumnWidth"         , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Property_ColumnWidth ))
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "Interior"            , %thinBasic_ReturnString     , CodePtr(cExcel_Range_Property_Interior    ))
         RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "NumberFormat"        , %thinBasic_ReturnString     , CodePtr(cExcel_Range_Property_NumberFormat))
+
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "End"                 , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Property_End         ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "Column"              , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Property_Column      ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "Row"                 , %thinBasic_ReturnCodeLong   , CodePtr(cExcel_Range_Property_Row         ))
+        RetCode = thinBasic_Class_AddProperty (pClass_cExcel_Range, "Copy"                , %thinBasic_ReturnCodeString , CodePtr(cExcel_Range_Property_Copy        ))
         
       End If
 
@@ -269,6 +283,14 @@ GLOBAL gPath AS STRING
       thinBasic_AddEquate  "%XlFileFormat_xlOpenXMLStrictWorkbook      " , "", %XlFileFormat.xlOpenXMLStrictWorkbook      
       thinBasic_AddEquate  "%XlFileFormat_xlWorkbookDefault            " , "", %XlFileFormat.xlWorkbookDefault            
        
+      thinBasic_AddEquate  "%XlDirection_xlDown                        " , "", %XlDirection.xlDown              
+      thinBasic_AddEquate  "%XlDirection_xlToLeft                      " , "", %XlDirection.xlToLeft            
+      thinBasic_AddEquate  "%XlDirection_xlToRight                     " , "", %XlDirection.xlToRight           
+      thinBasic_AddEquate  "%XlDirection_xlUp                          " , "", %XlDirection.xlUp                
+
+
+ 
+
 
   End Function
 
