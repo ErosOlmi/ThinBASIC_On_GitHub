@@ -20,3 +20,7 @@
 *.PDF	 diff=astextplain
 *.rtf	 diff=astextplain
 *.RTF	 diff=astextplain
+
+$ cat .gitattributes
+*.bas linguist-language=PowerBASIC
+*.tbasic linguist-language=thinBASIC
