@@ -261,6 +261,11 @@
  
     If thinBasic_ErrorFree Then
       Select Case UCase$(sSubItem)
+        Case ""
+          Object Call lExcel_Workbook(1&).Worksheets(vIndex) To lDummyExcelWorksheet
+'MsgBox FuncName$ & Str$(Variant#(vIndex))
+          Function = Str$(ObjPtr(lDummyExcelWorksheet))
+        
         Case "SELECT"
           Object Call lExcel_Workbook(1&).Worksheets(vIndex).Select 'To lDummyExcelWorksheet
 'MsgBox FuncName$ & Str$(Variant#(vIndex))

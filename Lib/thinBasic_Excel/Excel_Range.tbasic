@@ -3,7 +3,6 @@
 Uses "Excel"
 Uses "Console"
 
-
 Function TBMain() As Long
   Dim xApp        As  Excel_Application
   Dim xWorkBook1  As  Excel_Workbook
@@ -30,7 +29,8 @@ Function TBMain() As Long
   '---Here we just get the activesheet
   xSheet1 = xWorkBook1.Activesheet
   '---And here we create a new sheet using Add method
-  xSheet2 = xWorkBook1.Worksheets.Add
+  xWorkBook1.Worksheets.Add
+  xSheet2 = xWorkBook1.Worksheets(2)
 
   '---We want activate "Sheet1"
   '---To be able to select a sheet in a workbook, workbook must be the activa one
