@@ -210,10 +210,12 @@
               '---Return value
               Object Get lExcel_Worksheet(1&).Cells(vY, vX).Value To vText
               Select Case VariantVT(vText)
+                Case %VT_Empty, %VT_Null
+                  Function = ""
                 Case %VT_BStr, %VT_LPStr, %VT_LPWStr
                   Function = Variant$(vText)
                 Case %VT_Date
-                  Function = Variant$(vText)
+                  Function = Excel_DateFromVariantDate(vText)'Variant$(vText)
                 Case Else
                   Function = Format$(Variant#(vText))
               End Select
