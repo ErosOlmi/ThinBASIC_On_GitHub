@@ -1,0 +1,41 @@
+Uses "TImage"
+
+Function test_TImageGetBitsPtr_8bitBMPFilePassed_ReturnsPointer()
+  DWord imageId = 1
+  
+  TImage_Load(imageId, APP_Path + "SampleScripts\TBGL\Basic\Textures\test.bmp")
+  DWord dataPointer = TImage_GetBitsPtr(imageId)
+  TImage_Unload(imageId)
+
+  ut_AssertIsTrue(dataPointer > 0)   
+End Function
+
+Function test_TImageGetBitsPtr_24bitBMPFilePassed_ReturnsPointer()
+  DWord imageId = 1
+  
+  TImage_Load(imageId, APP_Path + "SampleScripts\UI\Canvas\Canvas_ViewPort\Image_Background.bmp")
+  DWord dataPointer = TImage_GetBitsPtr(imageId)
+  TImage_Unload(imageId)
+
+  ut_AssertIsTrue(dataPointer > 0)   
+End Function
+
+Function test_TImageGetBitsPtr_PNGFilePassed_ReturnsPointer()
+  DWord imageId = 1
+  
+  TImage_Load(imageId, APP_Path + "SampleScripts\TImage\nebe.png")
+  DWord dataPointer = TImage_GetBitsPtr(imageId)
+  TImage_Unload(imageId)
+
+  ut_AssertIsTrue(dataPointer > 0)   
+End Function
+
+Function test_TImageGetBitsPtr_JPGFilePassed_ReturnsPointer()
+  DWord imageId = 1
+  
+  TImage_Load(imageId, APP_Path + "SampleScripts\TImage\nebe.jpg")
+  DWord dataPointer = TImage_GetBitsPtr(imageId)
+  TImage_Unload(imageId)
+
+  ut_AssertIsTrue(dataPointer > 0)   
+End Function
