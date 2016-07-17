@@ -44,10 +44,9 @@
   '------------------------------------------------------------------
   #INCLUDE ".\thinRegistry.INC"
   '------------------------------------------------------------------
-
-
+                  
   Function Registry_ConvertHKey(ByVal sHKey As String) As Dword
-    SELECT CASE UCASE$(TRIM$(sHKey))
+    SELECT CASE AS CONST$ UCASE$(TRIM$(sHKey))
       CASE "HKEYCR"
         FUNCTION = %HKEY_CLASSES_ROOT
       CASE "HKEYCU"
@@ -58,6 +57,8 @@
         FUNCTION = %HKEY_USERS
       CASE "HKEYCC"
         FUNCTION = %HKEY_CURRENT_CONFIG
+      CASE ELSE
+        thinbasic_RunTimeError ( %ERR__MODULE_SPECIFIC, "Invalid hKey value, must be one of the following:" + $CRLF + "HKEYCR, HKEYCU, HKEYLM, HKEYU, HKEYCC" )        
     END SELECT
   END FUNCTION
                                                
