@@ -378,43 +378,38 @@
   '------------------------------------------------------------------------------
   'Syntax: List = REGISTRY_GetAllKeys(HKey, MainKey, Separator)
   '------------------------------------------------------------------------------
-    LOCAL lHKey     AS STRING
-    LOCAL lMainKey  AS STRING
-    LOCAL lSep      AS STRING
-    
-    LOCAL lKey      AS STRING
-    LOCAL lTmp      AS STRING
-    Local azTmp     As Asciiz * 1024
-    LOCAL tmpHKey   AS DWORD
-    
-    Local pp        As Byte
-    
-    pp = thinBasic_CheckOpenParens_Optional
+    LOCAL sHKey       AS STRING
+    LOCAL sMainKey    AS STRING
+    LOCAL sSeparator  AS STRING
 
-    thinBasic_ParseString lHKey
-    If thinBasic_CheckComma_Mandatory Then
-      thinBasic_ParseString lMainKey
-      IF LEFT$(lMainKey, 1) = "\" THEN lMainKey = MID$(lMainKey, 2, LEN(lMainKey))
-      
-      If thinBasic_CheckComma_Optional Then
-        thinBasic_ParseString lSep  
-      Else  
-        lSep = $CrLf
-      End If
-        
-      tmpHKey = Registry_ConvertHKey(lHKey)
-      If tmpHKey Then          
-        azTmp = String$(1024, 0)
-        azTmp = lMainKey
-        lTmp = GetAllKeys(tmpHKey, azTmp, lSep)
-        FUNCTION = lTmp
-      End If
+    LOCAL azMainKey AS ASCIIZ * 1024
+    LOCAL dwHKey    AS DWORD
 
-    End If
+    LOCAL parensPresent AS BYTE
 
-    If pp Then thinBasic_CheckCloseParens_Mandatory
-    
-  End Function
+    parensPresent = thinBasic_CheckOpenParens_Optional
+
+    thinBasic_ParseString sHKey
+    IF thinBasic_CheckComma_Mandatory THEN
+      thinBasic_ParseString sMainKey
+      IF LEFT$(sMainKey, 1) = "\" THEN sMainKey = LTRIM$(sMainKey, "\")
+
+      IF thinBasic_CheckComma_Optional THEN
+        thinBasic_ParseString sSeparator
+      ELSE
+        sSeparator = $CRLF
+      END IF
+
+      dwHKey = Registry_ConvertHKey(sHKey)
+      IF thinBasic_ErrorFree() THEN
+        azMainKey = sMainKey
+        FUNCTION = GetAllKeys(dwHKey, azMainKey, sSeparator)
+      END IF
+    END IF
+
+    IF parensPresent THEN thinBasic_CheckCloseParens_Mandatory
+
+  END FUNCTION
 
   '------------------------------------------------------------------------------
   FUNCTION Exec_Registry_DelValue() AS EXT
