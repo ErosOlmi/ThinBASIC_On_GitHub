@@ -3,69 +3,55 @@
 
 FUNCTION GetRegValues(hKey AS DWORD) AS STRING
   DIM lReturn            AS LONG
-  DIM KeyName            AS ASCIIZ * 255
+  DIM azKeyName          AS ASCIIZ * 32767   ' up to 32 KB according to MSDN
   DIM KeyType            AS DWORD
-  DIM KeyValue           AS ASCIIZ * 255
+  DIM azKeyValue         AS ASCIIZ * 1048576 ' up to 1 MB according to MSDN
   DIM Reserved           AS DWORD
   DIM lIndex             AS DWORD
-  DIM lNameLen           AS DWORD
-  DIM lValueLen          AS DWORD
-  DIM TextOut3           AS STRING
-  DIM A                  AS STRING
-  DIM lSIZE              AS LONG
-  DIM OutText(200)       AS STRING
-  DIM COUNT              AS INTEGER
-  DIM I                  AS INTEGER
+  DIM azKeyNameLen       AS DWORD
+  DIM azKeyValueLen      AS DWORD
 
-  lIndex   = 0
-  Textout3 = ""
-  lReturn  = 0
-  COUNT    = 0
+  DIM sKeyValue          AS STRING
+  DIM items(1 TO 1024)   AS STRING
+  DIM itemCount          AS LONG
 
-  DO WHILE lReturn <> 259 '%ERROR_NO_MORE_ITEMS  '(259)
-     KeyName   = STRING$(255,32)
-     KeyValue  = STRING$(255,32)
-     lNameLen  = 255 'LEN(KeyName)
-     lValueLen = 255 'LEN(KeyValue)
+  DO WHILE lReturn <> %ERROR_NO_MORE_ITEMS
+    azKeyNameLen  = SIZEOF(azKeyName)
+    azKeyValueLen = SIZEOF(azKeyValue)
 
-     Reserved=%NULL
-     LReturn = RegEnumValue(hKey, lIndex, KeyName, BYVAL VARPTR(lNameLen), BYVAL Reserved , BYVAL VARPTR (KeyType), KeyValue, BYVAL VARPTR(lValueLen))
-     IF lReturn = 87 THEN
-        FUNCTION = "Error code 87 in RegEnumValue" + $CRLF
+    Reserved = %NULL
+    lReturn  = RegEnumValue(hKey, lIndex, azKeyName, BYVAL VARPTR(azKeyNameLen), BYVAL Reserved , BYVAL VARPTR(KeyType), azKeyValue, BYVAL VARPTR(azKeyValueLen))
+    INCR lIndex
+
+    IF lReturn = %ERROR_SUCCESS THEN
+      SELECT CASE keyType
+        CASE %REG_DWORD
+          sKeyValue = FORMAT$(CVDWD(azKeyValue))
+
+        CASE %REG_QWORD
+          sKeyValue = FORMAT$(CVQ(azKeyValue))
+
+        CASE ELSE
+          sKeyValue = LEFT$(azKeyValue, azKeyValueLen)
+      END SELECT
+
+      INCR itemCount
+      IF itemCount > UBOUND(items) THEN
+        REDIM PRESERVE items(1 TO UBOUND(items) * 2)
+      END IF
+      items(itemCount) = TRIM$(azKeyName) + "=" + sKeyValue
+    ELSEIF lReturn <> %ERROR_NO_MORE_ITEMS THEN
+        FUNCTION = "Error code " + FORMAT$(lReturn) + " in RegEnumValue"
         EXIT FUNCTION
-     END IF
-     IF (lReturn <> %ERROR_NO_MORE_ITEMS) THEN
-        IF lReturn = %ERROR_SUCCESS THEN
-            lSIZE = lValueLen
-            IF KeyType = %REG_SZ THEN
-               A= LEFT$(KeyValue, lSIZE - 1)
-            ELSEIF KeyType = %REG_DWORD THEN
-               A= STR$(CVL(LEFT$(KeyValue, lSIZE)))
-            ELSEIF KeyType = %REG_BINARY AND lSIZE=1 THEN
-               A= STR$(ASC(LEFT$(KeyValue, lSIZE)))
-            ELSEIF KeyType = %REG_MULTI_SZ THEN
-               A= LEFT$(KeyValue, lSIZE - 1)
-               REPLACE ANY CHR$(0) WITH "," IN A
-            ELSE
-               A= LEFT$(KeyValue, lSIZE)
-               REPLACE ANY CHR$(0, 1, 2, 3, 4, 5, 6, 7, 8, 9) WITH "*" IN A
-            END IF
-            COUNT = COUNT + 1
-            OutText(COUNT) = KeyName + CHR$(255) + A
-        ELSE
-        END IF
-     END IF
-     INCR lIndex
+    END IF
   LOOP
-  IF COUNT > 0 THEN
-     ARRAY SORT OutText(1) FOR COUNT, FROM 1 TO 15
-     FOR I = 1 TO COUNT
-         KeyName = EXTRACT$(OutText(I), CHR$(255))
-         A = REMAIN$(OutText(I), CHR$(255))
-         TextOut3 = TextOut3 + KeyName + "=" + A + $CRLF
-     NEXT I
+
+  IF itemCount THEN
+    REDIM PRESERVE items(1 TO itemCount)
+    ARRAY SORT items()
+
+    FUNCTION = JOIN$(items(), $CRLF)
   END IF
-  FUNCTION = TextOut3
 END FUNCTION
 
 FUNCTION GetAllKeys(BYVAL lHKey AS DWORD, lHive AS ASCIIZ, BYVAL sSep AS STRING) AS STRING
@@ -101,11 +87,11 @@ FUNCTION GetAllKeys(BYVAL lHKey AS DWORD, lHive AS ASCIIZ, BYVAL sSep AS STRING)
       EXIT FUNCTION
   END IF
 
-  strTmp = strTmp + GetRegValues(hKey)
+  strTmp = GetRegValues(hKey)
 
   ' Enumerate all the subkeys for the current key.
   '...............................................
-  DO WHILE  lReturn <> %ERROR_NO_MORE_ITEMS
+  DO WHILE lReturn <> %ERROR_NO_MORE_ITEMS
      IF lReturn = %ERROR_SUCCESS THEN
         lNameLen = SIZEOF(szSubKeyName)
         lClassLen = SIZEOF(azClass)
@@ -113,11 +99,11 @@ FUNCTION GetAllKeys(BYVAL lHKey AS DWORD, lHive AS ASCIIZ, BYVAL sSep AS STRING)
 
         IF (lReturn <> %ERROR_NO_MORE_ITEMS) THEN
            IF lReturn = %ERROR_SUCCESS THEN
-              strTmp += IIF$(LEN(strTmp), sSep, "") + szSubKeyName '+ sSep '$LIST_SEP
+              strTmp += IIF$(LEN(strTmp), sSep, "") + szSubKeyName
            END IF
         END IF
      END IF
-     lIndex = lIndex + 1
+     INCR lIndex
   LOOP
 
   RegCloseKey hKey
