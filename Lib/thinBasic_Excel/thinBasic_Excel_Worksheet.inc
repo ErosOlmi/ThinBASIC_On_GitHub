@@ -215,7 +215,7 @@
                 Case %VT_BStr, %VT_LPStr, %VT_LPWStr
                   Function = Variant$(vText)
                 Case %VT_Date
-                  Function = Excel_DateFromVariantDate(vText)'Variant$(vText)
+                  Function = Excel_DateFromVariantDate(vText, %TRUE)'Variant$(vText)
                 Case Else
                   Function = Format$(Variant#(vText))
               End Select
