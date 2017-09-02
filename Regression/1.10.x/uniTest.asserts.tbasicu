@@ -1,0 +1,148 @@
+function uniTestRunner.assertEqual(byVal aValue1 as number, byVal aValue2 as number, optional aComment as string ) as long
+  if (aValue1 = aValue2) then
+    return true
+  else
+    me._raiseFail("Expected value=" + aValue1 + ", found value=" + aValue2 + IIf$(len(aComment), "[" + aComment + "]", ""))
+    return false
+  end if
+end function
+
+' -- Are two numbers equal when rounded to specified number of decimals?
+function uniTestRunner.assertEqualRounded(byVal aValue1 as number, byVal aValue2 as number, byVal aNumberOfDecimals as number, optional aComment as string ) as long
+  if (Round(aValue1, aNumberOfDecimals) = Round(aValue2, aNumberOfDecimals)) then
+    return true
+  else
+    me._raiseFail("Expected value=" + Round(aValue1, aNumberOfDecimals) + ", found value=" + Round(aValue2, aNumberOfDecimals) + IIf$(len(aComment), "[" + aComment + "]", ""))
+    return false
+  end if
+end function
+
+' -- Are two numbers equal when rounded to specified number of decimals?
+function uniTestRunner.assertEqualEpsilon(byVal aValue1 as number, byVal aValue2 as number, byVal aEpsilon as number, optional aComment as string ) as long
+  if (val(format$(abs(aValue1-aValue2))) <= val(format$(aEpsilon))) then
+    return true
+  else
+    me._raiseFail("Expected maximum difference=" + aEpsilon + ", found difference=" + abs(aValue1-aValue2) + " for values " + aValue1 + " and " + aValue2 + IIf$(len(aComment), "[" + aComment + "]", ""))
+    return false
+  end if
+end function
+
+' -- Are two numbers not equal?
+function uniTestRunner.assertNotEqual(byVal aValue1 as number, byVal aValue2 as number, optional aComment as string ) as long
+  if not(aValue1 = aValue2) then
+    return true
+  else
+    me._raiseFail("Expected value=" + aValue1 + ", found value=" + aValue2 + IIf$(len(aComment), "[" + aComment + "]", ""))
+    return false
+  end if
+end function
+
+' -- Are two texts equal?
+function uniTestRunner.assertEqualText(byVal aValue1 as string, byVal aValue2 as string, optional aComment as string ) as long
+  if (aValue1 = aValue2) then
+    return true
+  else
+    me._raiseFail("Expected text=" + $DQ + aValue1 + $DQ + ", found text=" + $DQ + aValue2 + $DQ + IIf$(len(aComment), "[" + aComment + "]", ""))
+    return false
+  end if
+end function
+
+' -- Are two texts not equal?
+function uniTestRunner.assertNotEqualText(byVal aValue1 as string, byVal aValue2 as string, optional aComment as string ) as long
+  if not(aValue1 = aValue2) then
+    return true
+  else
+    me._raiseFail("Expected text="+ $DQ + aValue1+ $DQ + ", found text="+ $DQ + aValue2 + $DQ + IIf$(len(aComment), "[" + aComment + "]", ""))
+    return false
+  end if
+end function
+
+' -- Is first number greater?
+function uniTestRunner.assertIsGreater(byVal aValue1 as number, byVal aValue2 as number, optional aComment as string ) as long
+  if (aValue1 > aValue2) then
+    return true
+  else
+    me._raiseFail("Expected " + aValue1 + " > " + aValue2 + IIf$(len(aComment), "[" + aComment + "]", ""))
+    return false
+  end if
+end function
+
+' -- Is first number smaller?
+function uniTestRunner.assertIsLess(byVal aValue1 as number, byVal aValue2 as number, optional aComment as string ) as long
+  if (aValue1 < aValue2) then
+    return true
+  else
+    me._raiseFail("Expected " + aValue1 + " < " + aValue2 + IIf$(len(aComment), "[" + aComment + "]", ""))
+    return false
+  end if
+end function
+
+' -- Is value true?
+function uniTestRunner.assertIsTrue(byVal aValue as number, optional aComment as string ) as long
+  if (aValue = false) then
+    me._raiseFail("Expected " + aValue + " = " + format$(true) + "(= true)" + IIf$(len(aComment), "[" + aComment + "]", ""))
+    return false
+  else
+    return true
+  end if
+end function
+
+' -- Is value false?
+function uniTestRunner.assertIsFalse(byVal aValue as number, optional aComment as string ) as long
+  if (aValue = false) then
+    return true
+  else
+    me._raiseFail("Expected " + aValue + " = " + format$(false) + "(= false)" + IIf$(len(aComment), "[" + aComment + "]", ""))
+    return false
+  end if
+end function
+
+' -- Is value NULL?
+function uniTestRunner.assertIsNull(byVal aValue as number, optional aComment as string ) as long
+  if (aValue = NULL) then
+    return true
+  else
+    me._raiseFail("Expected " + aValue + " = " + format$(NULL) + "(= 0)" + IIf$(len(aComment), "[" + aComment + "]", ""))
+    return false
+  end if
+end function
+
+' -- Is value not NULL?
+function uniTestRunner.assertIsNotNull(byVal aValue as number, optional aComment as string ) as long
+  if (aValue <> NULL) then
+    return true
+  else
+    me._raiseFail("Expected " + aValue + " <> " + format$(NULL) + "(= 0)" + IIf$(len(aComment), "[" + aComment + "]", ""))
+    return false
+  end if
+end function
+
+' -- Is string empty?
+function uniTestRunner.assertIsEmpty(byVal aValue as string, optional aComment as string ) as long
+  if (len(aValue) = 0) then
+    return true
+  else
+    me._raiseFail("Expected length of zero, instead found length of " + len(aValue1) + IIf$(len(aComment), "[" + aComment + "]", ""))
+    return false
+  end if
+end function
+
+' -- Is string not empty?
+function uniTestRunner.assertIsNotEmpty(byVal aValue as string, optional aComment as string ) as long
+  if (len(aValue) > 0) then
+    return true
+  else
+    me._raiseFail("Expected non-zero length, instead found empty string" + IIf$(len(aComment), "[" + aComment + "]", ""))
+    return false
+  end if
+end function
+
+' -- Is ERR set to expected value
+function uniTestRunner.assertError(byVal aValue as number, optional aComment as string ) as long
+  if (err = aValue) then
+    return true
+  else
+    me._raiseFail("Expected ERR=" + aValue + ", found ERR=" + err + " instead" + IIf$(len(aComment), "[" + aComment + "]", ""))
+    return false
+  end if
+end function

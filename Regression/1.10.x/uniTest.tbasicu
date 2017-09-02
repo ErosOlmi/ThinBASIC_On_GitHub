@@ -1,0 +1,109 @@
+uses "file"
+
+type uniTestRunner
+  private
+  
+  _failLog              as string
+  _failCount            as long
+  _testCount            as long
+  
+  _RaiseFail            as function
+  _GetFailInfo          as function
+      
+  public
+
+  assertEqual           as function
+  assertEqualRounded    as function
+  assertEqualEpsilon    as function
+  assertNotEqual        as function
+  assertEqualText       as function
+  assertNotEqualText    as function
+  assertIsGreater       as function
+  assertIsLess          as function
+  assertIsTrue          as function
+  assertIsFalse         as function
+  assertIsNull          as function
+  assertIsNotNull       as function
+  assertIsEmpty         as function
+  assertIsNotEmpty      as function
+  assertError           as function
+  
+  getPassedCount        as function
+  getFailedCount        as function
+  getFailedTestName     as function
+  getFailedAssertType   as function
+  getFailedDescription  as function
+  getFailedComment      as function
+  
+  function _create()
+    me.resetResults()
+  end function
+    
+  function resetResults()
+    me._failCount = 0
+    me._failLog = "<header>" + $CRLF + 
+                  $TAB + "<version>1.5</version>" + $CRLF +
+                  $TAB + "<date>" + Date$ + "</date>" + $CRLF +
+                  $TAB + "<time>" + Time$ + "</time>" + $CRLF +
+                  $TAB + "<failCount>0</failCount>" + $CRLF +  
+                  "</header>" + $CRLF +
+                  "<body>" + $CRLF
+  end function
+  
+  function runTests(optional prefix as string)
+  
+    if len(prefix) then prefix = uCase$(prefix) + "_"
+    prefix += "TEST_"
+    
+    string sTestFunctions = function_names(%FUNCTION_USER, ",")
+    
+    string sValidFunctions, sFunction   
+    long   i
+    
+    string setupFunction    = prefix + "SETUP"
+    string teardownFunction = prefix + "TEARDOWN"
+    for i = 1 To parseCount(sTestFunctions, ",")
+      sFunction = parse$(sTestFunctions, ",", i)   
+      
+      ' -- If it matches expected naming convention, but it is not setup function...
+      if startsWith(sFunction, prefix) and sFunction <> setupFunction and sFunction <> teardownFunction then
+        sValidFunctions += sFunction + ","
+      end if
+    next
+    
+    sValidFunctions = rTrim$(sValidFunctions, ",")
+    
+    if len(sValidFunctions) then
+      me._testCount = parsecount(sValidFunctions, ",")
+      for i = 1 to parseCount(sValidFunctions, ",")
+        sFunction = parse$(sValidFunctions, ",", i)
+
+        call_ifExists setupFunction()
+        call sFunction()
+        call_ifExists teardownFunction()
+      next
+    
+      return parseCount(sValidFunctions, ",")
+    else
+      me._RaiseFail("No fixtures with prefix=" + $DQ + prefix + $DQ + " found")  
+      return 0
+    end if
+
+  end function
+  
+  ' Returns the number of failed tests
+  function saveResults( sFileName As String ) As Long    
+    me._failLog += "</body>"
+    me._failLog = replace$(me._failLog, "<failCount>0</failCount>", "<failCount>" + me._failCount + "</failCount>")
+    
+    file_save(sFileName, me._failLog)
+            
+    return me._failCount    
+  end function
+
+end type
+
+#include "uniTest.bindapi.tbasicu"
+#include "uniTest.private.tbasicu"
+#include "uniTest.asserts.tbasicu"
+#include "uniTest.results.tbasicu"

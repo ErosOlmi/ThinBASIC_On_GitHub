@@ -1,0 +1,35 @@
+type test_udt_fullName
+  name    as string
+  surname as string
+  
+  function GetName() as string
+    return me.name    
+  end function
+  
+  function ToString() as string
+    return strformat$("{1} {2}", me.name, me.surname)
+  end function  
+end type
+
+function test_udt_membersCanBeKeywords()
+  dim fullName as test_udt_fullName
+
+  fullName.name = "Eros"
+
+  ut.assertEqualText(fullName.name, "Eros")
+end function
+
+function test_udt_keywordMemberAccess()
+  dim fullName as test_udt_fullName
+  fullName.name    = "Eros"
+
+  ut.assertEqualText(fullName.GetName, "Eros")
+end function
+
+function test_udt_keywordMemberUseInFunction()
+  dim fullName as test_udt_fullName
+  fullName.name    = "Eros"
+  fullName.surname = "Olmi"
+
+  ut.assertEqualText(fullName.ToString, "Eros Olmi")
+end function

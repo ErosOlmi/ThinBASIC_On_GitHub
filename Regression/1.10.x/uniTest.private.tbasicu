@@ -1,0 +1,38 @@
+function uniTestRunner._raiseFail( aDescription as string )
+
+  string sStack = thinBasic_StackGetList($TAB)
+  string sFunc()
+  long   nFunc  = parse(sStack, sFunc, $TAB)
+
+  string sAssertSource = remain$(sFunc(uBound(sFunc)-1), ".")
+  string sTestMethod   = sFunc(uBound(sFunc)-2)
+
+  me._failCount += 1
+
+  me._failLog += $TAB + "<fail>" + $CRLF +
+                 $TAB(2) + "<id>" + me._failCount + "</id>" + $CRLF +
+                 $TAB(2) + "<testName>" + sTestMethod + "</testName>" + $CRLF +
+                 $TAB(2) + "<assertType>" + sAssertSource + "</assertType>" + $CRLF +
+                 $TAB(2) + "<description>" + parse$(aDescription, "[", 1) + "</description>" + $CRLF +
+                 $TAB(2) + "<comment>" + trim$(Remain$(aDescription, "["), "]") + "</comment>" + $CRLF +
+                 $TAB + "</fail>" + $CRLF
+
+end function
+
+function uniTestRunner._getFailInfo( sSource as string, id as long, sField as string ) as string
+  if (me._failCount = 0) then
+    exit function
+  end if
+
+  if outside(id, 1, me._failCount) then
+    exit function
+  end if
+
+  string failChunk = grab$(me._failLog,
+                           "<fail>" + $CRLF + $TAB(2) + "<id>" + id + "</id>",
+                           "</fail>")
+
+  string fieldValue = grab$(failChunk, "<" + sField + ">", "</" + sField + ">")
+
+  return fieldValue
+end function

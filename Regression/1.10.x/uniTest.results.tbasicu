@@ -1,0 +1,23 @@
+function uniTestRunner.getPassedCount() as long
+  return me._testCount - me._failCount
+end function
+
+function uniTestRunner.getFailedCount() as long
+  return me._failCount
+end function
+
+function uniTestRunner.getFailedTestName( id as long ) as string
+  return me._GetFailInfo("getFailedTestName", id, "testName")
+end function
+
+function uniTestRunner.getFailedAssertType( id as long ) as string
+  return me._GetFailInfo("getFailedAssertType", id, "assertType")
+end function
+
+function uniTestRunner.getFailedDescription( id as long ) as string
+  return me._GetFailInfo("getFailedDescription", id, "description")
+end function
+
+function uniTestRunner.getFailedComment( id as long ) as string
+  return me._GetFailInfo("getFailedComment", id, "comment")
+end function

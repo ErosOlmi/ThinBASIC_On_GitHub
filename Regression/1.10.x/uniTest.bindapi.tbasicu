@@ -1,0 +1,1 @@
+declare function thinBasic_StackGetList lib "thinCore.dll" alias "thinBasic_StackGetList"(optional byVal sSep as string) as string
