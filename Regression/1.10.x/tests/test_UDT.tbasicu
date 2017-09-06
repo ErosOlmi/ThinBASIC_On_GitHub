@@ -1,4 +1,4 @@
-type test_udt_fullName
+type udt_fullName
   name    as string
   surname as string
   
@@ -12,7 +12,7 @@ type test_udt_fullName
 end type
 
 function test_udt_membersCanBeKeywords()
-  dim fullName as test_udt_fullName
+  dim fullName as udt_fullName
 
   fullName.name = "Eros"
 
@@ -20,14 +20,14 @@ function test_udt_membersCanBeKeywords()
 end function
 
 function test_udt_keywordMemberAccess()
-  dim fullName as test_udt_fullName
+  dim fullName as udt_fullName
   fullName.name    = "Eros"
 
   ut.assertEqualText(fullName.GetName, "Eros")
 end function
 
 function test_udt_keywordMemberUseInFunction()
-  dim fullName as test_udt_fullName
+  dim fullName as udt_fullName
   fullName.name    = "Eros"
   fullName.surname = "Olmi"
 
