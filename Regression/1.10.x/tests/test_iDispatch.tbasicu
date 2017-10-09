@@ -1,0 +1,45 @@
+function test_iDispatch_shortInitialization()
+
+  dim object as iDispatch  = newCom("Scripting.FileSystemObject")
+  
+  ut.assertIsTrue(isComObject(object))
+  
+end function
+
+function test_iDispatch_shorterInitialization()
+
+  iDispatch object = newCom("Scripting.FileSystemObject")
+  
+  ut.assertIsTrue(isComObject(object))
+  
+end function
+
+function test_iDispatch_comObjPtr()
+
+  iDispatch object = newCom("Scripting.FileSystemObject")
+  
+  ut.assertIsTrue(comObjPtr(object) > 0)
+  
+end function
+
+function test_iDispatch_passToFunction()
+
+  iDispatch object = newCom("Scripting.FileSystemObject")
+  
+  long retVal = iDispatch_checkItIsValid(object)  
+  
+  ut.assertIsTrue(retVal)
+  
+end function
+
+function iDispatch_checkItIsValid(byref o as iDispatch) as long
+  return isComObject(o)
+end function
+
+function test_iDispatch_isComNothing()
+
+  iDispatch object
+  
+  ut.assertIsTrue(isComNothing(object))
+  
+end function
